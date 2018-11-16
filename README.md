@@ -52,31 +52,15 @@ environment can be found at the end of the CircleCI log output on a successful b
 - Watch your project build, the CircleCI output has a link to your   
 
 ## Deploying an existing WunderTools project
-Get a copy of the WunderTools repository next to your project repository and copy the required files:
-```
-cp -R ../WunderTools/.circleci .
-cp -R ../WunderTools/drupal/Dockerfile drupal/
-cp -R ../WunderTools/drupal/.dockerignore drupal/
-cp -R ../WunderTools/drupal/web/Dockerfile drupal/web/
-cp -R ../WunderTools/drupal/web/.dockerignore drupal/web/
-```
-
-Make sure your settings.php includes the following lines after the usual database credentials:
+We provide a script to convert existing Drupal projects by adding the required 
+Silta configuration. To execute it, go to your project root, make sure you don't
+have any uncommitted work and run the following command:
 
 ```
-$databases['default']['default'] = [
-  'database' =>  getenv('DB_NAME'),
-  'username' => getenv('DB_USER'),
-  'password' => getenv('DB_PASS'),
-  'host' => getenv('DB_HOST'),
-  'port' => '3306',
-  'driver' => 'mysql',
-  'prefix' => '',
-  'collation' => 'utf8mb4_general_ci',
-];
-
+curl https://raw.githubusercontent.com/wunderio/silta/master/drupal-migrate.sh | bash
 ```
 
+Have a look at the modifications made to your repository and commit them.
 Finally, enable CircleCI for your project (see above for details).
 
 ## FAQ
