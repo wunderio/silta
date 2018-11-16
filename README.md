@@ -18,22 +18,19 @@ One of the great features is the possibility to use your own Docker images,
 we use our own called [circleci-builder](https://github.com/wunderio/circleci-builder).
 
 We use CircleCi to check the repository for errors, build the codebase, create custom docker 
-images, push them to the registry and instruct Kontena to deploy our stack. The build process is based 
+images, push them to the registry and deploy a release of our Helm chart. The build process is based 
 on a config file located under `.circleci/config.yml` in the git repository.
 
 To perform its duties, CircleCI needs certain credentials, for example to push to the docker image 
-registry or to interact with the Kontena master. These credentials are stored in the 
-[CircleCI Contexts](https://circleci.com/docs/2.0/contexts/) `dev_wdr_io` and are available to any repository
+registry or to interact with the Kubernetes master. These credentials are stored in a 
+[CircleCI Contexts](https://circleci.com/docs/2.0/contexts/) and are available to any repository
 in our Github organisation.  
 
-### Kontena (for now)
-Kontena is an open source container orchestration platform, as well as a hosted 
-service which also includes a docker image registry which we currently use. Kontena worker nodes are regular
-servers and can be located anywhere.
+### Kubernetes
+[Kubernetes](https://kubernetes.io/) is an open source container orchestration platform supported by all major cloud hosting providers.
 
-In Kontena, each application is described as a "stack" using a [kontena.yml file](https://kontena.io/docs/using-kontena/stack-file.html) 
-which is located in the git repository. The stack file provided by the Drupal template is sufficient 
-for a standard Drupal project, but you might need to adapt it to add services such as Elasticsearch.
+### Helm
+[Helm](https://helm.sh/) is a package manager for Kubernetes. We published our own chart repository: https://github.com/wunderio/charts. The chart is referenced from the CircleCI configuration, and each repository can also override the default values to adapt the configuration.
 
 ## How it works in practice
 
@@ -58,7 +55,6 @@ environment can be found at the end of the CircleCI log output on a successful b
 Get a copy of the WunderTools repository next to your project repository and copy the required files:
 ```
 cp -R ../WunderTools/.circleci .
-cp -R ../WunderTools/drupal/kontena.yml drupal/
 cp -R ../WunderTools/drupal/Dockerfile drupal/
 cp -R ../WunderTools/drupal/.dockerignore drupal/
 cp -R ../WunderTools/drupal/web/Dockerfile drupal/web/
@@ -71,7 +67,7 @@ Make sure your settings.php includes the following lines after the usual databas
 $databases['default']['default'] = [
   'database' =>  getenv('DB_NAME'),
   'username' => getenv('DB_USER'),
-  'password' => getenv('DB_PASSWORD'),
+  'password' => getenv('DB_PASS'),
   'host' => getenv('DB_HOST'),
   'port' => '3306',
   'driver' => 'mysql',
@@ -89,4 +85,4 @@ Finally, enable CircleCI for your project (see above for details).
 It means "bridge" in Finnish.
 
 #### Can I use Silta outside of Wunder?
-Yes, there is nothing proprietary about Silta. However, we haven't put special attention to this use case at this point.
+Yes, our code is open. However, we haven't put special attention to this use case at this point.
