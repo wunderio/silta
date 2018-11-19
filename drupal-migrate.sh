@@ -71,6 +71,9 @@ else
   echo "You don't seem to be using composer, this is currently not supported out of the box."
 fi
 
+mkdir -p drush/Commands
+curl -s https://raw.githubusercontent.com/wunderio/drupal-project/master/drush/Commands/CheckBootstrapCommands.php > drush/Commands/CheckBootstrapCommands.php
+
 # TODO: update settings.php
 # TODO: check drupal config folder location
 # TODO: detect location of frontend with package.json
