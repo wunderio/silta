@@ -7,29 +7,37 @@ echo "Checking dependencies"
 git --version
 composer --version
 
-
-echo "Adding standard CircleCI configuration"
 mkdir -p .circleci
-curl -s https://raw.githubusercontent.com/wunderio/drupal-project/master/.circleci/config.yml > .circleci/config.yml
 
-# Try to detect the default path
-composer_path=`find . -name composer.json -not -path "*vendor*" -not -path "*modules*" -not -path "*core*" -not -path "*test*"`
-drupal_root_guess=`dirname $composer_path`
+if [ -f drupal/composer.json ] && [ -f drupal/build.sh ]
+then
+  echo "This looks like a D8 Wundertools project."
+  drupal_root="drupal"
+  echo "Adding Wunderools CircleCI configuration"
+  curl -s https://raw.githubusercontent.com/wunderio/Wundertools/master/.circleci/config.yml > .circleci/config.yml
+else
+  echo "Adding standard CircleCI configuration"
+  curl -s https://raw.githubusercontent.com/wunderio/drupal-project/master/.circleci/config.yml > .circleci/config.yml
 
-while ! [[ $drupal_root ]] || ! [ -d $drupal_root ]
-do
-  read -er -p "Where is the drupal root? ($drupal_root_guess): " drupal_root
+  # Try to detect the default path
+  composer_path=`find . -name composer.json -not -path "*vendor*" -not -path "*modules*" -not -path "*core*" -not -path "*test*"`
+  drupal_root_guess=`dirname $composer_path`
 
-  if ! [[ $drupal_root ]]
-  then
-    drupal_root=$drupal_root_guess
-  fi
+  while ! [[ $drupal_root ]] || ! [ -d $drupal_root ]
+  do
+    read -er -p "Where is the drupal root? $drupal_root_guess : " drupal_root
 
-  if ! [ -d $drupal_root ]
-  then
-    echo "The folder $drupal_root could not be found."
-  fi
-done
+    if ! [[ $drupal_root ]]
+    then
+      drupal_root=$drupal_root_guess
+    fi
+
+    if ! [ -d $drupal_root ]
+    then
+      echo "The folder $drupal_root could not be found."
+    fi
+  done
+fi
 
 cd $drupal_root
 
