@@ -57,7 +57,7 @@ Silta configuration. To execute it, go to your project root, make sure you don't
 have any uncommitted work and run the following command:
 
 ```
-curl https://raw.githubusercontent.com/wunderio/silta/master/drupal-migrate.sh | bash
+curl -s https://raw.githubusercontent.com/wunderio/silta/master/drupal-migrate.sh | bash
 ```
 
 Have a look at the modifications made to your repository and commit them.
