@@ -51,9 +51,10 @@ environment can be found at the end of the CircleCI log output on a successful b
 - Log in to CircleCI with your Github credentials, select "wunderio" and [enable your project](https://circleci.com/add-projects/gh/wunderio).
 - Watch your project build, the CircleCI output has a link to your   
 
-## Deploying an existing WunderTools project
+## Deploying an existing Drupal project
 We provide a script to convert existing Drupal projects by adding the required 
-Silta configuration. To execute it, go to your project root, make sure you don't
+Silta configuration. The script also includes code to handle projects based
+on the [WunderTools](https://github.com/wunderio/WunderTools/) template. To execute it, go to your project root, make sure you don't
 have any uncommitted work and run the following command:
 
 ```
