@@ -82,8 +82,15 @@ fi
 mkdir -p drush/Commands
 curl -s https://raw.githubusercontent.com/wunderio/drupal-project/master/drush/Commands/CheckBootstrapCommands.php > drush/Commands/CheckBootstrapCommands.php
 
-# TODO: update settings.php
+echo "Updating settings.php"
+echo '
+/**
+ * Silta cluster configuration overrides.
+ */
+if (getenv("SILTA_CLUSTER") && file_exists($app_root . "/" . $site_path . "/settings.silta.php")) {
+  include $app_root . "/" . $site_path . "/settings.silta.php";
+}' >>  web/sites/default/settings.php
+curl -s https://raw.githubusercontent.com/wunderio/drupal-project/master/web/sites/default/settings.silta.php > web/sites/default/settings.silta.php
+
 # TODO: check drupal config folder location
 # TODO: detect location of frontend with package.json
-
-#read -e -p "Do you want to delete ansible configuration?"
