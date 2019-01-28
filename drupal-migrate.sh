@@ -47,12 +47,13 @@ curl -s https://raw.githubusercontent.com/wunderio/drupal-project/master/silta/n
 curl -s https://raw.githubusercontent.com/wunderio/drupal-project/master/silta/php.Dockerfile > silta/php.Dockerfile
 curl -s https://raw.githubusercontent.com/wunderio/drupal-project/master/silta/shell.Dockerfile > silta/shell.Dockerfile
 
+echo "Adding project-specific silta configuration file"
+curl -s https://raw.githubusercontent.com/wunderio/drupal-project/master/silta/silta.yml > silta/silta.yml
+curl -s https://raw.githubusercontent.com/wunderio/drupal-project/master/silta/silta-prod.yml > silta/silta-prod.yml
+
 echo "Adding dockerignore files"
 curl -s https://raw.githubusercontent.com/wunderio/drupal-project/master/.dockerignore > .dockerignore
 curl -s https://raw.githubusercontent.com/wunderio/drupal-project/master/web/.dockerignore > web/.dockerignore
-
-echo "Adding project-specific silta configuration file"
-curl -s https://raw.githubusercontent.com/wunderio/drupal-project/master/silta.yml > silta.yml
 
 if [ ! -f phpcs.xml ]; then
   echo "Adding our standard phpcs.xml"
