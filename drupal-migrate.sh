@@ -76,6 +76,15 @@ if [ -f composer.json ]; then
 
   echo "Updating drush to version 9"
   composer require drush/drush:^9.0.0
+
+  if grep -q drupal/elasticsearch_helper composer.json; then
+    echo "Using Elasticsearch Helper."
+    echo '
+elasticsearch:
+  enabled: true
+  version: 5.6.14
+' >> silta/silta.yml
+  fi
 else
   echo "You don't seem to be using composer, this is currently not supported out of the box."
 fi
@@ -92,9 +101,20 @@ then
  */
 if (getenv("SILTA_CLUSTER") && file_exists($app_root . "/" . $site_path . "/settings.silta.php")) {
   include $app_root . "/" . $site_path . "/settings.silta.php";
-}' >>  web/sites/default/settings.php
+}
+' >>  web/sites/default/settings.php
 fi
 curl -s https://raw.githubusercontent.com/wunderio/drupal-project/master/web/sites/default/settings.silta.php > web/sites/default/settings.silta.php
+
+if find . -name core.extension.yml -not -path "*web*"
+then
+  echo "Configuration found"
+fi
+
+if ! [ -d config/sync ]
+then
+  echo "Please move your configuration folder to config/sync"
+fi
 
 # TODO: check drupal config folder location
 # TODO: detect location of frontend with package.json
