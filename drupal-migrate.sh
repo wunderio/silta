@@ -72,7 +72,7 @@ fi
 if [ -f composer.json ]; then
   echo "Adding up gdpr-dump to sanitize database dumps."
   composer require machbarmacher/gdpr-dump
-  curl -s https://raw.githubusercontent.com/wunderio/drupal-project/master/web/gdpr.json > gdpr.json
+  curl -s https://raw.githubusercontent.com/wunderio/drupal-project/master/gdpr.json > gdpr.json
 
   echo "Updating drush to version 9"
   composer require drush/drush:^9.0.0
