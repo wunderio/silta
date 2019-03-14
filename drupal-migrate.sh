@@ -92,6 +92,19 @@ fi
 mkdir -p drush/Commands
 curl -s https://raw.githubusercontent.com/wunderio/drupal-project/master/drush/Commands/CheckBootstrapCommands.php > drush/Commands/CheckBootstrapCommands.php
 
+if ! grep -q "settings.lando.php" web/sites/default/settings.php
+then
+  echo '
+/**
+ * Lando configuration overrides.
+ */
+if (getenv("LANDO_INFO") && file_exists($app_root . "/" . $site_path . "/settings.lando.php")) {
+  include $app_root . "/" . $site_path . "/settings.lando.php";
+}
+' >>  web/sites/default/settings.php
+fi
+curl -s https://raw.githubusercontent.com/wunderio/drupal-project/master/web/sites/default/settings.lando.php > web/sites/default/settings.lando.php
+
 echo "Updating settings.php"
 if ! grep -q "settings.silta.php" web/sites/default/settings.php
 then
