@@ -49,7 +49,7 @@ environment can be found at the end of the CircleCI log output on a successful b
     - Install javascript dependencies with `yarn install` and commit the yarn.lock file.
     - Install Drupal with `lando drush site-install` and export the default configuration with `lando drush config-export`. 
 - Log in to CircleCI with your Github credentials, select "wunderio" and [enable your project](https://circleci.com/add-projects/gh/wunderio).
-- Watch your project build, the CircleCI output has a link to your   
+- Watch your project build, the CircleCI output has a link to your deployed environment.  
 
 ## Deploying an existing Drupal project
 We provide a script to convert existing Drupal projects by adding the required 
