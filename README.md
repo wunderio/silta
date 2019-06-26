@@ -32,6 +32,12 @@ in our Github organisation.
 ### Helm
 [Helm](https://helm.sh/) is a package manager for Kubernetes. We published our own chart repository: https://github.com/wunderio/charts. The chart is referenced from the CircleCI configuration, and each repository can also override the default values to adapt the configuration.
 
+## Request workflow
+![request workflow](https://github.com/wunderio/silta/raw/master/Silta%20request%20workflow.png)
+
+## Deployment workflow
+![deployment workflow](https://github.com/wunderio/silta/raw/master/Silta%20deployment%20workflow.png)
+
 ## How it works in practice
 
 All infrastructure configuration is based on Git, a deployment is triggered automatically when pushing code to Github. 
