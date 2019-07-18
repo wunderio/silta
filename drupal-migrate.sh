@@ -123,9 +123,12 @@ then
   echo "Configuration found"
 fi
 
-if ! [ -d config/sync ]
+if ! [ -d config/sync ] && [[ `find . -name core.extension.yml` ]]
 then
-  echo "Please move your Drupal configuration folder to config/sync"
+  echo "Setting up non-standard Drupal config folder location."
+  DRUPAL_CONFIG_PATH=$(dirname `find . -name core.extension.yml`)
+  echo "php:" >> silta/silta.yml
+  echo "  drupalConfigPath: ${DRUPAL_CONFIG_PATH//.\//}" >> silta/silta.yml
 fi
 
 # TODO: check drupal config folder location
