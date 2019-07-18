@@ -125,7 +125,7 @@ fi
 
 if ! [ -d config/sync ]
 then
-  echo "Please move your configuration folder to config/sync"
+  echo "Please move your Drupal configuration folder to config/sync"
 fi
 
 # TODO: check drupal config folder location
