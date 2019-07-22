@@ -73,9 +73,6 @@ if [ -f composer.json ]; then
   echo "Adding up gdpr-dump to sanitize database dumps."
   composer require machbarmacher/gdpr-dump --ignore-platform-reqs
 
-  echo "Updating drush to version 9"
-  composer require drush/drush:^9.0.0 --ignore-platform-reqs
-
   if grep -q drupal/elasticsearch_helper composer.json; then
     echo "Using Elasticsearch Helper."
     echo '
