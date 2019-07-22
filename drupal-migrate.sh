@@ -85,9 +85,6 @@ else
   echo "You don't seem to be using composer, this is currently not supported out of the box."
 fi
 
-mkdir -p drush/Commands
-curl -s https://raw.githubusercontent.com/wunderio/drupal-project/master/drush/Commands/CheckBootstrapCommands.php > drush/Commands/CheckBootstrapCommands.php
-
 if ! grep -q "settings.lando.php" web/sites/default/settings.php
 then
   echo '
