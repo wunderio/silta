@@ -55,6 +55,11 @@ environment can be found at the end of the CircleCI log output on a successful b
     - Install javascript dependencies with `yarn install` and commit the yarn.lock file.
     - Install Drupal with `lando drush site-install` and export the default configuration with `lando drush config-export`. 
 - Log in to CircleCI with your Github credentials, select "wunderio" and [enable your project](https://circleci.com/add-projects/gh/wunderio).
+!!!
+It's not clear now what it means actually to "enable your project". We should add more details here:
+a) user might be a repo admin - then (s)he should get instructions how to enable CircleCI integration in project settings
+b) user is a regular user;then (s)he should ask someone whi is a repo admin to enable CircleCI integration.
+!!!
 - Watch your project build, the CircleCI output has a link to your deployed environment.  
 
 ## Deploying an existing Drupal project
@@ -69,6 +74,18 @@ curl -s https://raw.githubusercontent.com/wunderio/silta/master/drupal-migrate.s
 
 Have a look at the modifications made to your repository and commit them.
 Finally, enable CircleCI for your project (see above for details).
+
+Make sure you added `drupal/silta/` directory, `drupal/web/sites/default/settings.silta.php` file and that you have appropriate changes in `settings.php` file: include `settings.silta.php` if it's silta cluster env.
+("have a look at modifications made to your repo and commit them" sounds not enough clear. At least, I did not add any of those files, except `settings.silta.php`.)
+
+`drupal/silta/` diriectory should contain following files: `nginx.Dockerfile  php.Dockerfile  shell.Dockerfile  silta-prod.yml  silta.yml`.
+
+Also make sure you added into git `drupal/web/.dockerignore` file.
+
+If your project does not have any `npm` dependency in core (meaning that there is no `package(-lock).json` file in project `drupal/` dir),
+then you will need to remove `npm-install-build` step from `.circleci/config.yml`. Otherwise build will fail on install npm command.
+
+Some projects might have custom npm configuration. Then README should provide a hint how to run `npm install` on build step in custom location.
 
 ## FAQ
 
