@@ -107,7 +107,6 @@ if (getenv("SILTA_CLUSTER") && file_exists($app_root . "/" . $site_path . "/sett
 }
 ' >>  web/sites/default/settings.php
 fi
-curl -s https://raw.githubusercontent.com/wunderio/drupal-project/master/web/sites/default/settings.silta.php > web/sites/default/settings.silta.php
 
 if find . -name core.extension.yml -not -path "*web*"
 then
