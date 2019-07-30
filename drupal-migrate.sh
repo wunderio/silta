@@ -70,9 +70,6 @@ else
 fi
 
 if [ -f composer.json ]; then
-  echo "Adding up gdpr-dump to sanitize database dumps."
-  composer require machbarmacher/gdpr-dump --ignore-platform-reqs
-
   if grep -q drupal/elasticsearch_helper composer.json; then
     echo "Using Elasticsearch Helper."
     echo '
