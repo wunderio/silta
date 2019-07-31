@@ -6,22 +6,21 @@ as a stable production hosting.
 
 ## Documentation
 
+### How it works
 - [Key components](docs/key_components.md)
+- [Request workflow](docs/request_workflow.md)
+- [Deployment workflow](docs/deployment_workflow.md)
 - [Docker images](docs/docker_images.md)
+
+### Working with Silta
 - [Creating a new project](docs/creating_a_new_project.md)
 - [Migrating an existing project](docs/migrating_existing_project.md)
 - [Troubleshooting](docs/troubleshooting.md)
 
-## Request workflow
-![request workflow](docs/img/Silta%20request%20workflow.png)
-
-## Deployment workflow
-![deployment workflow](docs/img/Silta%20deployment%20workflow.png)
-
 ## How it works in practice
 
 All infrastructure configuration is based on Git, a deployment is triggered automatically when pushing code to Github. 
-The Github status indicator next to each commit links to the CircleCI log output. 
+The Github status checks link to the CircleCI log output. 
 
 Each branch is deployed to a dedicated environment based on its content. The URL of the 
 environment can be found at the end of the CircleCI log output on a successful build.    
