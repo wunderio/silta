@@ -15,6 +15,7 @@ as a stable production hosting.
 ### Working with Silta
 - [Creating a new project](docs/creating_a_new_project.md)
 - [Migrating an existing project](docs/migrating_existing_project.md)
+- [Anatomy of a Silta project](docs/anatomy_of_a_silta_project.md)
 - [Troubleshooting](docs/troubleshooting.md)
 
 ## How it works in practice
