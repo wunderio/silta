@@ -18,7 +18,7 @@
 2. Create a new feature branch: 
    ```
    git checkout -b feature/silta
-   ``
+   ```
    
 3. Run the migration script from the project root: 
     ```
