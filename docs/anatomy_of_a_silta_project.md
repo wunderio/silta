@@ -123,7 +123,9 @@ This job reuses the previous job, it runs only for the production branch with th
 
 The Silta configuration file is located in the Drupal root at `silta/silta.yml`, it is an instance of a Helm values file.
 It overrides the default values of our Helm chart (https://github.com/wunderio/charts/blob/master/drupal/values.yaml) 
-and uses the same structure.  
+and uses the same structure.
+
+Here is a list of [sample configuration changes](silta-examples.md) for common requirements.
 
 ## Additional files
 
