@@ -2,10 +2,10 @@
 
 A silta projec requires two main configuration files, which give you the possibility to customize the behavior according to your requirements:
 
-- A [CircleCI configuration file](##-CircleCI-configuration). This defines how the application is built and tested.
-- A Silta configuration file. This defines how the environment running your application is provisioned.
+- A [CircleCI configuration file](#CircleCI-configuration). This defines how the application is built and tested.
+- A [Silta configuration file](#Silta-configuration). This defines how the environment running your application is provisioned.
 
-(##-CircleCI-configuration)
+## CircleCI configuration
 
 This file is located in the project root at `.circleci/config.yml` and uses the official [CircleCI](https://circleci.com/docs/2.0/configuration-reference/) structure. Here is the default content:
 
@@ -119,7 +119,7 @@ This job reuses the previous job, it runs only for the production branch with th
 - It uses one additional silta configuration configuration file which contains production-specific configuration.
 - It can potentially deploy to a different cluster using different credentials.
 
-## Silta configuration
+## Silta-configuration
 
 The Silta configuration file is located in the Drupal root at `silta/silta.yml`, it is an instance of a Helm values file.
 It overrides the default values of our Helm chart (https://github.com/wunderio/charts/blob/master/drupal/values.yaml) 
