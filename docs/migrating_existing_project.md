@@ -51,4 +51,4 @@
     This is the _reference environment_ by default, meaning that new environments 
     will be created with a copy of this content.
     
-12. You should now be set up. Please share any issues you had or ideas for improvements.   
+12. Congratulations, your project is now up and running! Please share any issues you had or ideas for improvements.
