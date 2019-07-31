@@ -9,9 +9,8 @@ as a stable production hosting.
 - [Key components](docs/key_components.md)
 - [Docker images](docs/docker_images.md)
 - [Creating a new project](docs/creating_a_new_project.md)
-- [Mgrating an existing project](docs/migrating_existing_project.md)
-
-
+- [Migrating an existing project](docs/migrating_existing_project.md)
+- [Troubleshooting](docs/troubleshooting.md)
 
 ## Request workflow
 ![request workflow](docs/img/Silta%20request%20workflow.png)
