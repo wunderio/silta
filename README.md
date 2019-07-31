@@ -34,3 +34,7 @@ It means "bridge" in Finnish.
 
 #### Can I use Silta outside of Wunder?
 Yes, our code is open. However, we haven't put special attention to this use case at this point.
+
+#### Does Silta support multisite
+This might be technically possible, but multisite setups provide little benefits in a container-based environment. 
+Instead, it is recommended to trigger the deployment of multiple sites into dedicated environments from the same repository.
