@@ -22,7 +22,7 @@
    
 3. Run the migration script from the project root: 
     ```
-    curl -s https://raw.githubusercontent.com/wunderio/silta/master/drupal-migrate.sh | bash
+    curl -s https://raw.githubusercontent.com/wunderio/silta/master/scripts/drupal-migrate.sh | bash
     ```
     
 4. Read through the output of the script and check for any instructions to perform manual steps.
