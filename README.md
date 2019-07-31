@@ -14,10 +14,10 @@ as a stable production hosting.
 
 
 ## Request workflow
-![request workflow](Silta%20request%20workflow.png)
+![request workflow](docs/img/Silta%20request%20workflow.png)
 
 ## Deployment workflow
-![deployment workflow](Silta%20deployment%20workflow.png)
+![deployment workflow](docs/img/Silta%20deployment%20workflow.png)
 
 ## How it works in practice
 
