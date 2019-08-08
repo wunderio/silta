@@ -126,5 +126,13 @@ then
   echo "You seem to be using yarn, this is still supported but we recommend switching to npm"
 fi
 
+if [ ! -f package.json ] && [[ -n `find . -name package.json -not -path "*web/core*"` ]]
+then
+  PACKAGE_JSON=`find . -name package.json | head -n 1`
+  NPM_PATH=`dirname $PACKAGE_JSON`
+  echo "Setting path to npm package.json.".
+  sed -e "s/path: \. # Adjust to the location of your package.json/path: ${NPM_PATH//\//\/}/g" .circleci/config.yml
+fi
+
 # TODO: check drupal config folder location
 # TODO: detect location of frontend with package.json
