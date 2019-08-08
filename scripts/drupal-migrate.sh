@@ -126,12 +126,18 @@ then
   echo "You seem to be using yarn, this is still supported but we recommend switching to npm"
 fi
 
-if [ ! -f package.json ] && [[ -n `find . -name package.json -not -path "*web/core*"` ]]
+if [ ! -f package.json ] && [[ -n $(find . -name package.json -not -path "*web/core*") ]]
 then
-  PACKAGE_JSON=`find . -name package.json | head -n 1`
+  count=$(find . -name package.json -not -path "*web/core*" | wc -l | tr -d "[:space:]")
+  if [ "$count" -ne 1 ]
+  then
+    echo "You have more than one package.json in your project, you will need to build each folder with individually configured circleci steps."
+  fi
+
+  PACKAGE_JSON=`find . -name package.json -not -path "*web/core*" | head -n 1`
   NPM_PATH=`dirname $PACKAGE_JSON`
   echo "Setting path to npm package.json.".
-  sed -e "s/path: \. # Adjust to the location of your package.json/path: ${NPM_PATH//\//\/}/g" .circleci/config.yml
+  sed -i -e "s/path: \. # Adjust to the location of your package.json/path: ${NPM_PATH//\//\/}/g" .circleci/config.yml
 fi
 
 # TODO: check drupal config folder location
