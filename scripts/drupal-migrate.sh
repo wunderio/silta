@@ -121,5 +121,10 @@ then
   echo "  drupalConfigPath: ${DRUPAL_CONFIG_PATH//.\//}" >> silta/silta.yml
 fi
 
+if [[ -n `find . -name yarn.lock` ]]
+then
+  echo "You seem to be using yarn, this is still supported but we recommend switching to npm"
+fi
+
 # TODO: check drupal config folder location
 # TODO: detect location of frontend with package.json
