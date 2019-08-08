@@ -41,7 +41,7 @@
     - You should also be able to access the environment using the provided SSH instructions.
     
 9. Upload a database dump using the command provided in CircleCI output. 
-   You might need to log in via SSH and clear the caches. 
+   You might need to log in via SSH and clear the caches, import configuration or run updates if your database dump is not in sync with the current codebase. 
    At this point you should have a somewhat functioning environment accessible. 
 
 10. Create a pull request for your feature branch, have a peer review it, and merge it. 
