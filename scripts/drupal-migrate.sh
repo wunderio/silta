@@ -113,7 +113,7 @@ then
   echo "Configuration found"
 fi
 
-if ! [ -d config/sync ] && [[ `find . -name core.extension.yml` ]]
+if [ ! -d config/sync ] && [ -n `find . -name core.extension.yml -not -path "*web/core*"` ] && ! grep -q drupalConfigPath silta/silta.yml
 then
   echo "Setting up non-standard Drupal config folder location."
   DRUPAL_CONFIG_PATH=$(dirname `find . -name core.extension.yml -not -path "*web/core*"`)
