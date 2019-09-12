@@ -87,3 +87,10 @@ gdprDump:
       formatter: name
 ```
 Here `name` is the formatter type. See https://github.com/machbarmacher/gdpr-dump/#using-gdpr-replacements for additonal formatter types.
+
+## Skip taking reference data dumps on each deployment
+```yaml
+referenceData:
+  updateAfterDeployment: false
+```
+For some sites with a lot of files, taking a reference data dump after each deployment can cause the builds to time out. Disabling `updateAfterDeployment` means new environments will be created with reference data from the previous nightly dump.
