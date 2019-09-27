@@ -31,7 +31,7 @@ If you have another command that should be run you can specify it in the `npm-in
     command: "compass compile --production"
 ```
 
-## Use yarn instead of npm
+## Use npm instead of yarn
 
 Using `npm` is preferred over the user of `yarn`, and if it's not too much hassle it would be best to switch
 for the sake of consistency.
