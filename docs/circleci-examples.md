@@ -28,7 +28,7 @@ If you have another command that should be run you can specify it in the `npm-in
 
 ```yaml
 - npm-install-build:
-    command: "compass compile --production"
+    build-command: "compass compile --production"
 ```
 
 ## Use npm instead of yarn
