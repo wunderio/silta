@@ -18,6 +18,7 @@ as a stable production hosting.
 - [Anatomy of a Silta project](docs/anatomy_of_a_silta_project.md)
 - [CircleCI configuration examples](docs/circleci-examples.md)
 - [silta.yml configuration examples](docs/silta-examples.md)
+- [Encrypting sensitive configuration](docs/encrypting_sensitive_configuration.md)
 - [Troubleshooting](docs/troubleshooting.md)
 
 ## How it works in practice
