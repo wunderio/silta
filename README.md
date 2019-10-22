@@ -20,6 +20,7 @@ as a stable production hosting.
 - [silta.yml configuration examples](docs/silta-examples.md)
 - [Encrypting sensitive configuration](docs/encrypting_sensitive_configuration.md)
 - [Troubleshooting](docs/troubleshooting.md)
+- [Go-live checklist](docs/go-live-checklist.md)
 
 ## How it works in practice
 
