@@ -23,7 +23,7 @@ We therefore recommend the following process:
 
 - Now copy the encrypted file back to your local environment with 
   ```bash
-  scp -P 64537 3.80.240.10:/tmp/secret_file path/to/file
+  scp -P 64537 3.80.240.10:/tmp/encrypted_file path/to/file
   ```
   The port and IP should be the same as the SSH instructions. Note that `-P` is uppercase for `scp`!
 
