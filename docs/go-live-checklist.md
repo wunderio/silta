@@ -25,5 +25,6 @@ Note that this list does not include application-specific steps
 - Make sure the production static IP is set up if any whitelisting is needed for third-party integrations
 
 # Web access
+- Recommended: set up a `beta.example.com` domain that can be used to test the process of configuring DNS.
 - Domain names are set in silta.yml, configured to use SSL with letsencrypt or custom certifcates
 - BasicAuth is disabled
