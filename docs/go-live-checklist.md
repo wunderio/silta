@@ -5,6 +5,10 @@ These are the Silta-specific steps that should be checked before going live.
 Note that this list does not include application-specific steps 
 (for example making sure that the root account of the CMS is disabled).
 
+The production environment only costs more when it requests additional resources. 
+We recommend setting up and using the production branch early in the project so any issues are
+identified as soon as possible. 
+
 ## Github
 - Set up deletion protection for the master and production branches.
 - Make sure the required people are added to the group which has access to the production CircleCI context.
