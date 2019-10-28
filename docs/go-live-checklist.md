@@ -6,7 +6,8 @@ Note that this list does not include application-specific steps
 (for example making sure that the root account of the CMS is disabled).
 
 ## Github
-- Set up deletion protection for the master and production branches
+- Set up deletion protection for the master and production branches.
+- Make sure the required people are added to the group which has access to the production CircleCI context.
 
 ## Resources
 - Make sure all services have dedicated resources:
