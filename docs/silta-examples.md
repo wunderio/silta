@@ -94,3 +94,16 @@ referenceData:
   updateAfterDeployment: false
 ```
 For some sites with a lot of files, taking a reference data dump after each deployment can cause the builds to time out. Disabling `updateAfterDeployment` means new environments will be created with reference data from the previous nightly dump.
+
+## Sending e-mail
+You can use any external smtp server. Here's an example for sparkpost.
+```yaml
+smtp:
+  enabled: true
+  address: smtp.sparkpostmail.com:587
+  tls: true
+  username: "SMTP_Injection"
+  # Encrypt this password. See: docs/encrypting_sensitive_configuration.md
+  password: "MYAPIKEY"
+```
+Note: To get the sparkpost API key, you have to [validate your domain](https://www.sparkpost.com/docs/getting-started/setting-up-domains/) first.
