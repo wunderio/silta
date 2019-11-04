@@ -31,7 +31,7 @@ We therefore recommend the following process:
 
 - In your CircleCI configuration, add a build step to decrypt the file:
   ```bash
-  - decrypt-files:
+  - silta/decrypt-files:
       files: path/to/file
   ```
   Note that the path is relative to the build folder (where you have your composer.json).
