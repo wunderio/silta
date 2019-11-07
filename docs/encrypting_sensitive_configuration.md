@@ -30,7 +30,7 @@ We therefore recommend the following process:
 - Commit the encrypted file to git at the location where you want to have it.
 
 - In your CircleCI configuration, add a build step to decrypt the file:
-  ```bash
+  ```
   - silta/decrypt-files:
       files: path/to/file
   ```
@@ -43,6 +43,19 @@ We therefore recommend the following process:
 
 - Your secret file can also contain an extension to the configuration in silta.yml, 
   for example to set encrypted environment variables. To do that, add this to your `drupal-build-deploy` CircleCI job:
-  ```sh
+  ```
   silta_config: silta/silta.yml,silta/secrets
+  ```
+
+## Using a custom encryption key
+For cases where you want to have your own encryption key, you can do that with the following steps:
+
+- Create an environment variable in your CircleCI project.
+Click the gear icon on a build page > Environment variables > Add Variable.
+Use a name like `MYPROJECT_SECRET_KEY` and the value of your choice (preferably a strong key).
+- Use the same step as above, but specify the environment variable to be used as the decryption key:
+  ```
+  - silta/decrypt-files:
+      files: path/to/file
+      secret_key_env: MYPROJECT_SECRET_KEY
   ```
