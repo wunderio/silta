@@ -4,7 +4,7 @@
 
 The project/repo is deployed in one-cluster context.
 
-The project has SSR and needs environment variables set DURING BUILD-TIME,
+Use-case: The project has SSR and needs environment variables set DURING BUILD-TIME,
 to generate static files to be served by webserver in the container.
 
 Silta lack tools to provide build-time environment variables.
@@ -13,7 +13,7 @@ Silta lack tools to provide build-time environment variables.
 
 Ideal solution would be to have `--build-arg` during container build.
 
-Workaround consists of providing separate Dockerfiles depending on branch being deployed.
+Workaround consists of providing separate `Dockerfile`s depending on branch being deployed.
 
 ### `.circleci/config.yml`
 
@@ -50,9 +50,9 @@ This is not complete config, only relevant bits:
 ```
 
 * Need to provide two sections, one for `master` and other for non-`master` brances. This is specified in `filter` section.
-* Need to specify separate `Dockerfiles` for each configuration. This is specified in `image_build_steps: -silta/build-docker-image:`. Notice that `path` and `identifier` need to be defined.
+* Need to specify separate `Dockerfile`s for each configuration. This is specified in `image_build_steps: -silta/build-docker-image:`. Notice that `path` and `identifier` need to be defined.
 * Need to have separate `silta_config`. If many files are provided, that latter one just overrides specific values.
-* Be aware of YML Anchors/References/Extend syntax: https://blog.daemonl.com/2016/02/yaml.html
+* Be aware of YAML Anchors/References/Extend syntax: https://blog.daemonl.com/2016/02/yaml.html
 
 ### `silta/prod.yml` and `silta/test.yml`
 
@@ -69,6 +69,8 @@ services:
 * This specifies environment variables for the runtime.
 
 ### `silta/prod.Dockerfile` and `silta/test.Dockerfile`
+
+This is a fragment of a `Drockerfile`:
 
 ```
 ENV ENVIRONMENT_TYPE=...
