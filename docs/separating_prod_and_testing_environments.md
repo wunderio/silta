@@ -17,7 +17,7 @@ Workaround consists of providing separate `Dockerfile`s depending on branch bein
 
 ### `.circleci/config.yml`
 
-This is not complete config, only relevant bits:
+This is not complete config, only relevant fragments:
 
 ```
   version: 2
@@ -56,6 +56,8 @@ This is not complete config, only relevant bits:
 
 ### `silta/prod.yml` and `silta/test.yml`
 
+That is the whole content of the file, not a fragment:
+
 ```
 services:
   node:
@@ -65,7 +67,6 @@ services:
       NODE_ENV: ...
 ```
 
-* That is the whole content of the file, not a fragment.
 * This specifies environment variables for the runtime.
 
 ### `silta/prod.Dockerfile` and `silta/test.Dockerfile`
