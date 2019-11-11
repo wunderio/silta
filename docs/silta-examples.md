@@ -107,3 +107,42 @@ smtp:
   password: "MYAPIKEY"
 ```
 Note: To get the sparkpost API key, you have to [validate your domain](https://www.sparkpost.com/docs/getting-started/setting-up-domains/) first.
+
+## Exposed domains and SSL certificates
+Various `exposeDomains` examples for SSL certificate issuers. Same structure can be reused for release `ssl` parameter too.
+```
+exposeDomains:
+
+- name: example-nossl
+  hostname: nossl.example.com
+
+- name: example-letsencrypt
+  hostname: ssl-le.example.com
+  ssl:
+    enabled: true
+    issuer: letsencrypt
+
+- name: example-le-staging
+  hostname: ssl-le-staging.example.com
+  ssl:
+    enabled: true
+    issuer: letsencrypt-staging    
+
+- name: example-custom
+  hostname: ssl-custom.example.com
+  ssl:
+    enabled: true
+    issuer: custom
+    key: |
+      -----BEGIN PRIVATE KEY-----
+      MIIEvQIBADANBgkqhkiG9w0BAQEFAASCBKcwggSjAgEAAoIBAQC1AnQnJXBJWw3A
+      (..)
+      N/a90beSt0vJ6Cy+jMCVQ0s=
+      -----END PRIVATE KEY-----
+    crt: |
+      -----BEGIN CERTIFICATE-----
+      MIIDPzCCAiegAwIBAgIUe0NEJnh4ffNBsdKzT5/PTlFRoQYwDQYJKoZIhvcNAQEL
+      (..)
+      jyj9OmdjZTJAwwqDdcs6TaRXxQ==
+      -----END CERTIFICATE-----
+```
