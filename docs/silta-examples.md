@@ -109,7 +109,7 @@ smtp:
 Note: To get the sparkpost API key, you have to [validate your domain](https://www.sparkpost.com/docs/getting-started/setting-up-domains/) first.
 
 ## Exposed domains and SSL certificates
-Various `exposeDomains` examples for SSL certificate issuers. Same structure can be reused for release `ssl` parameter too.
+Various `exposeDomains` examples for SSL certificate issuers. Same structure can be reused for release `ssl` parameter too. You can also use `letsencrypt-staging` issuer to avoid hitting [rate limits](https://letsencrypt.org/docs/rate-limits/).
 ```
 exposeDomains:
 
@@ -121,12 +121,6 @@ exposeDomains:
   ssl:
     enabled: true
     issuer: letsencrypt
-
-- name: example-le-staging
-  hostname: ssl-le-staging.example.com
-  ssl:
-    enabled: true
-    issuer: letsencrypt-staging    
 
 - name: example-custom
   hostname: ssl-custom.example.com
