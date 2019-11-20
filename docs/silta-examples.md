@@ -127,6 +127,7 @@ exposeDomains:
   ssl:
     enabled: true
     issuer: custom
+    # Encrypt key and certificate. See: docs/encrypting_sensitive_configuration.md
     key: |
       -----BEGIN PRIVATE KEY-----
       MIIEvQIBADANBgkqhkiG9w0BAQEFAASCBKcwggSjAgEAAoIBAQC1AnQnJXBJWw3A
