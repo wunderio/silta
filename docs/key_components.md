@@ -2,23 +2,23 @@
 
 ## Github
 All of our code is stored in Github within our organisation. All project-specific infrastructure
-configuration is versioned in Git. We provide a default template for 
+configuration is versioned in Git. We provide a default template for
 [Drupal projects](https://github.com/wunderio/drupal-project), but any Docker-compatible application
-is supported. 
+is supported.
 
 ## CircleCI
-CircleCI is a cloud-based CI solution that integrates very nicely with Github. 
-One of the great features is the possibility to use your own Docker images, 
+CircleCI is a cloud-based CI solution that integrates very nicely with Github.
+One of the great features is the possibility to use your own Docker images,
 we use our own called [circleci-builder](https://github.com/wunderio/circleci-builder).
 
-We use CircleCi to check the repository for errors, build the codebase, create custom docker 
-images, push them to the registry and deploy a release of our Helm chart. The build process is based 
+We use CircleCi to check the repository for errors, build the codebase, create custom docker
+images, push them to the registry and deploy a release of our Helm chart. The build process is based
 on a config file located under `.circleci/config.yml` in the git repository.
 
-To perform its duties, CircleCI needs certain credentials, for example to push to the docker image 
-registry or to interact with the Kubernetes master. These credentials are stored in a 
+To perform its duties, CircleCI needs certain credentials, for example to push to the docker image
+registry or to interact with the Kubernetes master. These credentials are stored in a
 [CircleCI Contexts](https://circleci.com/docs/2.0/contexts/) and are available to any repository
-in our Github organisation.  
+in our Github organisation.
 
 ## Kubernetes
 [Kubernetes](https://kubernetes.io/) is an open source container orchestration platform supported by all major cloud hosting providers.

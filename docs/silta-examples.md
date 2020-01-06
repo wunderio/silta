@@ -2,7 +2,7 @@
 
 The default values are documented here: https://github.com/wunderio/charts/blob/master/drupal/values.yaml
 
-Below is a list of examples for common needs. 
+Below is a list of examples for common needs.
 All examples are meant to be used in the `silta.yml` file of your project.
 
 Also note that increasing resources will result in increased costs, so use sensible values.
@@ -56,7 +56,7 @@ php:
   env:
     MY_VARIABLE_NAME: 'theValueOfMyVariable'
 ```
- 
+
 ## Changing basic auth username and password
 
 ```yaml

@@ -5,8 +5,8 @@
 ```
 Error: kind PersistentVolume with the name "project-123--branchname-someresource" already exists in the cluster and wasn't defined in the previous release.
 ```
-This error happens when a release that created a new resource failed. 
-The resource that is now in the way needs to be deleted, please ask someone with direct access to the cluster to do that. 
+This error happens when a release that created a new resource failed.
+The resource that is now in the way needs to be deleted, please ask someone with direct access to the cluster to do that.
 
 # HTTP connection issues
 
@@ -14,7 +14,7 @@ The resource that is now in the way needs to be deleted, please ask someone with
 ```
 upstream connect error or disconnect/reset before headers
 ```
-**What happened:** The application pod is in an unready state, so ambassador (the API gateway) is not sending traffic to it.  
+**What happened:** The application pod is in an unready state, so ambassador (the API gateway) is not sending traffic to it.
 
 **What to do:** This could be because the deployment is not complete, or there is a problem with your application.
 Check the deployment logs in CircleCI. Please contact the ops team if the issue persists.
@@ -33,7 +33,7 @@ ssh_exchange_identification: Connection closed by remote host
 
 ## Timeout without error
 
-You are probably not logged into the VPN.   
+You are probably not logged into the VPN.
 
 ## username@3.80.240.10: Permission denied (publickey).
 
