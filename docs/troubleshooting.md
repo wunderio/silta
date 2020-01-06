@@ -34,3 +34,14 @@ ssh_exchange_identification: Connection closed by remote host
 ## Timeout without error
 
 You are probably not logged into the VPN.   
+
+## username@3.80.240.10: Permission denied (publickey).
+
+Reason: Authentication is based on your GitHub key, but there is trouble reading it.
+
+Solution: Use the key explicitly and make sure it is readable:
+```bash
+ssh -p 64535 -i ~/.ssh/keys/wunder-github.rsa 3.80.240.10
+```
+
+Note, there is no need to specify username.

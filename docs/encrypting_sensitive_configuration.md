@@ -12,6 +12,7 @@ We therefore recommend the following process:
   ```bash
   ssh -p 64537 3.80.240.10
   ```
+  If you have trouble getting in, please refer to `troubleshooting.md` SSH section.
 
 - Create your file named `/tmp/secret_file`.
 
