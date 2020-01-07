@@ -9,102 +9,114 @@ Also note that increasing resources will result in increased costs, so use sensi
 
 ## Allocate more storage for your database.
 ```yaml
-mariadb:
-  master:
-    persistence:
-      size: 2G
+services:
+  mariadb:
+    master:
+      persistence:
+        size: 2G
 ```
 Note that storage can only be increased, not decreased.
 
 ## Allocate more storage for files
 ```yaml
-mounts:
-  public-files:
-    storage: 2G
+services:
+  mounts:
+    public-files:
+      storage: 2G
 ```
 Note that storage can only be increased, not decreased.
 
 ## Mount Drupal public files in a different location
 ```yaml
-mounts:
-  public-files:
-    mountPath: `/app/web/sites/my-other-location/files`
+services:
+  mounts:
+    public-files:
+      mountPath: `/app/web/sites/my-other-location/files`
 ```
 
 ## Change how often the standard Drupal cron is executed
 ```yaml
-php:
-  cron:
-    drupal:
-      # Run every 5 minutes
-      schedule: '*/5 * * * *'
+services:
+  php:
+    cron:
+      drupal:
+        # Run every 5 minutes
+        schedule: '*/5 * * * *'
 ```
 
 ## Run a custom cron job
 ```yaml
-php:
-  cron:
-    my-custom-cron-job:
-      # Run a custom drush command at midnight
-      schedule: '0 0 * * *'
-      command: 'drush my-custom-command'
+services:
+  php:
+    cron:
+      my-custom-cron-job:
+        # Run a custom drush command at midnight
+        schedule: '0 0 * * *'
+        command: 'drush my-custom-command'
 ```
 
 ## Add aditional environment variables
 ```yaml
-php:
-  env:
-    MY_VARIABLE_NAME: 'theValueOfMyVariable'
+services:
+  php:
+    env:
+      MY_VARIABLE_NAME: 'theValueOfMyVariable'
 ```
 
 ## Changing basic auth username and password
 
 ```yaml
-nginx:
-  basicauth:
-    credentials:
-      username: hello
-      password: My$ecretP4ssw0rd
+services:
+  nginx:
+    basicauth:
+      credentials:
+        username: hello
+        password: My$ecretP4ssw0rd
 ```
 
 ## Enable elasticsearch
 ```yaml
-elasticsearch:
-  enabled: true
+services:
+  elasticsearch:
+    enabled: true
 ```
 
 ## Enable memcached
 ```yaml
-memcached:
-  enabled: true
+services:
+  memcached:
+    enabled: true
 ```
 
 ## Sanitize a table that contains sensitive information
 ```yaml
-gdprDump:
-  my_table_name:
-    my_field_name:
-      formatter: name
+services:
+  gdprDump:
+    my_table_name:
+      my_field_name:
+        formatter: name
 ```
 Here `name` is the formatter type. See https://github.com/machbarmacher/gdpr-dump/#using-gdpr-replacements for additonal formatter types.
 
 ## Skip taking reference data dumps on each deployment
 ```yaml
-referenceData:
-  updateAfterDeployment: false
+services:
+  referenceData:
+    updateAfterDeployment: false
 ```
 For some sites with a lot of files, taking a reference data dump after each deployment can cause the builds to time out. Disabling `updateAfterDeployment` means new environments will be created with reference data from the previous nightly dump.
 
 ## Sending e-mail
 You can use any external smtp server. Here's an example for sparkpost.
 ```yaml
-smtp:
-  enabled: true
-  address: smtp.sparkpostmail.com:587
-  tls: true
-  username: "SMTP_Injection"
-  # Encrypt this password. See: docs/encrypting_sensitive_configuration.md
-  password: "MYAPIKEY"
+services:
+  smtp:
+    enabled: true
+    address: smtp.sparkpostmail.com:587
+    tls: true
+    username: "SMTP_Injection"
+    # Encrypt this password. See: docs/encrypting_sensitive_configuration.md
+    password: "MYAPIKEY"
 ```
 Note: To get the sparkpost API key, you have to [validate your domain](https://www.sparkpost.com/docs/getting-started/setting-up-domains/) first.
 
