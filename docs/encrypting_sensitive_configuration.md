@@ -7,7 +7,7 @@ during the build process.
 We use `openssl` to encrypt files, but there are many versions available with incompatible ciphers.
 We therefore recommend the following process:
 
-- SSH into a CircleCI environment using "Rerun workflow > Rerun job with SSH" from the last build. Note that this has to be a deployment build (validation builds won't have the environment variable with the encryption key).
+- SSH into a CircleCI environment using "Rerun workflow > Rerun job with SSH" from the last build. Note that production and validation builds share encryption key.
   You will get a command like (the actual IP and port changes for each build)
   ```bash
   ssh -p 64537 3.80.240.10
@@ -47,6 +47,14 @@ We therefore recommend the following process:
   ```
   silta_config: silta/silta.yml,silta/secrets
   ```
+
+## Example of secret environment variables
+```
+services:
+  php:
+    env:
+      PAYMENT_GW_KEY: '1234567890qwertyuiop'
+```
 
 ## Using a custom encryption key
 For cases where you want to have your own encryption key, you can do that with the following steps:
