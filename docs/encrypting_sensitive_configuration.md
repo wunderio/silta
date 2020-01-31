@@ -59,3 +59,31 @@ Use a name like `MYPROJECT_SECRET_KEY` and the value of your choice (preferably 
       files: path/to/file
       secret_key_env: MYPROJECT_SECRET_KEY
   ```
+
+
+## Decrypting existing secrets file
+
+Check the port and IP address by Rerunning the latest workflow in CircleCI: > Rerun job with SSH
+
+Using the SSH port and IP address securely copy your silta/secrets file to CircleCI
+
+```
+scp -P 64537 silta/secrets 3.80.240.10:/tmp/encrypted_file
+````
+
+SSH to CircleCI using the correct port/IP you got from rerunning the job with SSH
+
+```
+ssh -p 64537 3.80.240.10
+```
+
+Run following command in CircleCI:
+
+```
+openssl aes-256-cbc -pbkdf2 -d -in /tmp/encrypted_file -out /tmp/decrypted_file -pass env:SECRET_KEY
+```
+
+Check `/tmp/decrypted_file` or scp it back to your local using
+```
+scp -P 64537 3.80.240.10:/tmp/decrypted_file silta/secrets_decrypted
+```
