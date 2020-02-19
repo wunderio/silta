@@ -110,7 +110,7 @@ Note: To get the sparkpost API key, you have to [validate your domain](https://w
 
 ## Exposed domains and SSL certificates
 Various `exposeDomains` examples for SSL certificate issuers. Same structure can be reused for release `ssl` parameter too. Note: You can also use `letsencrypt-staging` issuer to avoid hitting `letsencrypt` [rate limits](https://letsencrypt.org/docs/rate-limits/).
-```
+```yaml
 exposeDomains:
 
 - name: example-nossl
@@ -140,4 +140,19 @@ exposeDomains:
       (..)
       jyj9OmdjZTJAwwqDdcs6TaRXxQ==
       -----END CERTIFICATE-----
+```
+
+## Adding redirects
+Redirects can be relative to current domain or contain full domain for more targeted redirects when multiple external domains (`exposeDomains`) are attached to deployment, and you only need this redirect for a specific URL. Redirect URL's can have regular expressions.
+```yaml
+nginx:
+  redirects:
+    - from: /test1 
+      to: /
+    - from: http://exact-matching.example.com/test2
+      to: /test2-redirect
+    - from: '~://partial-matching.example.com/test3$' 
+      to: /test3-redirect
+    - from: ~/test4$ 
+      to: https://another-domain.example.com/test4-redirect
 ```
