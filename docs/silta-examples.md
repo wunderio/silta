@@ -100,7 +100,7 @@ You can use any external smtp server. Here's an example for sparkpost.
 ```yaml
 smtp:
   enabled: true
-  address: smtp.sparkpostmail.com:587
+  address: smtp.sparkpostmail.com:587 # or smtp.eu.sparkpost.com:587
   tls: true
   username: "SMTP_Injection"
   # Encrypt this password. See: docs/encrypting_sensitive_configuration.md
