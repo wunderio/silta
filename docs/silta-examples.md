@@ -109,7 +109,9 @@ smtp:
 Note: To get the sparkpost API key, you have to [validate your domain](https://www.sparkpost.com/docs/getting-started/setting-up-domains/) first.
 
 ## Exposed domains and SSL certificates
-Various `exposeDomains` examples for SSL certificate issuers. Same structure can be reused for release `ssl` parameter too. Note: You can also use `letsencrypt-staging` issuer to avoid hitting `letsencrypt` [rate limits](https://letsencrypt.org/docs/rate-limits/).
+Various `exposeDomains` examples for SSL certificate issuers. Same structure can be reused for release `ssl` parameter too. 
+Note: You can also use `letsencrypt-staging` issuer to avoid hitting `letsencrypt` [rate limits](https://letsencrypt.org/docs/rate-limits/).
+Note 2: For custom certificates it's advised to add CA root certificate to `exposeDomains[].ssl.crt` value. Having it under `exposeDomains[].ssl.ca` is not enough.
 ```yaml
 exposeDomains:
 
