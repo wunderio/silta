@@ -108,6 +108,8 @@ smtp:
 ```
 Note: To get the sparkpost API key, you have to [validate your domain](https://www.sparkpost.com/docs/getting-started/setting-up-domains/) first.
 
+If the `smtp` is configured and enabled, but it does not appear to send anything, make sure `mailhog` is not enabled.
+
 ## Exposed domains and SSL certificates
 Various `exposeDomains` examples for SSL certificate issuers. Same structure can be reused for release `ssl` parameter too. 
 Note: You can also use `letsencrypt-staging` issuer to avoid hitting `letsencrypt` [rate limits](https://letsencrypt.org/docs/rate-limits/).
