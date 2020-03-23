@@ -31,6 +31,15 @@ mounts:
     mountPath: `/app/web/sites/my-other-location/files`
 ```
 
+# Enabling private files for drupal
+There's a pre-built mount template or private file in silta, you have to enable it
+```yaml
+mounts:
+  private-files:
+    enabled: true
+```
+Enabling this will mount shared storage to `/app/private` and set `$settings['file_private_path']` accordingly. See chart values for override parameters.
+
 ## Change how often the standard Drupal cron is executed
 ```yaml
 php:
