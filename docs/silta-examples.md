@@ -31,7 +31,7 @@ mounts:
     mountPath: `/app/web/sites/my-other-location/files`
 ```
 
-# Enabling private files for drupal
+## Enabling private files for drupal
 There's a pre-built mount template or private file in silta, you have to enable it
 ```yaml
 mounts:
