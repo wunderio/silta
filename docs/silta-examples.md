@@ -32,7 +32,7 @@ mounts:
 ```
 
 ## Enabling private files for drupal
-There's a pre-built mount template or private file in silta, you have to enable it
+There is a pre-built mount template for drupal private file storage in silta, you just have to enable it
 ```yaml
 mounts:
   private-files:
