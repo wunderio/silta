@@ -29,12 +29,17 @@ We therefore recommend the following process:
 
 - Commit the encrypted file to git at the location where you want to have it.
 
-- In your CircleCI configuration, add a build step to decrypt the file:
+- In your CircleCI configuration, add following 
+  - *Frontend project*: Add following under `codebase-build`:
   ```
   - silta/decrypt-files:
       files: path/to/file
   ```
-  Note that the path is relative to the build folder (where you have your composer.json).
+  - *Drupal project*: Add following under `silta/drupal-build-deploy`:
+  ```
+  decrypt_files: path/to/file
+  ```
+  - `path/to/file` is relative to the build folder (root)
 
 - Push your code, the file will get decrypted in place at the build time. 
   Check the CircleCI step "Decrypt secret files".
