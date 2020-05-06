@@ -33,17 +33,14 @@ ssh_exchange_identification: Connection closed by remote host
 
 You are probably not logged into the VPN.
 
-## username@3.80.240.10: Permission denied (publickey).
+## username@X.X.X.X: Permission denied (publickey).
 
 Reason: Authentication is based on your GitHub key, but there is trouble reading it.
 
-Solution: Use the key explicitly and make sure it is readable:
+Solution: Use the key explicitly using `-i [path_to_identity_file]` option:
 ```bash
-ssh -p 64535 -i ~/.ssh/keys/wunder-github.rsa 3.80.240.10
+ssh X.X.X.X -i ~/.ssh/keys/wunder-github.rsa 
 ```
-
-Note, there is no need to specify username.
-
 
 ## Mariadb or Elasticsearch running out of disk space
 Stateful applications like MariaDB or Elasticsearch store their data in volumes backed by Google Persistent Disks. It is possible to resize those disks (only increasing storage is supported), but this is not yet integrated with the process of updating a statefulset. You can change the requested size by setting the `volumeClaimTemplate` field in the silta.yml for the appropriate service (`mariadb` or `elasticsearch`), but the following workaround with access to the cluster is needed before deploying:

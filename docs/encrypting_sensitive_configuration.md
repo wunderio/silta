@@ -7,7 +7,7 @@ during the build process.
 We use `openssl` to encrypt files, but there are many versions available with incompatible ciphers.
 We therefore recommend the following process:
 
-- SSH into a CircleCI environment using "Rerun workflow > Rerun job with SSH" from the last build. Note that production and validation builds share encryption key.
+- SSH into a CircleCI environment using "Rerun workflow > Rerun job with SSH" from the last build. Note that different environments might have different circleci contexts and hence - different encryption keys. Check your circleci config file for context information.
   You will get a command like (the actual IP and port changes for each build)
   ```bash
   ssh -p 64537 3.80.240.10
@@ -31,14 +31,14 @@ We therefore recommend the following process:
 - Commit the encrypted file to git at the location where you want to have it.
 
 - In your CircleCI configuration, add following 
-  - *Frontend project*: Add following under `codebase-build`:
+  - *Drupal chart*: Add following under `silta/drupal-build-deploy`:
+  ```
+  decrypt_files: path/to/file
+  ```
+  - *Frontend chart*: Add following under `codebase-build`:
   ```
   - silta/decrypt-files:
       files: path/to/file
-  ```
-  - *Drupal project*: Add following under `silta/drupal-build-deploy`:
-  ```
-  decrypt_files: path/to/file
   ```
   - `path/to/file` is relative to the build folder (root)
 
@@ -54,9 +54,18 @@ We therefore recommend the following process:
   ```
 
 ## Example of secret environment variables
+
+*Drupal chart*
+```
+php:
+  env:
+    PAYMENT_GW_KEY: '1234567890qwertyuiop'
+```
+
+*Frontend chart*
 ```
 services:
-  php:
+  myservice:
     env:
       PAYMENT_GW_KEY: '1234567890qwertyuiop'
 ```
