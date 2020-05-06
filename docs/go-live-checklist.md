@@ -1,13 +1,13 @@
 
 # Go-live checklist
 
-These are the Silta-specific steps that should be checked before going live. 
-Note that this list does not include application-specific steps 
+These are the Silta-specific steps that should be checked before going live.
+Note that this list does not include application-specific steps
 (for example making sure that the root account of the CMS is disabled).
 
-The production environment only costs more when it requests additional resources. 
+The production environment only costs more when it requests additional resources.
 We recommend setting up and using the production branch early in the project so any issues are
-identified as soon as possible. 
+identified as soon as possible.
 
 ## Github
 - Set up deletion protection for the master and production branches.
@@ -15,10 +15,10 @@ identified as soon as possible.
 
 ## Resources
 - Make sure all services have dedicated resources:
-  - PHP / Javascript 
+  - PHP / Javascript
   - MariaDB
   - Elasticsearch / Memcached / etc.
-- Make sure relevant services are using autoscaling with at least two replicas 
+- Make sure relevant services are using autoscaling with at least two replicas
   for high availability.
 - Do a basic load test to make sure that autoscaling works.
 
@@ -31,6 +31,6 @@ identified as soon as possible.
 # Web access
 - Recommended: set up a `beta.example.com` domain that can be used to test the process of configuring DNS.
 - Domain names are set in silta.yml, configured to use SSL with letsencrypt or custom certifcates
-- Some time before switching the DNS, set the TTL of any existing DNS entries to be short, like 1 minute (cached DNS 
-entries can cause a variety of issues, like failing letsencrypt DNS challenges).  
+- Some time before switching the DNS, set the TTL of any existing DNS entries to be short, like 1 minute (cached DNS
+entries can cause a variety of issues, like failing letsencrypt DNS challenges).
 - BasicAuth is disabled

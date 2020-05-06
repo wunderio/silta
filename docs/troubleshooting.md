@@ -5,8 +5,8 @@
 ```
 Error: kind PersistentVolume with the name "project-123--branchname-someresource" already exists in the cluster and wasn't defined in the previous release.
 ```
-This error happens when a release that created a new resource failed. 
-The resource that is now in the way needs to be deleted, please ask someone with direct access to the cluster to do that. 
+This error happens when a release that created a new resource failed.
+The resource that is now in the way needs to be deleted, please ask someone with direct access to the cluster to do that.
 
 # Issues with the deployed environments
 
@@ -14,7 +14,7 @@ The resource that is now in the way needs to be deleted, please ask someone with
 ```
 upstream connect error or disconnect/reset before headers
 ```
-**What happened:** The application pod is in an unready state, so ambassador (the API gateway) is not sending traffic to it.  
+**What happened:** The application pod is in an unready state, so ambassador (the API gateway) is not sending traffic to it.
 
 **What to do:** This could be because the deployment is not complete, or there is a problem with your application.
 Check the deployment logs in CircleCI. Please contact the ops team if the issue persists.
@@ -32,6 +32,15 @@ ssh_exchange_identification: Connection closed by remote host
 ## Timeout without error when connecting via SSH
 
 You are probably not logged into the VPN.
+
+## username@X.X.X.X: Permission denied (publickey).
+
+Reason: Authentication is based on your GitHub key, but there is trouble reading it.
+
+Solution: Use the key explicitly using `-i [path_to_identity_file]` option:
+```bash
+ssh X.X.X.X -i ~/.ssh/keys/wunder-github.rsa 
+```
 
 ## Mariadb or Elasticsearch running out of disk space
 Stateful applications like MariaDB or Elasticsearch store their data in volumes backed by Google Persistent Disks. It is possible to resize those disks (only increasing storage is supported), but this is not yet integrated with the process of updating a statefulset. You can change the requested size by setting the `volumeClaimTemplate` field in the silta.yml for the appropriate service (`mariadb` or `elasticsearch`), but the following workaround with access to the cluster is needed before deploying:

@@ -2,8 +2,8 @@
 
 The default values are documented here: https://github.com/wunderio/charts/blob/master/drupal/values.yaml
 
-Below is a list of examples for common needs. 
-All examples are meant to be used in the `silta.yml` file of your project.
+Below is a list of examples for common needs.
+All examples are meant to be used in the `silta.yml` file of your project. Most of examples work with both drupal chart and frontend chart, unless name is explicitly mentioned above the code snippet. Double-check with default value files for each chart - [drupal](https://github.com/wunderio/charts/blob/master/drupal/values.yaml) and [frontend](https://github.com/wunderio/charts/blob/master/frontend/values.yaml).
 
 Also note that increasing resources will result in increased costs, so use sensible values.
 
@@ -50,6 +50,7 @@ php:
 ```
 
 ## Run a custom cron job
+*Drupal chart*:
 ```yaml
 php:
   cron:
@@ -59,13 +60,33 @@ php:
       command: 'drush my-custom-command'
 ```
 
+*Frontend chart*:
+```yaml
+services:
+  myservice:
+    cron:
+      my-custom-cron-job:
+        # Run a custom command at midnight
+        schedule: '0 0 * * *'
+        command: 'my-custom-command'
+```
+
 ## Add aditional environment variables
+*Drupal chart*
 ```yaml
 php:
   env:
     MY_VARIABLE_NAME: 'theValueOfMyVariable'
 ```
- 
+
+*Frontend chart*
+```yaml
+services:
+  myservice:
+    env:
+      MY_VARIABLE_NAME: 'theValueOfMyVariable'
+```
+
 ## Changing basic auth username and password
 
 ```yaml
@@ -105,7 +126,7 @@ referenceData:
 For some sites with a lot of files, taking a reference data dump after each deployment can cause the builds to time out. Disabling `updateAfterDeployment` means new environments will be created with reference data from the previous nightly dump.
 
 ## Sending e-mail
-You can use any external smtp server. Here's an example for sparkpost.
+sYou can use any external smtp server. Here's an example for sparkpost.
 ```yaml
 smtp:
   enabled: true
