@@ -47,8 +47,8 @@ Stateful applications like MariaDB or Elasticsearch store their data in volumes 
 
 ```
 namespace="name-of-repository"
-pvc="master-db-0" # Find this with kubectl get pvc -n $namespace
-statefulset="master-db"
+pvc="data-master-mariadb-0" # Find this with kubectl get pvc -n $namespace
+statefulset="master-mariadb"
 
 kubectl patch pvc -n $namespace $pvc -p '{"spec": {"resources": {"requests": {"storage": "2Gi"}}}}'
 kubectl delete statefulset  -n $namespace --cascade=false $statefulset
