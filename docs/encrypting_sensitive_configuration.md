@@ -30,12 +30,17 @@ We therefore recommend the following process:
 
 - Commit the encrypted file to git at the location where you want to have it.
 
-- In your CircleCI configuration, add a build step to decrypt the file:
+- In your CircleCI configuration, add following 
+  - *Frontend project*: Add following under `codebase-build`:
   ```
   - silta/decrypt-files:
       files: path/to/file
   ```
-  Note that the path is relative to the build folder (where you have your composer.json).
+  - *Drupal project*: Add following under `silta/drupal-build-deploy`:
+  ```
+  decrypt_files: path/to/file
+  ```
+  - `path/to/file` is relative to the build folder (root)
 
 - Push your code, the file will get decrypted in place at the build time.
   Check the CircleCI step "Decrypt secret files".
@@ -68,3 +73,31 @@ Use a name like `MYPROJECT_SECRET_KEY` and the value of your choice (preferably 
       files: path/to/file
       secret_key_env: MYPROJECT_SECRET_KEY
   ```
+
+
+## Decrypting existing secrets file
+
+Check the port and IP address by Rerunning the latest workflow in CircleCI: > Rerun job with SSH
+
+Using the SSH port and IP address securely copy your silta/secrets file to CircleCI
+
+```
+scp -P 64537 silta/secrets 3.80.240.10:/tmp/encrypted_file
+````
+
+SSH to CircleCI using the correct port/IP you got from rerunning the job with SSH
+
+```
+ssh -p 64537 3.80.240.10
+```
+
+Run following command in CircleCI:
+
+```
+openssl aes-256-cbc -pbkdf2 -d -in /tmp/encrypted_file -out /tmp/decrypted_file -pass env:SECRET_KEY
+```
+
+Check `/tmp/decrypted_file` or scp it back to your local using
+```
+scp -P 64537 3.80.240.10:/tmp/decrypted_file silta/secrets_decrypted
+```

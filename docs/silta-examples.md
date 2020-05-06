@@ -34,6 +34,15 @@ services:
       mountPath: `/app/web/sites/my-other-location/files`
 ```
 
+## Enabling private files for drupal
+There is a pre-built mount template for drupal private file storage in silta, you just have to enable it
+```yaml
+mounts:
+  private-files:
+    enabled: true
+```
+Enabling this will mount shared storage to `/app/private` and set `$settings['file_private_path']` accordingly. See chart values for override parameters.
+
 ## Change how often the standard Drupal cron is executed
 ```yaml
 services:
@@ -109,20 +118,23 @@ For some sites with a lot of files, taking a reference data dump after each depl
 ## Sending e-mail
 You can use any external smtp server. Here's an example for sparkpost.
 ```yaml
-services:
-  smtp:
-    enabled: true
-    address: smtp.sparkpostmail.com:587
-    tls: true
-    username: "SMTP_Injection"
-    # Encrypt this password. See: docs/encrypting_sensitive_configuration.md
-    password: "MYAPIKEY"
+smtp:
+  enabled: true
+  address: smtp.sparkpostmail.com:587 # or smtp.eu.sparkpost.com:587
+  tls: true
+  username: "SMTP_Injection"
+  # Encrypt this password. See: docs/encrypting_sensitive_configuration.md
+  password: "MYAPIKEY"
 ```
 Note: To get the sparkpost API key, you have to [validate your domain](https://www.sparkpost.com/docs/getting-started/setting-up-domains/) first.
 
+If the `smtp` is configured and enabled, but it does not appear to send anything, make sure `mailhog` is not enabled.
+
 ## Exposed domains and SSL certificates
-Various `exposeDomains` examples for SSL certificate issuers. Same structure can be reused for release `ssl` parameter too. Note: You can also use `letsencrypt-staging` issuer to avoid hitting `letsencrypt` [rate limits](https://letsencrypt.org/docs/rate-limits/).
-```
+Various `exposeDomains` examples for SSL certificate issuers. Same structure can be reused for release `ssl` parameter too. 
+Note: You can also use `letsencrypt-staging` issuer to avoid hitting `letsencrypt` [rate limits](https://letsencrypt.org/docs/rate-limits/).
+Note 2: For custom certificates it's advised to add CA root certificate to `exposeDomains[].ssl.crt` value. Having it under `exposeDomains[].ssl.ca` is not enough.
+```yaml
 exposeDomains:
 
 - name: example-nossl
@@ -152,4 +164,19 @@ exposeDomains:
       (..)
       jyj9OmdjZTJAwwqDdcs6TaRXxQ==
       -----END CERTIFICATE-----
+```
+
+## Adding redirects
+Redirects can be relative to current domain or contain full domain for more targeted redirects when multiple external domains (`exposeDomains`) are attached to deployment, and you only need this redirect for a specific URL. Redirect URL's can have regular expressions.
+```yaml
+nginx:
+  redirects:
+    - from: /test1 
+      to: /
+    - from: http://exact-matching.example.com/test2
+      to: /test2-redirect
+    - from: '~://partial-matching.example.com/test3$' 
+      to: /test3-redirect
+    - from: ~/test4$ 
+      to: https://another-domain.example.com/test4-redirect
 ```
