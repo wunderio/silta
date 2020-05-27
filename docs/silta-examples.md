@@ -126,7 +126,14 @@ referenceData:
 For some sites with a lot of files, taking a reference data dump after each deployment can cause the builds to time out. Disabling `updateAfterDeployment` means new environments will be created with reference data from the previous nightly dump.
 
 ## Sending e-mail
-sYou can use any external smtp server. Here's an example for sparkpost.
+
+If you just want to test email, you can use mailhog:
+```
+mailhog:
+  enabled: true
+```
+
+For emails to be actually sent out of the cluster, You can use any external smtp server. Here's an example for sparkpost.
 ```yaml
 smtp:
   enabled: true
