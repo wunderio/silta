@@ -50,6 +50,7 @@ namespace="name-of-repository"
 pvc="data-master-mariadb-0" # Find this with kubectl get pvc -n $namespace
 statefulset="master-mariadb"
 
-kubectl patch pvc -n $namespace $pvc -p '{"spec": {"resources": {"requests": {"storage": "2Gi"}}}}'
+kubectl patch pvc -n $namespace $pvc -p '{"spec": {"resources": {"requests": {"storage": "5Gi"}}}}'
 kubectl delete statefulset  -n $namespace --cascade=false $statefulset
 ```
+If the size is less than 5G, set it to 5G. If it's 5G or more, double the previous value.
