@@ -23,8 +23,7 @@ identified as soon as possible.
 - Do a basic load test to make sure that autoscaling works.
 
 # Configuration
-- NewRelic APM is configured
-- Sparkpost key is set
+- Sparkpost key is set (if applicable)
 - Backups are enabled
 - Make sure the production static IP is set up if any whitelisting is needed for third-party integrations
 
