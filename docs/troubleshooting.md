@@ -45,7 +45,7 @@ ssh X.X.X.X -i ~/.ssh/keys/wunder-github.rsa
 ## Mariadb or Elasticsearch running out of disk space
 Stateful applications like MariaDB or Elasticsearch store their data in volumes backed by Google Persistent Disks. It is possible to resize those disks (only increasing storage is supported), but this is not yet integrated with the process of updating a statefulset. You can change the requested size by setting the `volumeClaimTemplate` or `mariadb.master.persistence.size` field in the `silta.yml` for the appropriate service (`mariadb` or `elasticsearch`), but the following workaround with access to the cluster is needed before deploying:
 
-MariaDB storage request:
+MariaDB storage request (re-check correct values with mariadb subchart if needed):
 ```
 mariadb:
   master:
@@ -54,12 +54,14 @@ mariadb:
       # Request assistance from ops team after changing this on existing deployment.
       size: 5G
 ```
-Elasticsearch storage request
+Elasticsearch storage request (re-check correct values with elasticsearch subchart if needed):
 ```
 elasticsearch:
   volumeClaimTemplate:
     resources:
       requests:
+        # Elasticsearch storage disk space allocation
+        # Request assistance from ops team after changing this on existing deployment.
         storage: 5Gi
 ```
 If the size is less than 5G, set it to 5G. If it's 5G or more, double the previous value.
