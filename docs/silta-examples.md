@@ -8,7 +8,8 @@ All examples are meant to be used in the `silta.yml` file of your project. Most 
 Also note that increasing resources will result in increased costs, so use sensible values.
 
 ## Allocate more storage for your database.
-*Drupal chart only*:
+
+*Drupal chart*:
 ```yaml
 mariadb:
   master:
@@ -18,6 +19,7 @@ mariadb:
 Note that storage can only be increased, not decreased.
 
 ## Mount Drupal public files to a different location
+
 *Drupal chart*:
 ```yaml
 mounts:
@@ -27,6 +29,7 @@ mounts:
 
 ## Enabling private files for drupal
 There is a pre-built mount template for drupal private file storage in silta (check values.yaml), you just have to enable it
+
 *Drupal chart*:
 ```yaml
 mounts:
@@ -36,6 +39,7 @@ mounts:
 Enabling this will mount shared storage to `/app/private` and set `$settings['file_private_path']` accordingly. See chart values for override parameters.
 
 ## Change how often the standard Drupal cron is executed
+
 *Drupal chart*:
 ```yaml
 php:
@@ -46,6 +50,7 @@ php:
 ```
 
 ## Run a custom cron job
+
 *Drupal chart*:
 ```yaml
 php:
@@ -68,14 +73,15 @@ services:
 ```
 
 ## Add aditional environment variables
-*Drupal chart*
+
+*Drupal chart*:
 ```yaml
 php:
   env:
     MY_VARIABLE_NAME: 'theValueOfMyVariable'
 ```
 
-*Frontend chart*
+*Frontend chart*:
 ```yaml
 services:
   myservice:
@@ -84,6 +90,7 @@ services:
 ```
 
 ## Changing basic auth username and password
+
 *Drupal chart and Frontend chart*:
 ```yaml
 nginx:
@@ -94,6 +101,7 @@ nginx:
 ```
 
 ## Enable elasticsearch
+
 *Drupal chart and Frontend chart*:
 ```yaml
 elasticsearch:
@@ -101,6 +109,7 @@ elasticsearch:
 ```
 
 ## Enable memcached
+
 *Drupal chart*:
 ```yaml
 memcached:
@@ -108,6 +117,7 @@ memcached:
 ```
 
 ## Sanitize a table that contains sensitive information
+
 *Drupal chart*:
 ```yaml
 gdprDump:
@@ -118,6 +128,7 @@ gdprDump:
 Here `name` is the formatter type. See https://github.com/machbarmacher/gdpr-dump/#using-gdpr-replacements for additonal formatter types.
 
 ## Skip taking reference data dumps on each deployment
+
 *Drupal chart*:
 ```yaml
 referenceData:
@@ -130,6 +141,7 @@ For some sites with a lot of files, taking a reference data dump after each depl
 Note: There is no e-mail handling for frontend chart currently. You must implement the smtp workflow via application. 
 
 If you just want to test email, you can use mailhog:
+
 *Drupal chart*:
 ```
 mailhog:
@@ -137,6 +149,7 @@ mailhog:
 ```
 
 For emails to be actually sent out of the cluster, You can use any external smtp server. Here's an example for sparkpost.
+
 *Drupal chart*:
 ```yaml
 smtp:
@@ -155,6 +168,7 @@ If the `smtp` is configured and enabled, but it does not appear to send anything
 Various `exposeDomains` examples for SSL certificate issuers. Same structure can be reused for release `ssl` parameter too. 
 Note: You can also use `letsencrypt-staging` issuer to avoid hitting `letsencrypt` [rate limits](https://letsencrypt.org/docs/rate-limits/).
 Note 2: For custom certificates it's advised to add CA root certificate to `exposeDomains[].ssl.crt` value. Having it under `exposeDomains[].ssl.ca` is not enough.
+
 *Drupal chart and Frontend chart*:
 ```yaml
 exposeDomains:
@@ -190,6 +204,7 @@ exposeDomains:
 
 ## Adding redirects
 Redirects can be relative to current domain or contain full domain for more targeted redirects when multiple external domains (`exposeDomains`) are attached to deployment, and you only need this redirect for a specific URL. Redirect URL's can have regular expressions.
+
 *Drupal chart*:
 ```yaml
 nginx:
