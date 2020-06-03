@@ -205,7 +205,7 @@ exposeDomains:
 ## Adding redirects
 Redirects can be relative to current domain or contain full domain for more targeted redirects when multiple external domains (`exposeDomains`) are attached to deployment, and you only need this redirect for a specific URL. Redirect URL's can have regular expressions.
 
-*Drupal chart*:
+*Drupal chart and Frontend chart*:
 ```yaml
 nginx:
   redirects:
