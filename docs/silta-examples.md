@@ -213,8 +213,10 @@ nginx:
       to: /
     - from: http://exact-matching.example.com/test2
       to: /test2-redirect
-    - from: '~://partial-matching.example.com/test3$' 
+    - from: '~://partial-matching.example.com/test3$'
       to: /test3-redirect
-    - from: ~/test4$ 
+    - from: ~/test4$
       to: https://another-domain.example.com/test4-redirect
+    - from: '~://production.exampleproject.finland.wdr.io'
+      to: https://example.com$request_uri
 ```
