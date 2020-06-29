@@ -168,6 +168,7 @@ If the `smtp` is configured and enabled, but it does not appear to send anything
 Various `exposeDomains` examples for SSL certificate issuers. Same structure can be reused for release `ssl` parameter too. 
 Note: You can also use `letsencrypt-staging` issuer to avoid hitting `letsencrypt` [rate limits](https://letsencrypt.org/docs/rate-limits/).
 Note 2: For custom certificates it's advised to add CA root certificate to `exposeDomains[].ssl.crt` value. Having it under `exposeDomains[].ssl.ca` is not enough.
+Note 3: `exposeDomains` entries do not have SSL enabled by default. You need to enable it (follow examples below)
 
 *Drupal chart and Frontend chart*:
 ```yaml
