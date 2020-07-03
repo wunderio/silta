@@ -1,6 +1,6 @@
 # CircleCI configuration examples
 
-Our custom CircleCI Orb is located here: https://github.com/wunderio/silta-circleci/blob/master/orb.yml
+Our custom CircleCI Orb is located here: https://github.com/wunderio/silta-circleci/tree/master/orb
 
 Below is a list of examples for common needs.
 All examples are meant to be used in the `.circleci/.yml` file of your project.
