@@ -250,3 +250,4 @@ nginx:
   serverExtraConfig: |
     include nginx.serverextra.conf;
 ```
+or if you `COPY` the file under `/etc/nginx/conf.d` they will be included automatically without the need to add them to silta.yml configs.
