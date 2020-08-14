@@ -81,7 +81,7 @@ NOTE: If updating pvc size you are met with error:
 ```
 error: persistentvolumeclaims "xxx-xxx" could not be patched: persistentvolumeclaims "xxx-xxx" is forbidden: only dynamically provisioned pvc can be resized and the storageclass that provisions the pvc must support resize
 ```
-Check that Kubernetes is running at least v1.16 and the edit the corresponding storageclass, "standard" in this case:
+Check that Kubernetes is running at least v1.16 and then edit the corresponding storageclass, "standard" in this case:
 ```
 kubectl patch storageclass standard -p '{"allowVolumeExpansion": true}'
 ```
