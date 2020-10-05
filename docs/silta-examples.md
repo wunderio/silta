@@ -123,19 +123,25 @@ memcached:
 varnish:
   enabled: true
 ```
-Enabling varnish exposes `VARNISH_ADMIN_HOST` variable that holds varnish hostname.
-When enabling varnish configuration needs to be overriden in `settings.php`.
-Steps (using `varnish_purge` module as an example):
-1. Find purger configuration name.
-2. Replace hostname with value from environment variable:
 
+When varnish is enabled in silta config, drupal configuration needs to be adjusted, so purge can find the varnish server.
+
+**Using [varnish](https://www.drupal.org/project/varnish) module:**
+
+*You should consider using purge module instead*
+No adjustments needed
+
+**Using [varnish_purge](https://www.drupal.org/project/varnish_purge) module:**
+
+1. Add varnish purger to purge settings.
+2. Find purger configuration name. You can see it by hovering over the configuration link (i.e. `1b619ba479`). This will be Your `<PURGER_ID>`.
+3. Put this snippet into your `settings.php` file:
 ```
 if (getenv('SILTA_CLUSTER') && getenv('VARNISH_ADMIN_HOST')) {
-  $config['varnish_purger.settings.{PURGER_ID}']['hostname'] = trim(getenv('VARNISH_ADMIN_HOST'));
+  $config['varnish_purger.settings.<PURGER_ID>']['hostname'] = trim(getenv('VARNISH_ADMIN_HOST'));
 }
 ```
-Make sure to replace `PURGER_ID` with actual id of purger configuration.
-
+Make sure to replace `<PURGER_ID>` with an actual id of purger configuration!
 
 ## Sanitize a table that contains sensitive information
 
