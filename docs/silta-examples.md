@@ -116,6 +116,27 @@ memcached:
   enabled: true
 ```
 
+## Using varnish
+
+*Drupal chart*:
+```yaml
+varnish:
+  enabled: true
+```
+Enabling varnish exposes `VARNISH_ADMIN_HOST` variable that holds varnish hostname.
+When enabling varnish configuration needs to be overriden in `settings.php`.
+Steps (using `varnish_purge` module as an example):
+1. Find purger configuration name.
+2. Replace hostname with value from environment variable:
+
+```
+if (getenv('SILTA_CLUSTER') && getenv('VARNISH_ADMIN_HOST')) {
+  $config['varnish_purger.settings.{PURGER_ID}']['hostname'] = trim(getenv('VARNISH_ADMIN_HOST'));
+}
+```
+Make sure to replace `PURGER_ID` with actual id of purger configuration.
+
+
 ## Sanitize a table that contains sensitive information
 
 *Drupal chart*:
