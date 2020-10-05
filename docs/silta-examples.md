@@ -219,3 +219,35 @@ nginx:
     - from: ~/test4$ 
       to: https://another-domain.example.com/test4-redirect
 ```
+
+## Adding custom include files for nginx
+Drupal chart builds nginx container using web/ folder as build context. This prevents files being included from outside the web folder and it's not a good idea to put config files under it.
+To be able to add include files the build context needs to be changed from `web/` into `.` by passing `nginx_build_context: "."` to `drupal-docker-build` in `.circleci/config.yml`:
+```
+jobs:
+  - silta/drupal-docker-build:
+      nginx_build_context: "."
+```
+Due root containing Drupal / shell container compatible .dockerignore file and for frontend there is a separate one inside the web/ folder this doesn't work anymore. Since version 19.03 Docker supports separate .dockerignore files for each Dockerfile. This requires Docker build to be made with BuildKit enabled. To enable BuildKit just pass the `DOCKER_BUILDKIT=1` to the build environment as an environment variable:
+```
+environment:
+  DOCKER_BUILDKIT: 1
+```
+The ignore file itself needs to be named the same as the Dockerfile with .dockerignore appended to the end and need to reside at the same place as the Dockerfile:
+```
+cp web/.gitignore silta/nginx.Dockerfile.dockerignore
+```
+Note: our validation checks if the .dockerignore is present under web/ so you can either leave it there or just add an empty file in it's place.
+To make the image to build correctly in this new context you need to update the COPY command in the nginx.Dockerfile to copy `web` instead of `.` and also add COPY commands to any custom config files you want to be able to include:
+```
+COPY silta/nginx.serverextra.conf /etc/nginx
+
+COPY web /app/web
+```
+Now you can include the config file in silta.yml like this:
+```
+nginx:
+  serverExtraConfig: |
+    include nginx.serverextra.conf;
+```
+or if you `COPY` the file under `/etc/nginx/conf.d` they will be included automatically without the need to add them to silta.yml configs.
