@@ -46,3 +46,7 @@ Yes, our code is open. However, we haven't put special attention to this use cas
 
 This might be technically possible, but multisite setups provide little benefits in a container-based environment.
 Instead, it is recommended to trigger the deployment of multiple sites into dedicated environments from the same repository.
+
+### Is this the complete FAQ for Silta
+
+No, we have an additional FAQ available here: <https://intra.wunder.io/info/silta/silta-faq> (for internal usage only).
