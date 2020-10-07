@@ -139,6 +139,7 @@ No adjustments needed
 ```
 if (getenv('SILTA_CLUSTER') && getenv('VARNISH_ADMIN_HOST')) {
   $config['varnish_purger.settings.<PURGER_ID>']['hostname'] = trim(getenv('VARNISH_ADMIN_HOST'));
+  $config['varnish_purger.settings.<PURGER_ID>']['port'] = '80';
 }
 ```
 Make sure to replace `<PURGER_ID>` with an actual id of purger configuration!
