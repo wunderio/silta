@@ -123,6 +123,16 @@ memcached:
 varnish:
   enabled: true
 ```
+If extra cookies are needed, they can be defined in a vcl_extra_cookies variable:
+
+```yaml
+varnish:
+  vcl_extra_cookies: |
+    if (req.http.Cookie ~ "extra_cookie_name") {
+      return (pass);
+    }
+
+```
 
 When varnish is enabled in silta config, drupal configuration needs to be adjusted, so purge can find the varnish server.
 
