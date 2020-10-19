@@ -235,8 +235,10 @@ exposeDomains:
         (..)
         jyj9OmdjZTJAwwqDdcs6TaRXxQ==
         -----END CERTIFICATE-----
-
-  # You don't need a custom static ip (via gce ingress) normally, but here's how.
+```
+You don't need a custom static ip (via gce ingress) normally, but if Your project requires, here's how - 
+```
+exposeDomains:
   example-gce-ingress:
     hostname: gce-ingress.example.com
     # see ingress.gce definition. This can also be a custom ingress too.
@@ -249,6 +251,12 @@ ingress:
   gce:
     # Request a global static ip from OPS team first
     staticIpAddressName: custom-ip-name
+
+# Depending on the cluster type, You might need to enable this. 
+# A safe default is "false" (works in both cases), but "VPC Native" 
+# clusters work more correcly with cluster.vpcNative set to "true".
+cluster: 
+  vpcNative: true
 ```
 
 ## Adding redirects
