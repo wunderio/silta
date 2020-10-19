@@ -202,33 +202,53 @@ Note 3: `exposeDomains` entries do not have SSL enabled by default. You need to 
 ```yaml
 exposeDomains:
 
-- name: example-nossl
-  hostname: nossl.example.com
+  example-nossl
+    hostname: nossl.example.com
 
-- name: example-letsencrypt
-  hostname: ssl-le.example.com
-  ssl:
-    enabled: true
-    issuer: letsencrypt
+  example-le:
+    hostname: ssl-le.example.com
+    ssl:
+      enabled: true
+      issuer: letsencrypt
 
-- name: example-custom
-  hostname: ssl-custom.example.com
-  ssl:
-    enabled: true
-    issuer: custom
-    # Encrypt key and certificate. See: docs/encrypting_sensitive_configuration.md
-    key: |
-      -----BEGIN PRIVATE KEY-----
-      MIIEvQIBADANBgkqhkiG9w0BAQEFAASCBKcwggSjAgEAAoIBAQC1AnQnJXBJWw3A
-      (..)
-      N/a90beSt0vJ6Cy+jMCVQ0s=
-      -----END PRIVATE KEY-----
-    crt: |
-      -----BEGIN CERTIFICATE-----
-      MIIDPzCCAiegAwIBAgIUe0NEJnh4ffNBsdKzT5/PTlFRoQYwDQYJKoZIhvcNAQEL
-      (..)
-      jyj9OmdjZTJAwwqDdcs6TaRXxQ==
-      -----END CERTIFICATE-----
+  example-customcert:
+    hostname: ssl-custom.example.com
+    ssl:
+      enabled: true
+      issuer: custom
+      # Encrypt key and certificate. See: docs/encrypting_sensitive_configuration.md
+      ca: |
+        -----BEGIN PRIVATE KEY-----
+        MIIEvQIBADANBgkqhkiG9w0BAQEFAASCBKcwggSjAgEAAoIBAQC1AnQnJXBJWw3A
+        (..)
+        N/a90beSt0vJ6Cy+jMCVQ0s=
+        -----END PRIVATE KEY-----
+      key: |
+        -----BEGIN PRIVATE KEY-----
+        MIIEvQIBADANBgkqhkiG9w0BAQEFAASCBKcwggSjAgEAAoIBAQC1AnQnJXBJWw3A
+        (..)
+        N/a90beSt0vJ6Cy+jMCVQ0s=
+        -----END PRIVATE KEY-----
+      crt: |
+        -----BEGIN CERTIFICATE-----
+        MIIDPzCCAiegAwIBAgIUe0NEJnh4ffNBsdKzT5/PTlFRoQYwDQYJKoZIhvcNAQEL
+        (..)
+        jyj9OmdjZTJAwwqDdcs6TaRXxQ==
+        -----END CERTIFICATE-----
+
+  # You don't need a custom static ip (via gce ingress) normally, but here's how.
+  example-gce-ingress:
+    hostname: gce-ingress.example.com
+    # see ingress.gce definition. This can also be a custom ingress too.
+    ingress: gce
+    ssl:
+      enabled: true
+      issuer: letsencrypt
+
+ingress:
+  gce:
+    # Request a global static ip from OPS team first
+    staticIpAddressName: custom-ip-name
 ```
 
 ## Adding redirects
