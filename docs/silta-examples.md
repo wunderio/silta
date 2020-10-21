@@ -252,6 +252,18 @@ ingress:
     # Request a global static ip from OPS team first
     staticIpAddressName: custom-ip-name
 
+# Whitelist reverse proxy ip's to accept X-Forwarded-For header 
+nginx:
+  serverExtraConfig: |
+    # Traefik IP for pre-generated hostname
+    set_real_ip_from 10.0.0.0/8;
+    # Load Balancer IP
+    set_real_ip_from 1.2.3.4/32;
+    # Google load balancer IP's
+    set_real_ip_from 130.211.0.0/22;
+    set_real_ip_from 35.191.0.0/16;
+    real_ip_recursive on;
+
 # Depending on the cluster type, You might need to enable this. 
 # A safe default is "false" (works in both cases), but "VPC Native" 
 # clusters work more correcly with cluster.vpcNative set to "true".
