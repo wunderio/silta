@@ -183,7 +183,9 @@ For emails to be actually sent out of the cluster, You can use any external smtp
 smtp:
   enabled: true
   address: smtp.sparkpostmail.com:587 # or smtp.eu.sparkpost.com:587
-  tls: true
+  tls: "YES"
+  # StartTLS is required when you use smtp.office365.com:587
+  # starttls: "YES"
   username: "SMTP_Injection"
   # Encrypt this password. See: docs/encrypting_sensitive_configuration.md
   password: "MYAPIKEY"
