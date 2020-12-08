@@ -53,7 +53,7 @@ mariadb:
     persistence:
       # Database storage disk space allocation
       # Request assistance from ops team after changing this on existing deployment.
-      size: 5G
+      size: 5Gi
 ```
 Elasticsearch storage request (re-check correct values with elasticsearch subchart if needed):
 ```
