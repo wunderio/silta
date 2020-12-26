@@ -74,7 +74,7 @@ pvc="data-master-mariadb-0" # Find this with kubectl get pvc -n $namespace
 statefulset="master-mariadb"
 
 kubectl patch pvc -n $namespace $pvc -p '{"spec": {"resources": {"requests": {"storage": "5Gi"}}}}'
-kubectl delete statefulset  -n $namespace --cascade=false $statefulset
+kubectl delete statefulset  -n $namespace --cascade=orphan $statefulset
 ```
 
 NOTE: If updating pvc size you are met with error:
