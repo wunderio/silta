@@ -1,6 +1,9 @@
 # silta.yml configuration examples
 
-The default values are documented here: https://github.com/wunderio/charts/blob/master/drupal/values.yaml
+The default values are documented here: 
+ - Drupal chart: https://github.com/wunderio/charts/blob/master/drupal/values.yaml
+ - Frontend chart: https://github.com/wunderio/charts/blob/master/frontend/values.yaml
+ - Simple chart: https://github.com/wunderio/charts/blob/master/simple/values.yaml
 
 Below is a list of examples for common needs.
 All examples are meant to be used in the `silta.yml` file of your project. Most of examples work with both drupal chart and frontend chart, unless name is explicitly mentioned above the code snippet. Double-check with default value files for each chart - [drupal](https://github.com/wunderio/charts/blob/master/drupal/values.yaml) and [frontend](https://github.com/wunderio/charts/blob/master/frontend/values.yaml).
