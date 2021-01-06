@@ -10,7 +10,7 @@
 0. Set up the project on CircleCI:
     - Make sure that you have admin permissions for the project repository on Github.
     - Log in with your Github credentials at https://circleci.com
-    - Choose the right organisation and go to "Add Projects": https://circleci.com/add-projects/gh/wunderio
+    - Choose the right organisation and go to "Add Projects": https://app.circleci.com/projects/project-dashboard/github/wunderio/
     - Find your project on the list and click on "set up project" (or "Follow project" if the project is already using CircleCI).
 
 1. Make sure you have a clean, up-to-date checkout of your repository.
