@@ -19,6 +19,7 @@ as a stable production hosting.
 - [CircleCI configuration examples](docs/circleci-examples.md)
 - [silta.yml configuration examples](docs/silta-examples.md)
 - [Encrypting sensitive configuration](docs/encrypting_sensitive_configuration.md)
+- [Helping with Silta development](docs/helping_with_silta_development.md)
 - [Troubleshooting](docs/troubleshooting.md)
 - [Go-live checklist](docs/go-live-checklist.md)
 
