@@ -20,3 +20,18 @@ If you want to test a feature PR, you can do it like this:
 1. Check that functionality works as it should.
 1. Write tests when possible and push them to the original feature branch or request the original author to add them.
 1. Delete the test branch if everything works.
+
+
+## Some tips and external documentation when working with HELM charts
+
+[Helm template guide - control structures](https://helm.sh/docs/chart_template_guide/control_structures/)  
+[Goland Sprig functions](http://masterminds.github.io/sprig/defaults.html)
+
+To test charts locally You will need access to [Silta Dev cluster](https://intra.wunder.io/info/silta/silta-ops-manual) and Helm installed locally  
+Most likely You will need to add Helm repos before testing.    
+See example below.       
+`helm repo add wunderio https://storage.googleapis.com/charts.wdr.io`  
+
+Do dry-run with  
+`helm upgrade --install test charts/drupal --dry-run --debug --values silta/silta.yml`  
+
