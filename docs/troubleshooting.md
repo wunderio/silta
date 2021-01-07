@@ -53,7 +53,7 @@ mariadb:
     persistence:
       # Database storage disk space allocation
       # Request assistance from ops team after changing this on existing deployment.
-      size: 5G
+      size: 5Gi
 ```
 Elasticsearch storage request (re-check correct values with elasticsearch subchart if needed):
 ```
@@ -74,7 +74,7 @@ pvc="data-master-mariadb-0" # Find this with kubectl get pvc -n $namespace
 statefulset="master-mariadb"
 
 kubectl patch pvc -n $namespace $pvc -p '{"spec": {"resources": {"requests": {"storage": "5Gi"}}}}'
-kubectl delete statefulset  -n $namespace --cascade=false $statefulset
+kubectl delete statefulset  -n $namespace --cascade=orphan $statefulset
 ```
 
 NOTE: If updating pvc size you are met with error:

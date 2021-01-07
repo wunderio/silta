@@ -42,16 +42,15 @@ We therefore recommend the following process:
   ```
   - `path/to/file` is relative to the build folder (root)
 
+- Your secret file can also contain an extension to the configuration in silta.yml, for example to set encrypted environment variables. To do that, add this to your `drupal-build-deploy` CircleCI job:
+  ```
+  silta_config: silta/silta.yml,silta/secrets
+  ```
+
 - Push your code, the file will get decrypted in place at the build time.
   Check the CircleCI step "Decrypt secret files".
 
 - Your secret file can be used as it is (for example, the private key to connect to another service).
-
-- Your secret file can also contain an extension to the configuration in silta.yml,
-  for example to set encrypted environment variables. To do that, add this to your `drupal-build-deploy` CircleCI job:
-  ```
-  silta_config: silta/silta.yml,silta/secrets
-  ```
 
 ## Example of secret environment variables
 

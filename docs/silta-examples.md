@@ -1,6 +1,9 @@
 # silta.yml configuration examples
 
-The default values are documented here: https://github.com/wunderio/charts/blob/master/drupal/values.yaml
+The default values are documented here: 
+ - Drupal chart: https://github.com/wunderio/charts/blob/master/drupal/values.yaml
+ - Frontend chart: https://github.com/wunderio/charts/blob/master/frontend/values.yaml
+ - Simple chart: https://github.com/wunderio/charts/blob/master/simple/values.yaml
 
 Below is a list of examples for common needs.
 All examples are meant to be used in the `silta.yml` file of your project. Most of examples work with both drupal chart and frontend chart, unless name is explicitly mentioned above the code snippet. Double-check with default value files for each chart - [drupal](https://github.com/wunderio/charts/blob/master/drupal/values.yaml) and [frontend](https://github.com/wunderio/charts/blob/master/frontend/values.yaml).
@@ -116,6 +119,34 @@ memcached:
   enabled: true
 ```
 
+## Using varnish
+
+*Drupal chart*:
+```yaml
+varnish:
+  enabled: true
+```
+
+When varnish is enabled in silta config, drupal configuration needs to be adjusted, so purge can find the varnish server.
+
+**Using [varnish](https://www.drupal.org/project/varnish) module:**
+
+*You should consider using purge module instead*
+No adjustments needed
+
+**Using [varnish_purge](https://www.drupal.org/project/varnish_purge) module:**
+
+1. Add varnish purger to purge settings.
+2. Find purger configuration name. You can see it by hovering over the configuration link (i.e. `1b619ba479`). This will be Your `<PURGER_ID>`.
+3. Put this snippet into your `settings.php` file:
+```
+if (getenv('SILTA_CLUSTER') && getenv('VARNISH_ADMIN_HOST')) {
+  $config['varnish_purger.settings.<PURGER_ID>']['hostname'] = trim(getenv('VARNISH_ADMIN_HOST'));
+  $config['varnish_purger.settings.<PURGER_ID>']['port'] = '80';
+}
+```
+Make sure to replace `<PURGER_ID>` with an actual id of purger configuration!
+
 ## Sanitize a table that contains sensitive information
 
 *Drupal chart*:
@@ -155,7 +186,9 @@ For emails to be actually sent out of the cluster, You can use any external smtp
 smtp:
   enabled: true
   address: smtp.sparkpostmail.com:587 # or smtp.eu.sparkpost.com:587
-  tls: true
+  tls: "YES"
+  # StartTLS is required when you use smtp.office365.com:587
+  # starttls: "YES"
   username: "SMTP_Injection"
   # Encrypt this password. See: docs/encrypting_sensitive_configuration.md
   password: "MYAPIKEY"
@@ -166,41 +199,81 @@ If the `smtp` is configured and enabled, but it does not appear to send anything
 
 ## Exposed domains and SSL certificates
 Various `exposeDomains` examples for SSL certificate issuers. Same structure can be reused for release `ssl` parameter too. 
+
 Note: You can also use `letsencrypt-staging` issuer to avoid hitting `letsencrypt` [rate limits](https://letsencrypt.org/docs/rate-limits/).
+
 Note 2: For custom certificates it's advised to add CA root certificate to `exposeDomains[].ssl.crt` value. Having it under `exposeDomains[].ssl.ca` is not enough.
-Note 3: `exposeDomains` entries do not have SSL enabled by default. You need to enable it (follow examples below)
+
+Note 3: Deploy `exposeDomains` entries only when DNS entries are changed or are soon to be changed. Otherwise, Letsencrypt validation might eventually get stuck due to retries.  
 
 *Drupal chart and Frontend chart*:
 ```yaml
 exposeDomains:
 
-- name: example-nossl
-  hostname: nossl.example.com
+  example-le:
+    hostname: ssl-le.example.com
+    ssl:
+      enabled: true
+      issuer: letsencrypt
 
-- name: example-letsencrypt
-  hostname: ssl-le.example.com
-  ssl:
-    enabled: true
-    issuer: letsencrypt
+  example-customcert:
+    hostname: ssl-custom.example.com
+    ssl:
+      enabled: true
+      issuer: custom
+      # Encrypt key and certificate. See: docs/encrypting_sensitive_configuration.md
+      ca: |
+        -----BEGIN PRIVATE KEY-----
+        MIIEvQIBADANBgkqhkiG9w0BAQEFAASCBKcwggSjAgEAAoIBAQC1AnQnJXBJWw3A
+        (..)
+        N/a90beSt0vJ6Cy+jMCVQ0s=
+        -----END PRIVATE KEY-----
+      key: |
+        -----BEGIN PRIVATE KEY-----
+        MIIEvQIBADANBgkqhkiG9w0BAQEFAASCBKcwggSjAgEAAoIBAQC1AnQnJXBJWw3A
+        (..)
+        N/a90beSt0vJ6Cy+jMCVQ0s=
+        -----END PRIVATE KEY-----
+      crt: |
+        -----BEGIN CERTIFICATE-----
+        MIIDPzCCAiegAwIBAgIUe0NEJnh4ffNBsdKzT5/PTlFRoQYwDQYJKoZIhvcNAQEL
+        (..)
+        jyj9OmdjZTJAwwqDdcs6TaRXxQ==
+        -----END CERTIFICATE-----
+```
+You don't need a custom static ip (via gce ingress) normally, but if Your project requires, here's how - 
+```
+exposeDomains:
+  example-gce-ingress:
+    hostname: gce-ingress.example.com
+    # see ingress.gce definition. This can also be a custom ingress too.
+    ingress: gce
+    ssl:
+      enabled: true
+      issuer: letsencrypt
 
-- name: example-custom
-  hostname: ssl-custom.example.com
-  ssl:
-    enabled: true
-    issuer: custom
-    # Encrypt key and certificate. See: docs/encrypting_sensitive_configuration.md
-    key: |
-      -----BEGIN PRIVATE KEY-----
-      MIIEvQIBADANBgkqhkiG9w0BAQEFAASCBKcwggSjAgEAAoIBAQC1AnQnJXBJWw3A
-      (..)
-      N/a90beSt0vJ6Cy+jMCVQ0s=
-      -----END PRIVATE KEY-----
-    crt: |
-      -----BEGIN CERTIFICATE-----
-      MIIDPzCCAiegAwIBAgIUe0NEJnh4ffNBsdKzT5/PTlFRoQYwDQYJKoZIhvcNAQEL
-      (..)
-      jyj9OmdjZTJAwwqDdcs6TaRXxQ==
-      -----END CERTIFICATE-----
+ingress:
+  gce:
+    # Request a global static ip from OPS team first
+    staticIpAddressName: custom-ip-name
+
+# Whitelist reverse proxy ip's to accept X-Forwarded-For header 
+nginx:
+  serverExtraConfig: |
+    # Traefik IP for pre-generated hostname
+    set_real_ip_from 10.0.0.0/8;
+    # Load Balancer IP
+    set_real_ip_from 1.2.3.4/32;
+    # Google load balancer IP's
+    set_real_ip_from 130.211.0.0/22;
+    set_real_ip_from 35.191.0.0/16;
+    real_ip_recursive on;
+
+# Depending on the cluster type, You might need to enable this. 
+# A safe default is "false" (works in both cases), but "VPC Native" 
+# clusters work more correcly with cluster.vpcNative set to "true".
+cluster: 
+  vpcNative: true
 ```
 
 ## Adding redirects
@@ -219,3 +292,35 @@ nginx:
     - from: ~/test4$ 
       to: https://another-domain.example.com/test4-redirect
 ```
+
+## Adding custom include files for nginx
+Drupal chart builds nginx container using web/ folder as build context. This prevents files being included from outside the web folder and it's not a good idea to put config files under it.
+To be able to add include files the build context needs to be changed from `web/` into `.` by passing `nginx_build_context: "."` to `drupal-docker-build` in `.circleci/config.yml`:
+```
+jobs:
+  - silta/drupal-docker-build:
+      nginx_build_context: "."
+```
+Due root containing Drupal / shell container compatible .dockerignore file and for frontend there is a separate one inside the web/ folder this doesn't work anymore. Since version 19.03 Docker supports separate .dockerignore files for each Dockerfile. This requires Docker build to be made with BuildKit enabled. To enable BuildKit just pass the `DOCKER_BUILDKIT=1` to the build environment as an environment variable:
+```
+environment:
+  DOCKER_BUILDKIT: 1
+```
+The ignore file itself needs to be named the same as the Dockerfile with .dockerignore appended to the end and need to reside at the same place as the Dockerfile:
+```
+cp web/.gitignore silta/nginx.Dockerfile.dockerignore
+```
+Note: our validation checks if the .dockerignore is present under web/ so you can either leave it there or just add an empty file in it's place.
+To make the image to build correctly in this new context you need to update the COPY command in the nginx.Dockerfile to copy `web` instead of `.` and also add COPY commands to any custom config files you want to be able to include:
+```
+COPY silta/nginx.serverextra.conf /etc/nginx
+
+COPY web /app/web
+```
+Now you can include the config file in silta.yml like this:
+```
+nginx:
+  serverExtraConfig: |
+    include nginx.serverextra.conf;
+```
+or if you `COPY` the file under `/etc/nginx/conf.d` they will be included automatically without the need to add them to silta.yml configs.
