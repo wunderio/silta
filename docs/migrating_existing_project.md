@@ -28,10 +28,19 @@
    ```
    curl -s https://raw.githubusercontent.com/wunderio/silta/master/scripts/drupal-migrate.sh | bash
    ```
-   For Drupal 7   
+   For Drupal 7 with composer.json run      
    ```
    curl -s https://raw.githubusercontent.com/wunderio/silta/master/scripts/drupal7-migrate.sh | bash
    ```
+   Please check [troubleshooting](troubleshooting.md) for other Drupal 7 cases  
+   
+   **Important**  
+   Add to silta.yml config  
+   ```
+   php:
+     drupalCoreVersion: "7"
+   ```
+
 1. Read through the output of the script and check for any instructions to perform manual steps.
 
 1. Check modifications made by the script with `git diff`. Pay particular attention to code that has been removed, we don't want to lose anything important.
