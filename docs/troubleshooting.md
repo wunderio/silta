@@ -85,3 +85,40 @@ Check that Kubernetes is running at least v1.16 and then edit the corresponding 
 ```
 kubectl patch storageclass standard -p '{"allowVolumeExpansion": true}'
 ```
+
+## Drupal 7 migration
+
+**Project uses make file for builds**  
+Have something like this in .circleci/config.yml
+```yaml
+          codebase-build:
+            - run:
+                name: Build from makefile
+                command: |
+                  composer install
+                  vendor/drush/drush/drush make ~/project/drupal/conf/site.make ~/project/drupal/web/
+                  mkdir -p web/sites/all/modules
+                  cp -r code/modules/custom web/sites/all/modules/
+```
+
+**Drush is missing**  
+Add composer.json in Drupal folder
+```json
+{
+    "require": {
+        "drush/drush": "8.*"
+    },
+    "extra": {
+        "installer-paths": {
+            "web/": ["type:drupal-core"]
+        }
+    }
+}
+```
+
+And then in .circleci/config.yml add
+```yaml
+                command: |
+                  composer install
+```
+

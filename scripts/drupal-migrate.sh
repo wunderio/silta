@@ -7,6 +7,13 @@ echo "Checking dependencies"
 git --version
 composer --version
 
+if  grep -q "drupal/core" "drupal/composer.json" ; then
+         echo 'Drupal 8+ detected' ;
+else
+         echo 'Unsupported Drupal version. Please follow documentation how to migrate projects' ;
+         exit ;
+fi
+
 mkdir -p .circleci
 
 if [ -f drupal/composer.json ] && [ -f drupal/build.sh ]
