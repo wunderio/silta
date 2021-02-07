@@ -1,5 +1,7 @@
-# Creating a new project
-
+---
+id: creating-new-project
+title: Creating a new project
+---
 ## Drupal project guidelines
 
 - Make a copy of Wunder's [drupal-project](https://github.com/wunderio/drupal-project), and push it as a new repository within the wunderio Github organisation.

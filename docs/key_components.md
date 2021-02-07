@@ -1,6 +1,9 @@
-# Key components
-
+---
+id: key-components
+title: Key components
+--- 
 ## Github
+
 All of our code is stored in Github within our organisation. All project-specific infrastructure
 configuration is versioned in Git. We provide a default template for
 [Drupal projects](https://github.com/wunderio/drupal-project), but any Docker-compatible application
