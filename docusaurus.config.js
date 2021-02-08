@@ -9,6 +9,14 @@ module.exports = {
   organizationName: 'wunderio', // Usually your GitHub org/user name.
   projectName: 'silta', // Usually your repo name.
   themeConfig: {
+    colorMode: {
+      defaultMode: 'light',
+      disableSwitch: true,
+    },
+    prism: {
+      theme: require('prism-react-renderer/themes/github'), // would have used shadesOfPurple.js, but the .yaml highlightinng is buggy.
+      darkTheme: require('prism-react-renderer/themes/dracula'),
+    },
     navbar: {
       // title: 'Silta',
       logo: {
@@ -22,7 +30,6 @@ module.exports = {
           label: 'Docs',
           position: 'left',
         },
-        {to: 'blog', label: 'Blog', position: 'left'},
         {
           href: 'https://github.com/wunderio/silta',
           label: 'GitHub',
@@ -47,7 +54,7 @@ module.exports = {
           ],
         },
         {
-          title: 'Community',
+          title: 'Wunder on Social Media',
           items: [
             {
               label: 'Facebook',
@@ -76,11 +83,11 @@ module.exports = {
           items: [
             {
               label: 'Blog',
-              to: 'blog',
+              href: 'https://wunder.io/articles/',
             },
             {
               label: 'GitHub',
-              href: 'https://github.com/facebook/docusaurus',
+              href: 'https://github.com/wunderio/silta',
             },
           ],
         },
@@ -96,7 +103,7 @@ module.exports = {
           sidebarPath: require.resolve('./sidebars.js'),
           // Please change this to your repo.
           editUrl:
-            'https://github.com/wunderio/silta',
+            'https://github.com/wunderio/silta/tree/master/',
         },
         blog: {
           showReadingTime: true,

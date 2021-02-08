@@ -18,14 +18,20 @@
 
   --ifm-footer-background-color: #532fb6;
   --ifm-footer-link-color: white;
+  --ifm-footer-link-hover-color: white;
   --ifm-footer-title-color: white;
   --ifm-footer-color: white;
   --ifm-heading-color: #5b37bf;
+  --ifm-navbar-link-color: #5b37bf;
 }
 
 .docusaurus-highlight-code-line {
-  background-color: rgb(72, 77, 91);
+  background-color: #5b37bf;
   display: block;
   margin: 0 calc(-1 * var(--ifm-pre-padding));
   padding: 0 var(--ifm-pre-padding);
+}
+
+.hero .button {
+  color: white !important;
 }
