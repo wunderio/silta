@@ -2,7 +2,7 @@ module.exports = {
   title: 'Silta',
   tagline: 'Silta is a combination of open source tools and cloud services to provide a simple but flexible, self-service infrastructure for development teams, as well as a stable production hosting.',
   url: 'https://wunder.io/',
-  baseUrl: '/',
+  baseUrl: 'silta/build/',
   onBrokenLinks: 'throw',
   onBrokenMarkdownLinks: 'warn',
   favicon: 'img/favicon.ico',
