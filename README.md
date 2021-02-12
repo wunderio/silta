@@ -6,7 +6,7 @@ as a stable production hosting.
 
 ## Documentation
 
-- [Online Docs 📔](https://wunderio.github.io/silta/)
+- [Online Docs 📖](https://wunderio.github.io/silta/)
 
 ### How it works
 - [Key components](docs/key_components.md)

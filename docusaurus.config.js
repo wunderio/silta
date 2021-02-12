@@ -43,9 +43,13 @@ module.exports = {
               href: 'https://dashboard.silta.wdr.io/',
             },
             {
+              label: 'Silta CircleCI Orb',
+              href: 'https://circleci.com/developer/orbs/orb/silta/silta'
+            },
+            {
               label: 'Slack',
               href: 'https://wunder.slack.com/archives/C8UN6AG9W'
-            }
+            },
           ],
         },
         {
