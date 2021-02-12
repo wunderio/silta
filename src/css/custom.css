@@ -32,6 +32,12 @@
   padding: 0 var(--ifm-pre-padding);
 }
 
+/* their current selectors are missing and reusintg wrong variables. Just bear the ugly !important for now. */
+
 .hero .button {
   color: white !important;
+}
+
+.button--outline:hover {
+  color: #5b37bf !important;
 }

@@ -9,7 +9,7 @@ import styles from './styles.module.css';
 const features = [
   {
     title: 'What does Silta mean?',
-    imageUrl: 'img/undraw_docusaurus_mountain.svg',
+    imageUrl: 'img/carrot_1.svg',
     description: (
       <>
         It means "bridge" in Finnish.
@@ -18,7 +18,7 @@ const features = [
   },
   {
     title: 'Can I use Silta outside of Wunder?',
-    imageUrl: 'img/undraw_docusaurus_tree.svg',
+    imageUrl: 'img/carrot_3.svg',
     description: (
       <>
         Yes, our code is open. However, we haven't put special attention to this use case at this point.
@@ -27,7 +27,7 @@ const features = [
   },
   {
     title: 'Does Silta support multisite?',
-    imageUrl: 'img/undraw_docusaurus_react.svg',
+    imageUrl: 'img/carrot_2.svg',
     description: (
       <>
         This might be technically possible, but multisite setups provide little benefits in a container-based environment. Instead, it is recommended to trigger the deployment of multiple sites into dedicated environments from the same repository.

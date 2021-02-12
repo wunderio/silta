@@ -31,11 +31,35 @@ module.exports = {
           position: 'left',
         },
         {
+          label: 'Internal 🔒',
+          position: 'left', // or 'right'
+          items: [
+            {
+              label: 'FAQ',
+              href: 'https://intra.wunder.io/info/silta/silta-faq',
+            },
+            {
+              label: 'Dashboard',
+              href: 'https://dashboard.silta.wdr.io/',
+            },
+            {
+              label: 'Slack',
+              href: 'https://wunder.slack.com/archives/C8UN6AG9W'
+            }
+          ],
+        },
+        {
           href: 'https://github.com/wunderio/silta',
           label: 'GitHub',
           position: 'right',
         },
       ],
+    },
+    algolia: {
+      apiKey: 'dea4d95a5d7d736429669fdf0169961e', // this can and will be public
+      indexName: 'silta',
+      contextualSearch: false,
+      searchParameters: {'facetFilters': ["content"]},
     },
     footer: {
       style: 'light',
@@ -50,7 +74,7 @@ module.exports = {
           ],
         },
         {
-          title: 'Wunder on Social Media',
+          title: 'Social presence' ,
           items: [
             {
               label: 'Facebook',
