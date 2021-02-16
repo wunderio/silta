@@ -1,4 +1,7 @@
-# Anatomy of a Silta project
+---
+id: anatomy-of-silta
+title: Anatomy of a Silta project
+---
 
 A silta project requires two main configuration files, which give you the possibility to customize the behavior according to your requirements:
 

@@ -1,0 +1,43 @@
+/* stylelint-disable docusaurus/copyright-header */
+/**
+ * Any CSS included here will be global. The classic template
+ * bundles Infima by default. Infima is a CSS framework designed to
+ * work well for content-centric websites.
+ */
+
+/* You can override the default Infima variables here. */
+:root {
+  --ifm-color-primary: #5b37bf;
+  --ifm-color-primary-dark: rgb(33, 175, 144);
+  --ifm-color-primary-darker: rgb(31, 165, 136);
+  --ifm-color-primary-darkest: #532fb6;
+  --ifm-color-primary-light: rgb(70, 203, 174);
+  --ifm-color-primary-lighter: rgb(102, 212, 189);
+  --ifm-color-primary-lightest: rgb(146, 224, 208);
+  --ifm-code-font-size: 95%;
+
+  --ifm-footer-background-color: #532fb6;
+  --ifm-footer-link-color: white;
+  --ifm-footer-link-hover-color: white;
+  --ifm-footer-title-color: white;
+  --ifm-footer-color: white;
+  --ifm-heading-color: #5b37bf;
+  --ifm-navbar-link-color: #5b37bf;
+}
+
+.docusaurus-highlight-code-line {
+  background-color: #e0e1e2;
+  display: block;
+  margin: 0 calc(-1 * var(--ifm-pre-padding));
+  padding: 0 var(--ifm-pre-padding);
+}
+
+/* their current selectors are missing and reusintg wrong variables. Just bear the ugly !important for now. */
+
+.hero .button {
+  color: white !important;
+}
+
+.button--outline:hover {
+  color: #5b37bf !important;
+}

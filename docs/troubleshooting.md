@@ -1,6 +1,8 @@
-
-# CircleCI build issues
-
+---
+id: troubleshooting
+title: CircleCI build issues
+sidebar_label: Troubleshooting
+--- 
 # Helm release fails due to existing resources
 ```
 Error: kind PersistentVolume with the name "project-123--branchname-someresource" already exists in the cluster and wasn't defined in the previous release.

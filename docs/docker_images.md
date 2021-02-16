@@ -1,5 +1,7 @@
-
-# Docker images
+---
+id: docker-images
+title: Docker images
+---
 
 Here is a list of all the docker images used in the context of the Silta project.
 Each of these images has a dedicated repository on Github and is built and published

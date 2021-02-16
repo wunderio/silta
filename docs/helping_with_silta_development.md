@@ -1,4 +1,7 @@
-# Helping with Silta development
+---
+id: help-with-silta-dev
+title: Helping with Silta development
+---
 
 First and foremost, help updating this docs directory.
 

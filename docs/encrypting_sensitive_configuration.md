@@ -1,4 +1,7 @@
-# Encrypting sensitive configuration
+---
+id: encrypting-sensitive-configuration
+title: Encrypting sensitive configuration
+---
 
 Certain configuration items such as access tokens or secret keys are quite sensitive
 and should not be committed to the repository in plain text. Silta supports decrypting certain files

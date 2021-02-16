@@ -1,4 +1,9 @@
-# silta.yml configuration examples
+---
+id: silta-examples
+title: Silta examples
+--- 
+
+## silta.yml configuration examples
 
 The default values are documented here: 
  - Drupal chart: https://github.com/wunderio/charts/blob/master/drupal/values.yaml

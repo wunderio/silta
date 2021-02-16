@@ -1,5 +1,7 @@
-# Migrating an existing Drupal project
-
+---
+id: migrating-an-existing-drupal-project
+title: Migrating an existing Drupal project
+--- 
 ## General tips
 
 - We automate as much as possible, but many projects have project-specific differences.

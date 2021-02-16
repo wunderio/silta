@@ -1,5 +1,7 @@
-
-# Go-live checklist
+---
+id: go-live-checklist
+title: Go-live checklist
+---
 
 These are the Silta-specific steps that should be checked before going live.
 Note that this list does not include application-specific steps
