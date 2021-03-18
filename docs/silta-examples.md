@@ -294,6 +294,8 @@ cluster:
 ## Adding redirects
 Redirects can be relative to current domain or contain full domain for more targeted redirects when multiple external domains (`exposeDomains`) are attached to deployment, and you only need this redirect for a specific URL. Redirect URL's can have regular expressions.
 
+If You are scattering the redirect rules into separate yaml's use keys (or the latter yaml will overwrite the whole `nginx.redirects` object) and the alphabetical order of keys will be respected in nginx redirect map. Because of this, it's better to put everything in one file without keys, just descriptions and the order of the yaml will be respected.
+
 *Drupal chart and Frontend chart*:
 ```yaml
 nginx:
@@ -302,7 +304,7 @@ nginx:
       to: /
     - from: http://exact-matching.example.com/test2
       to: /test2-redirect
-    - from: '~://partial-matching.example.com/test3$' 
+    - from: '~://exact-matching-url-with-protocol-wildcard.example.com/test3$' 
       to: /test3-redirect
     - from: ~/test4$ 
       to: https://another-domain.example.com/test4-redirect
