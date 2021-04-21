@@ -11,7 +11,7 @@ The default values are documented here:
  - Simple chart: https://github.com/wunderio/charts/blob/master/simple/values.yaml
 
 Below is a list of examples for common needs.
-All examples are meant to be used in the `silta.yml` file of your project. Most of examples work with both drupal chart and frontend chart, unless name is explicitly mentioned above the code snippet. Double-check with default value files for each chart - [drupal](https://github.com/wunderio/charts/blob/master/drupal/values.yaml) and [frontend](https://github.com/wunderio/charts/blob/master/frontend/values.yaml).
+All examples are meant to be used in the `silta.yml` file of your project. Most of the examples work with both drupal chart and frontend chart, unless name is explicitly mentioned above the code snippet. Double-check with default value files for each chart - [drupal](https://github.com/wunderio/charts/blob/master/drupal/values.yaml) and [frontend](https://github.com/wunderio/charts/blob/master/frontend/values.yaml).
 
 Also note that increasing resources will result in increased costs, so use sensible values.
 
@@ -80,7 +80,7 @@ services:
         command: 'my-custom-command'
 ```
 
-## Add aditional environment variables
+## Add additional environment variables
 
 *Drupal chart*:
 ```yaml
@@ -97,7 +97,7 @@ services:
       MY_VARIABLE_NAME: 'theValueOfMyVariable'
 ```
 
-## Changing basic auth username and password
+## Change basic auth username and password
 
 *Drupal chart and Frontend chart*:
 ```yaml
@@ -194,7 +194,7 @@ mailhog:
   enabled: true
 ```
 
-For emails to be actually sent out of the cluster, You can use any external smtp server. Here's an example for sparkpost.
+For emails to be actually sent out of the cluster, you can use any external smtp server. Here's an example for sparkpost.
 
 *Drupal chart*:
 ```yaml
@@ -212,7 +212,7 @@ Note: To get the sparkpost API key, you have to [validate your domain](https://w
 
 If the `smtp` is configured and enabled, but it does not appear to send anything, make sure `mailhog` is not enabled.
 
-## Exposed domains and SSL certificates
+## Expose domains and SSL certificates
 Various `exposeDomains` examples for SSL certificate issuers. Same structure can be reused for release `ssl` parameter too. 
 
 Note: You can also use `letsencrypt-staging` issuer to avoid hitting `letsencrypt` [rate limits](https://letsencrypt.org/docs/rate-limits/).
@@ -291,7 +291,7 @@ cluster:
   vpcNative: true
 ```
 
-## Adding redirects
+## Add redirects
 Redirects can be relative to current domain or contain full domain for more targeted redirects when multiple external domains (`exposeDomains`) are attached to deployment, and you only need this redirect for a specific URL. Redirect URL's can have regular expressions.
 
 If You are scattering the redirect rules into separate yaml's use keys (or the latter yaml will overwrite the whole `nginx.redirects` object) and the alphabetical order of keys will be respected in nginx redirect map. Because of this, it's better to put everything in one file without keys, just descriptions and the order of the yaml will be respected.
@@ -310,7 +310,7 @@ nginx:
       to: https://another-domain.example.com/test4-redirect
 ```
 
-## Adding custom include files for nginx
+## Add custom include files for nginx
 Drupal chart builds nginx container using web/ folder as build context. This prevents files being included from outside the web folder and it's not a good idea to put config files under it.
 To be able to add include files the build context needs to be changed from `web/` into `.` by passing `nginx_build_context: "."` to `drupal-docker-build` in `.circleci/config.yml`:
 ```
