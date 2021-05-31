@@ -30,6 +30,19 @@ If you want to test a feature PR, you can do it like this:
 [Helm template guide - control structures](https://helm.sh/docs/chart_template_guide/control_structures/)  
 [Goland Sprig functions](http://masterminds.github.io/sprig/defaults.html)
 
+
+Before making a pull request you should install the unittest helm plugin:
+
+```
+helm plugin install https://github.com/quintush/helm-unittest --version 0.2.4
+```
+
+and run in on your updated chart:
+
+```
+helm unittest ./charts/drupal --helm3
+```
+
 To test charts locally You will need access to [Silta Dev cluster](https://intra.wunder.io/info/silta/silta-ops-manual) and Helm installed locally  
 Most likely You will need to add Helm repos before testing.    
 See example below.       
