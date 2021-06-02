@@ -32,6 +32,6 @@ identified as soon as possible.
 # Web access
 - Recommended: set up a `beta.example.com` domain that can be used to test the process of configuring DNS.
 - Domain names are set in silta.yml, configured to use SSL with letsencrypt or custom certifcates
-- Some time before switching the DNS, set the TTL of any existing DNS entries to be short, like 1 minute (cached DNS
-entries can cause a variety of issues, like failing letsencrypt DNS challenges).
+- **Some time before switching the DNS, set the TTL of any existing DNS entries to be short, like 1 minute (cached DNS
+entries can cause a variety of issues, like failing letsencrypt DNS challenges).**
 - BasicAuth is disabled
