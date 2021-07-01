@@ -304,11 +304,15 @@ nginx:
       to: /
     - from: http://exact-matching.example.com/test2
       to: /test2-redirect
+    - description: 'Redirect non-www site to www site.'
+      from: '~://example.com'
+      to: https://www.example.com$request_uri
     - from: '~://exact-matching-url-with-protocol-wildcard.example.com/test3$' 
       to: /test3-redirect
     - from: ~/test4$ 
       to: https://another-domain.example.com/test4-redirect
 ```
+Note: `description` key does not do anything currently, it's a documentation comment for configuration maintainer.
 
 ## Add custom include files for nginx
 Drupal chart builds nginx container using web/ folder as build context. This prevents files being included from outside the web folder and it's not a good idea to put config files under it.
