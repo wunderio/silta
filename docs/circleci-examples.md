@@ -40,7 +40,7 @@ Using `npm` is preferred over the user of `yarn`, and if it's not too much hassl
 for the sake of consistency.
 In the meantime you can use the `yarn-install-build` step which works the same as `npm-install-build`
 
-## Deploy sub project from within same repo
+## Deploy sub-project from within the same repo
 
 Having e.g. Storybook or other frontend application included in the base project codebase that require 
 separate deployment can be easily done even using different chart.
