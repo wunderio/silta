@@ -49,19 +49,10 @@ For simple application (static) the simple chart can be used. Refer to simple ex
 Tell build process (`under silta/simple-build-deploy`) where your application code can be found (related to repo root).
 
 ```yaml
+build_folder: web/themes/custom/yourtheme/storybook
 codebase-build:
   - silta/npm-install-build:
       path: web/themes/custom/yourtheme/storybook
-```
-
-Under the same workflow docker also needs to be told the build context:
-
-```yaml
-image_build_steps:
-  - silta/build-docker-image:
-      dockerfile: 'silta/node.Dockerfile'
-      path: './web/themes/custom/yourtheme/storybook'
-      identifier: 'node'
 ```
 
 Finally, give the deployment a release-suffix:
@@ -78,14 +69,10 @@ The complete deployment workflow for the app should look something like this:
     context: silta_dev
     silta_config: silta/silta.yml,silta/silta-storybook.yml
     release-suffix: storybook
+    build_folder: web/themes/custom/yourtheme/storybook
     codebase-build:
       - silta/npm-install-build:
           path: web/themes/custom/yourtheme/storybook
-    image_build_steps:
-      - silta/build-docker-image:
-          dockerfile: 'silta/node.Dockerfile'
-          path: './web/themes/custom/yourtheme/storybook'
-          identifier: 'nginx'
     filters:
       branches:
         ignore: production
