@@ -46,7 +46,7 @@ Having e.g. Storybook or other frontend application included in the base project
 separate deployment can be easily done even using different chart.
 For simple application (static) the simple chart can be used. Refer to simple examples with the following additions:
 
-Tell build process (`under silta/frontend-build-deploy`) where your application code can be found (related to repo root).
+Tell build process (`under silta/simple-build-deploy`) where your application code can be found (related to repo root).
 
 ```yaml
 codebase-build:
@@ -73,7 +73,7 @@ release-suffix: storybook
 The complete deployment workflow for the app should look something like this:
 
 ```yaml
-- silta/frontend-build-deploy: &build-deploy
+- silta/simple-build-deploy: &build-deploy
     name: Storybook build & deploy
     context: silta_dev
     silta_config: silta/silta.yml,silta/silta-storybook.yml
@@ -85,12 +85,12 @@ The complete deployment workflow for the app should look something like this:
       - silta/build-docker-image:
           dockerfile: 'silta/node.Dockerfile'
           path: './web/themes/custom/yourtheme/storybook'
-          identifier: 'node'
+          identifier: 'nginx'
     filters:
       branches:
         ignore: production
 
-- silta/frontend-build-deploy:
+- silta/simple-build-deploy:
     # Extend the build-deploy configuration for the production environment.
     <<: *build-deploy
     name: Storybook build & deploy production
