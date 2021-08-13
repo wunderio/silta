@@ -348,6 +348,6 @@ Having e.g. Storybook or other frontend application included in the base project
 separate deployment can be easily done even using different chart.
 See [https://wunderio.github.io/silta/docs/circleci-conf-examples](circleci-examples.md) for the deployment setup part.
 
-When using different charts (e.g. drupal and simple) you need to separate chart specific configurations to their own silta-*.yml files if you want to share any configs between the application deployments (for example basic auth credentials). Best way to do it is to put only the shared configurations to the silta.yml file and have e.g. silta-cms.yml and silta-storybook.yml for application specifig configurations.
+When using different charts (e.g. drupal and simple) you need to separate chart specific configurations to their own silta-*.yml files if you want to share any configs between the application deployments (for example basic auth credentials). Best way to do it is to put only the shared configurations to the silta.yml file and have e.g. silta-cms.yml and silta-storybook.yml for application specific configurations.
 
 
