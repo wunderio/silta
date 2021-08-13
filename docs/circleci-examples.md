@@ -47,12 +47,19 @@ separate deployment can be easily done even using different chart.
 For simple application (static) the simple chart can be used. Refer to simple examples with the following additions:
 
 Tell build process (`under silta/simple-build-deploy`) where your application code can be found (related to repo root).
+If the command to build your application isn't the default `npm run build`you can define it with the `build_command` parameter.
 
 ```yaml
-build_folder: web/themes/custom/yourtheme/storybook
 codebase-build:
   - silta/npm-install-build:
-      path: web/themes/custom/yourtheme/storybook
+      path: web/themes/custom/yourtheme
+      build-command: npm run build-storybook
+```
+
+Next, you need to define the webroot of your application, e.g. where your application was built:
+
+```
+build_folder: web/themes/custom/yourtheme/storybook-static
 ```
 
 Finally, give the deployment a release-suffix:
@@ -69,10 +76,10 @@ The complete deployment workflow for the app should look something like this:
     context: silta_dev
     silta_config: silta/silta.yml,silta/silta-storybook.yml
     release-suffix: storybook
-    build_folder: web/themes/custom/yourtheme/storybook
+    build_folder: web/themes/custom/yourtheme/storybook-static
     codebase-build:
       - silta/npm-install-build:
-          path: web/themes/custom/yourtheme/storybook
+          path: web/themes/custom/yourtheme
     filters:
       branches:
         ignore: production
