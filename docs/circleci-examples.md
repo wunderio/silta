@@ -53,7 +53,7 @@ If the command to build your application isn't the default `npm run build`you ca
 codebase-build:
   - silta/npm-install-build:
       path: web/themes/custom/yourtheme
-      build-command: npm run build-storybook
+      build-command: npm run build && npm run build-storybook
 ```
 
 Next, you need to define the webroot of your application, e.g. where your application was built:
@@ -80,6 +80,7 @@ The complete deployment workflow for the app should look something like this:
     codebase-build:
       - silta/npm-install-build:
           path: web/themes/custom/yourtheme
+          build-command: npm run build && npm run build-storybook
     filters:
       branches:
         ignore: production
