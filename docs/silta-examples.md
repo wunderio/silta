@@ -162,6 +162,14 @@ if (getenv('SILTA_CLUSTER') && getenv('VARNISH_ADMIN_HOST')) {
 ```
 Make sure to replace `<PURGER_ID>` with an actual id of purger configuration!
 
+**Changing varnish default control-key value**   
+This can be done by adding `secret` variable. 
+```yaml
+varnish:
+  secret: 'my-secret-key'
+```
+Please remember: best practice is to encrypt secrets.  
+
 ## Sanitize a table that contains sensitive information
 
 *Drupal chart*:
