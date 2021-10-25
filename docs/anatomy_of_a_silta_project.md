@@ -5,7 +5,7 @@ title: Anatomy of a Silta project
 
 A silta project requires two main configuration files, which give you the possibility to customize the behavior according to your requirements:
 
-- A [CircleCI configuration file](#circleCI-configuration). This defines how the application is built and tested.
+- A [CircleCI configuration file](#circleci-configuration). This defines how the application is built and tested.
 - A [Silta configuration file](#silta-configuration). This defines how the environment running your application is provisioned.
 
 ## CircleCI configuration
