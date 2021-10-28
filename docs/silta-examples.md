@@ -170,6 +170,19 @@ varnish:
 ```
 Please remember: best practice is to encrypt secrets.  
 
+**Changing varnish cache backend**
+The current default cache backend is set to file storage. The setting is exposed in values file and can be changed. Here are few examples:
+```
+varnish:
+  resources:
+    requests:
+      memory: 768Mi
+  # Memory allocated storage. Make sure to adjust varnish memory allocation too (see above)
+  storageBackend: 'malloc,512m'
+  # Disc allocated storage.
+  storageBackend: 'file,/var/lib/varnish/varnish_storage.bin,512M'
+```
+
 ## Sanitize a table that contains sensitive information
 
 *Drupal chart*:
