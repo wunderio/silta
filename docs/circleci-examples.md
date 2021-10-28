@@ -39,3 +39,66 @@ If you have another command that should be run you can specify it in the `npm-in
 Using `npm` is preferred over the user of `yarn`, and if it's not too much hassle it would be best to switch
 for the sake of consistency.
 In the meantime you can use the `yarn-install-build` step which works the same as `npm-install-build`
+
+## Deploy sub-project from within the same repo
+
+Having e.g. Storybook or other frontend application included in the base project codebase that require 
+separate deployment can be easily done even using different chart.
+For simple application (static) the simple chart can be used. Refer to simple examples with the following additions:
+
+Tell build process (`under silta/simple-build-deploy`) where your application code can be found (related to repo root).
+If the command to build your application isn't the default `npm run build`you can define it with the `build_command` parameter.
+
+```yaml
+codebase-build:
+  - silta/npm-install-build:
+      path: web/themes/custom/yourtheme
+      build-command: npm run build && npm run build-storybook
+```
+
+Next, you need to define the webroot of your application, e.g. where your application was built:
+
+```
+build_folder: web/themes/custom/yourtheme/storybook-static
+```
+
+Finally, give the deployment a release-suffix:
+
+```yaml
+release-suffix: storybook
+```
+
+The complete deployment workflow for the app should look something like this:
+
+```yaml
+- silta/simple-build-deploy: &build-deploy
+    name: Storybook build & deploy
+    context: silta_dev
+    silta_config: silta/silta.yml,silta/silta-storybook.yml
+    release-suffix: storybook
+    build_folder: web/themes/custom/yourtheme/storybook-static
+    codebase-build:
+      - silta/npm-install-build:
+          path: web/themes/custom/yourtheme
+          build-command: npm run build && npm run build-storybook
+    filters:
+      branches:
+        ignore: production
+
+- silta/simple-build-deploy:
+    # Extend the build-deploy configuration for the production environment.
+    <<: *build-deploy
+    name: Storybook build & deploy production
+    context: silta_finland
+    silta_config: silta/silta.yml,silta/silta-storybook.yml,silta/silta-storybook-prod.yml
+    filters:
+      branches:
+        only: production
+```
+
+Note: you need to include the application specific silta_configs (here silta-storybook.yml and silta-storybook-prod.yml). 
+You should also update the drupal specific deployment steps to include the appropriate silta-cms.yml files.
+
+See [https://wunderio.github.io/silta/docs/silta-examples](silta-examples.md) for example on how to split the silta configuration part for this kind of setup.
+There is also a more complex example in [https://github.com/wunderio/decoupled-project](decoupled-project -template)
+

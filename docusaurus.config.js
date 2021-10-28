@@ -31,28 +31,6 @@ module.exports = {
           position: 'left',
         },
         {
-          label: 'Internal 🔒',
-          position: 'left', // or 'right'
-          items: [
-            {
-              label: 'FAQ',
-              href: 'https://intra.wunder.io/info/silta/silta-faq',
-            },
-            {
-              label: 'Dashboard',
-              href: 'https://dashboard.silta.wdr.io/',
-            },
-            {
-              label: 'Silta CircleCI Orb',
-              href: 'https://circleci.com/developer/orbs/orb/silta/silta'
-            },
-            {
-              label: 'Slack',
-              href: 'https://wunder.slack.com/archives/C8UN6AG9W'
-            },
-          ],
-        },
-        {
           href: 'https://github.com/wunderio/silta',
           label: 'GitHub',
           position: 'right',

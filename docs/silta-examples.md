@@ -162,6 +162,29 @@ if (getenv('SILTA_CLUSTER') && getenv('VARNISH_ADMIN_HOST')) {
 ```
 Make sure to replace `<PURGER_ID>` with an actual id of purger configuration!
 
+**Changing varnish default control-key value**   
+
+This can be done by adding `secret` variable. 
+```yaml
+varnish:
+  secret: 'my-secret-key'
+```
+Please remember: best practice is to encrypt secrets.  
+
+**Changing varnish cache backend**
+
+The current default cache backend is set to file storage. The setting is exposed in values file and can be changed. Here are few examples:
+```
+varnish:
+  resources:
+    requests:
+      memory: 768Mi
+  # Memory allocated storage. Make sure to adjust varnish memory allocation too (see above)
+  storageBackend: 'malloc,512m'
+  # Disc allocated storage.
+  storageBackend: 'file,/var/lib/varnish/varnish_storage.bin,512M'
+```
+
 ## Sanitize a table that contains sensitive information
 
 *Drupal chart*:
@@ -304,11 +327,15 @@ nginx:
       to: /
     - from: http://exact-matching.example.com/test2
       to: /test2-redirect
+    - description: 'Redirect non-www site to www site.'
+      from: '~://example.com'
+      to: https://www.example.com$request_uri
     - from: '~://exact-matching-url-with-protocol-wildcard.example.com/test3$' 
       to: /test3-redirect
     - from: ~/test4$ 
       to: https://another-domain.example.com/test4-redirect
 ```
+Note: `description` key does not do anything currently, it's a documentation comment for configuration maintainer.
 
 ## Add custom include files for nginx
 Drupal chart builds nginx container using web/ folder as build context. This prevents files being included from outside the web folder and it's not a good idea to put config files under it.
@@ -341,3 +368,13 @@ nginx:
     include nginx.serverextra.conf;
 ```
 or if you `COPY` the file under `/etc/nginx/conf.d` they will be included automatically without the need to add them to silta.yml configs.
+
+## Deploy sub-project from the same repo using simple chart
+
+Having e.g. Storybook or other frontend application included in the base project codebase that require 
+separate deployment can be easily done even using different chart.
+See [https://wunderio.github.io/silta/docs/circleci-conf-examples](circleci-examples.md) for the deployment setup part.
+
+When using different charts (e.g. drupal and simple) you need to separate chart specific configurations to their own silta-*.yml files if you want to share any configs between the application deployments (for example basic auth credentials). Best way to do it is to put only the shared configurations to the silta.yml file and have e.g. silta-cms.yml and silta-storybook.yml for application specific configurations.
+
+
