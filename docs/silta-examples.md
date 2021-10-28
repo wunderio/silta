@@ -163,6 +163,7 @@ if (getenv('SILTA_CLUSTER') && getenv('VARNISH_ADMIN_HOST')) {
 Make sure to replace `<PURGER_ID>` with an actual id of purger configuration!
 
 **Changing varnish default control-key value**   
+
 This can be done by adding `secret` variable. 
 ```yaml
 varnish:
@@ -171,6 +172,7 @@ varnish:
 Please remember: best practice is to encrypt secrets.  
 
 **Changing varnish cache backend**
+
 The current default cache backend is set to file storage. The setting is exposed in values file and can be changed. Here are few examples:
 ```
 varnish:
