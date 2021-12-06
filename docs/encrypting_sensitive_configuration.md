@@ -20,7 +20,7 @@ We therefore recommend the following process:
 - Create your file named `/tmp/secret_file`.
 
 - Encrypt it with
-  ```
+  ```bash
   openssl aes-256-cbc -pbkdf2 -in /tmp/secret_file -out /tmp/encrypted_file -pass env:SECRET_KEY
   ```
   Make sure that the `-in` and `-out` parameters are not the same, or openssl will encrypt its own output.
@@ -35,18 +35,18 @@ We therefore recommend the following process:
 
 - In your CircleCI configuration, add following 
   - *Drupal chart*: Add following under `silta/drupal-build-deploy`:
-  ```
+  ```yaml
   decrypt_files: path/to/file
   ```
   - *Frontend chart*: Add following under `codebase-build`:
-  ```
+  ```yaml
   - silta/decrypt-files:
       files: path/to/file
   ```
   - `path/to/file` is relative to the build folder (root)
 
 - Your secret file can also contain an extension to the configuration in silta.yml, for example to set encrypted environment variables. To do that, add this to your `drupal-build-deploy` CircleCI job:
-  ```
+  ```yaml
   silta_config: silta/silta.yml,silta/secrets
   ```
 
@@ -58,14 +58,14 @@ We therefore recommend the following process:
 ## Example of secret environment variables
 
 *Drupal chart*
-```
+```yaml
 php:
   env:
     PAYMENT_GW_KEY: '1234567890qwertyuiop'
 ```
 
 *Frontend chart*
-```
+```yaml
 services:
   myservice:
     env:
@@ -79,7 +79,7 @@ For cases where you want to have your own encryption key, you can do that with t
 Click the gear icon on a build page > Environment variables > Add Variable.
 Use a name like `MYPROJECT_SECRET_KEY` and the value of your choice (preferably a strong key).
 - Use the same step as above, but specify the environment variable to be used as the decryption key:
-  ```
+  ```yaml
   - silta/decrypt-files:
       files: path/to/file
       secret_key_env: MYPROJECT_SECRET_KEY
@@ -92,23 +92,23 @@ Check the port and IP address by Rerunning the latest workflow in CircleCI: > Re
 
 Using the SSH port and IP address securely copy your silta/secrets file to CircleCI
 
-```
+```bash
 scp -P 64537 silta/secrets 3.80.240.10:/tmp/encrypted_file
 ````
 
 SSH to CircleCI using the correct port/IP you got from rerunning the job with SSH
 
-```
+```bash
 ssh -p 64537 3.80.240.10
 ```
 
 Run following command in CircleCI:
 
-```
+```bash
 openssl aes-256-cbc -pbkdf2 -d -in /tmp/encrypted_file -out /tmp/decrypted_file -pass env:SECRET_KEY
 ```
 
 Check `/tmp/decrypted_file` or scp it back to your local using
-```
+```bash
 scp -P 64537 3.80.240.10:/tmp/decrypted_file silta/secrets_decrypted
 ```

@@ -24,7 +24,9 @@ mariadb:
     persistence:
       size: 2G
 ```
-Note that storage can only be increased, not decreased.
+Note that storage can only be increased, not decreased. 
+
+Note 2: If you change it for existing deployment, You'll need to run special comands in cluster to expand the storage or deployment will fail (see [Mariadb or Elasticsearch running out of disk space](troubleshooting.md#mariadb-or-elasticsearch-running-out-of-disk-space) in troubleshooting page).
 
 ## Mount Drupal public files to a different location
 
@@ -55,6 +57,43 @@ php:
     drupal:
       # Run every 5 minutes
       schedule: '*/5 * * * *'
+```
+
+## Deploy a custom service using frontend chart
+
+While Frontend chart was originally meant to host NodeJS frontend projects, it also allows running custom docker images and optionally exposing them via nginx reverse proxy. These containers are called "services" in Frontend chart.
+
+*Frontend chart*:
+```yaml
+services:
+  mynodeservice:
+    replicas: 1
+    port: 3000
+    env:
+      VARIABLE: 'VALUE'
+    # Exposed at [hostname]/servicepath
+    exposedRoute: '/servicepath'
+  
+  mongo:
+    # Mongo image does not need to be built, 
+    # uses https://hub.docker.com/_/mongo
+    image: mongo
+    port: 27017
+```
+
+See `.Values.serviceDefaults` for service default values.
+
+Service images are built at `.circleci/config.yaml`:
+```yaml
+workflows:
+  build_deploy:
+    jobs:
+      - silta/frontend-build-deploy: &build-deploy
+          image_build_steps:
+            - silta/build-docker-image:
+                dockerfile: 'silta/mynodeservice.Dockerfile'
+                path: '.'
+                identifier: 'mynodeservice'
 ```
 
 ## Run a custom cron job
@@ -154,7 +193,7 @@ No adjustments needed
 1. Add varnish purger to purge settings.
 2. Find purger configuration name. You can see it by hovering over the configuration link (i.e. `1b619ba479`). This will be Your `<PURGER_ID>`.
 3. Put this snippet into your `settings.php` file:
-```
+```php
 if (getenv('SILTA_CLUSTER') && getenv('VARNISH_ADMIN_HOST')) {
   $config['varnish_purger.settings.<PURGER_ID>']['hostname'] = trim(getenv('VARNISH_ADMIN_HOST'));
   $config['varnish_purger.settings.<PURGER_ID>']['port'] = '80';
@@ -174,7 +213,7 @@ Please remember: best practice is to encrypt secrets.
 **Changing varnish cache backend**
 
 The current default cache backend is set to file storage. The setting is exposed in values file and can be changed. Here are few examples:
-```
+```yaml
 varnish:
   resources:
     requests:
@@ -184,17 +223,6 @@ varnish:
   # Disc allocated storage.
   storageBackend: 'file,/var/lib/varnish/varnish_storage.bin,512M'
 ```
-
-## Sanitize a table that contains sensitive information
-
-*Drupal chart*:
-```yaml
-gdprDump:
-  my_table_name:
-    my_field_name:
-      formatter: name
-```
-Here `name` is the formatter type. See https://github.com/machbarmacher/gdpr-dump/#using-gdpr-replacements for additonal formatter types.
 
 ## Skip taking reference data dumps on each deployment
 
@@ -207,15 +235,16 @@ For some sites with a lot of files, taking a reference data dump after each depl
 
 ## Sending e-mail
 
-Note: There is no e-mail handling for frontend chart currently. You must implement the smtp workflow via application. 
+Note: There is no e-mail handling for frontend chart. You must implement the smtp workflow via application. 
 
 If you just want to test email, you can use mailhog:
 
 *Drupal chart*:
-```
+```yaml
 mailhog:
   enabled: true
 ```
+Mailhog access information will be printed in release notes.
 
 For emails to be actually sent out of the cluster, you can use any external smtp server. Here's an example for sparkpost.
 
@@ -235,14 +264,16 @@ Note: To get the sparkpost API key, you have to [validate your domain](https://w
 
 If the `smtp` is configured and enabled, but it does not appear to send anything, make sure `mailhog` is not enabled.
 
-## Expose domains and SSL certificates
-Various `exposeDomains` examples for SSL certificate issuers. Same structure can be reused for release `ssl` parameter too. 
+## Domain names and SSL certificates
+All environments are given a hostname by default. It is possible to attach a custom domain name to environment by configuring `exposeDomains` configuration parameter. All hostnames attached to environment are printed in release notes. 
 
 Note: You can also use `letsencrypt-staging` issuer to avoid hitting `letsencrypt` [rate limits](https://letsencrypt.org/docs/rate-limits/).
 
 Note 2: For custom certificates it's advised to add CA root certificate to `exposeDomains[].ssl.crt` value. Having it under `exposeDomains[].ssl.ca` is not enough.
 
 Note 3: Deploy `exposeDomains` entries only when DNS entries are changed or are soon to be changed. Otherwise, Letsencrypt validation might eventually get stuck due to retries.  
+
+Note 4: Put `exposeDomains` in a dedicated configuration yaml file, so only one environment (branch) would be assigned this hostname. Having multiple environments with the same domain will act as a round robin load balancer for all environments and unexpected responses might be returned.
 
 *Drupal chart and Frontend chart*:
 ```yaml
@@ -280,7 +311,7 @@ exposeDomains:
         -----END CERTIFICATE-----
 ```
 You don't need a custom static ip (via gce ingress) normally, but if Your project requires, here's how - 
-```
+```yaml
 exposeDomains:
   example-gce-ingress:
     hostname: gce-ingress.example.com
@@ -295,17 +326,12 @@ ingress:
     # Request a global static ip from OPS team first
     staticIpAddressName: custom-ip-name
 
-# Whitelist reverse proxy ip's to accept X-Forwarded-For header 
 nginx:
-  serverExtraConfig: |
-    # Traefik IP for pre-generated hostname
-    set_real_ip_from 10.0.0.0/8;
-    # Load Balancer IP
-    set_real_ip_from 1.2.3.4/32;
-    # Google load balancer IP's
-    set_real_ip_from 130.211.0.0/22;
-    set_real_ip_from 35.191.0.0/16;
-    real_ip_recursive on;
+  # Reverse proxy IP's to trust with contents of X-Forwarded-For header 
+  realipfrom: 
+    gke-internal: 10.0.0.0/8
+    # Load Balancer IP (static ip you were given)
+    gce-lb-ip: 1.2.3.4/32;
 
 # Depending on the cluster type, You might need to enable this. 
 # A safe default is "false" (works in both cases), but "VPC Native" 
@@ -340,18 +366,18 @@ Note: `description` key does not do anything currently, it's a documentation com
 ## Add custom include files for nginx
 Drupal chart builds nginx container using web/ folder as build context. This prevents files being included from outside the web folder and it's not a good idea to put config files under it.
 To be able to add include files the build context needs to be changed from `web/` into `.` by passing `nginx_build_context: "."` to `drupal-docker-build` in `.circleci/config.yml`:
-```
+```yaml
 jobs:
   - silta/drupal-docker-build:
       nginx_build_context: "."
 ```
 Due root containing Drupal / shell container compatible .dockerignore file and for frontend there is a separate one inside the web/ folder this doesn't work anymore. Since version 19.03 Docker supports separate .dockerignore files for each Dockerfile. This requires Docker build to be made with BuildKit enabled. To enable BuildKit just pass the `DOCKER_BUILDKIT=1` to the build environment as an environment variable:
-```
+```yaml
 environment:
   DOCKER_BUILDKIT: 1
 ```
 The ignore file itself needs to be named the same as the Dockerfile with .dockerignore appended to the end and need to reside at the same place as the Dockerfile:
-```
+```bash
 cp web/.gitignore silta/nginx.Dockerfile.dockerignore
 ```
 Note: our validation checks if the .dockerignore is present under web/ so you can either leave it there or just add an empty file in it's place.
@@ -362,7 +388,7 @@ COPY silta/nginx.serverextra.conf /etc/nginx
 COPY web /app/web
 ```
 Now you can include the config file in silta.yml like this:
-```
+```yaml
 nginx:
   serverExtraConfig: |
     include nginx.serverextra.conf;

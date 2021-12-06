@@ -58,7 +58,7 @@ codebase-build:
 
 Next, you need to define the webroot of your application, e.g. where your application was built:
 
-```
+```yaml
 build_folder: web/themes/custom/yourtheme/storybook-static
 ```
 
@@ -98,6 +98,8 @@ The complete deployment workflow for the app should look something like this:
 
 Note: you need to include the application specific silta_configs (here silta-storybook.yml and silta-storybook-prod.yml). 
 You should also update the drupal specific deployment steps to include the appropriate silta-cms.yml files.
+
+Note 2: Add nested silta configurations (i.e. `web/themes/custom/yourtheme/silta/`) and non-public files located in web subdirectory to `.dockerignore` file, to exclude them from nginx and php images.
 
 See [https://wunderio.github.io/silta/docs/silta-examples](silta-examples.md) for example on how to split the silta configuration part for this kind of setup.
 There is also a more complex example in [https://github.com/wunderio/decoupled-project](decoupled-project -template)
