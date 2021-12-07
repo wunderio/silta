@@ -256,3 +256,111 @@ Some known references are:
 You also need to add the following in `.circleci/config.yml` parameters and put your webRoot directory name as the value, for example `web` or `docroot`:
 - Add parameter `web-root` to `silta/drupal-validate` job
 - Add parameter `nginx_build_context` to `silta/drupal-deploy-build` job
+
+## How to customize container images of Silta deployments?
+
+Drupal chart requires 3 images by default, `nginx` image, `php` and `shell` image. Source Dockerfiles for the image building are located at `silta/nginx.Dockerfile`, `silta/php.Dockerfile` and `silta/shell.Dockerfile` by default.
+
+Frontend chart dockerfiles depend on services You want to deploy. Normally the dockerfiles are located in `silta/` directory, i.e. `silta/node.Dockerfile`.
+
+These dockerfiles use specially crafted base images that provide additional libraries and tools by default. See upstream image sources at https://github.com/wunderio/silta-images.   
+
+You can install extra tools for Your project by editing dockerfiles. Let's use shell container as an example:
+
+Content of [silta/shell.Dockerfile](https://github.com/wunderio/drupal-project/blob/master/silta/shell.Dockerfile):
+
+```
+# Dockerfile for the Shell container.
+FROM eu.gcr.io/silta-images/shell:php7.4-v0.1
+
+COPY --chown=www-data:www-data . /app
+```
+
+- The `FROM` instruction initializes a new build stage and sets the Base Image for subsequent instructions. As such, a valid Dockerfile must start with a FROM instruction. The image can be any valid image – it is especially easy to start by pulling an image from the Public Repositories. In this  example it uses wunderio shell image, tagged with `php7.4-v0.1` tag. 
+- The `COPY` instruction copies new files or directories from `.` (project's root folder, but this can be adjusted) and adds them to the filesystem of the container at the path `/app`
+
+If You need to copy extra files or install tools, You can add extra instructions, f.ex -
+```
+COPY --chown=bin files* /somedir/
+
+RUN apk add wget
+```
+- The RUN instruction will execute any commands in a new layer on top of the current image and commit the results. The resulting committed image will be used for the next step in the Dockerfile.
+
+See Dockerfile refrence for more instructions: https://docs.docker.com/engine/reference/builder/
+
+## Q: How to test docker images?
+
+If You want to test docker images locally, You'd need to install docker or other runtime that allows running docker images. This tutorial won't list instructions for that and will assume You can run `docker` command (it also needs to be at least version 20.10 to be able to run alpine 3.14+ images. [Related document](https://wiki.alpinelinux.org/wiki/Release_Notes_for_Alpine_3.14.0#faccessat2)).
+
+Running a docker image:
+```bash
+docker run -it --entrypoint sh eu.gcr.io/silta-images/shell:php7.4-v0.1
+```
+
+This will download shell image and run a shell inside it. Typing `exit` will quit and stop the container.
+
+This also allows running other images like nginx:
+```bash
+# running official nginx image from https://hub.docker.com/_/nginx 
+docker run -p 8080:80 nginx 
+```
+
+This way You can also run silta images, as long as You have access to image repository. See "[How to run silta image locally](#q-how-to-run-silta-images-locally)" for instructions.
+
+If You want to test your customized dockerfile, You need to build the image and run it
+```bash
+# Build image and tag it with `shell_test_build` tag
+docker build -t shell_test_build -f silta/shell.Dockerfile .
+# Run tagged image and and exec into it with `sh` shell 
+docker run -it --entrypoint  sh shell_test_build
+# Remove test image
+docker image rm shell_test_build
+```
+
+More about running docker images via docker cli at "[Docker Command-line reference](https://docs.docker.com/engine/reference/commandline/cli/)" 
+
+## Q: How to run Silta images locally?
+
+TLDR: You can run those images locally, but there are missing resources (storage mounts, environment variables, secrets) that are only available in the cluster. You can still run containers and debug node applications if You have to.
+
+If You want to run some silta image locally for debugging or other purpose, follow these steps:
+
+1. Make sure You have access to kubernetes cluster. 
+    - Install kubectl kubernetes cli tool: https://kubernetes.io/docs/tasks/tools/
+    - Configure cluster access for kubectl (when using Google Kubernetes Engine): https://cloud.google.com/kubernetes-engine/docs/how-to/cluster-access-for-kubectl
+    - Try listing pod resources as an example (replace `drupal-project-k8s` with your repository name) 
+      ```bash
+      kubectl get pods -n drupal-project-k8s
+      ```
+
+2. Get the docker image URL for the container You are need to run using kubectl:
+
+    ```bash
+    $ kubectl get deployments -o wide -n drupal-project-k8s
+    NAME                 READY   UP-TO-DATE   AVAILABLE   AGE     CONTAINERS        IMAGES                                                                                                                                                                                    SELECTOR
+    master-drupal        1/1     1            1           448d    php,nginx         eu.gcr.io/[gcp-project]/drupal-project-k8s-php:v5-76e9f99eb3c4293fa14184b546bc1af980ea3760,eu.gcr.io/[gcp-project]/drupal-project-k8s-nginx:v5-bef5cba1137eaaa73a986bad07221bbab3ae5ca2   app=drupal,deployment=drupal,release=master
+    master-shell         1/1     1            1           448d    shell             eu.gcr.io/[gcp-project]/drupal-project-k8s-shell:v6-3879d81221f34e79ff8674efca539c8d7410dd0a                                                                                              app=drupal,release=master,service=shell
+
+    ```
+    - `drupal-project-k8s` is kubernetes namespace, in Silta it's also a project name.
+    - `master-drupal` is drupal pod of `master` branch deployment
+    - `master-drupal` pod contains two containers, `nginx` and `drupal`. These containers are using two images (see "IMAGES" column). See Google Kubernetes Engine [Pod documentation](https://cloud.google.com/kubernetes-engine/docs/concepts/pod) if you need to grasp the "Pod" concept. Pod resource is not GKE exclusive, this documentation applies to all kubernetes clusters.
+    - `master-shell` is a shell pod for `master` branch deployment.
+
+3. Make sure You have image pull access. Try pulling it:
+    ```bash
+    docker pull eu.gcr.io/[gcp-project]/drupal-project-k8s-shell:v6-3879d81221f34e79ff8674efca539c8d7410dd0a
+    ```
+    - If it fails, authenticate with Container Registry using gcloud helper: https://cloud.google.com/container-registry/docs/advanced-authentication#gcloud-helper
+      ```bash
+        gcloud auth login
+        gcloud auth configure-docker
+      ```
+
+4. Run Silta `shell` image:
+    ```bash
+    docker run -it --entrypoint sh eu.gcr.io/[gcp-project]/drupal-project-k8s-shell:v6-3879d81221f34e79ff8674efca539c8d7410dd0a
+    ```
+    - You can't run nginx image properly in local environment because silta mounts resources (storage, secrets, environment variables) that are only available in the cluster
+    - There will be some resources (mounts) missing in shell container (i.e. no content in `sites/default/files`) and some environment variables missing.
