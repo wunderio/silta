@@ -63,6 +63,10 @@ php:
 
 While Frontend chart was originally meant to host NodeJS frontend projects, it also allows running custom docker images and optionally exposing them via nginx reverse proxy. These containers are called "services" in Frontend chart.
 
+In this example, we are setting up two custom services - "mynodeservice" that will use a custom built image (see circleci configuration below) and "mongo" that will use prebuilt mongodb docker imageservice. 
+
+Note: This ".Values.services.mongo" service is not the same as ".Values.mongodb", it's just an example. 
+
 *Frontend chart*:
 ```yaml
 services:
@@ -95,6 +99,39 @@ workflows:
                 path: '.'
                 identifier: 'mynodeservice'
 ```
+
+It is very important to understand kubernetes containers are stateless, the moment container gets restarted, it will reset the storage to contents of docker image. To persist some particular filesystem path, you need to define persistent storage at `.Values.mounts` and attach it to the service (this only applies to containers defined at `.Values.services` since other applications (`.Values.mongodb`, `.Values.mariadb`, etc.) have default configurations in chart that persist data).
+
+In this example, we are setting up a custom "mongo" service that will use prebuilt mongodb docker imageservice. 
+
+Note: This ".Values.services.mongo" service is not the same as ".Values.mongodb", it's just an example. 
+
+*Frontend chart*:
+```yaml
+services:
+  mongo:
+    # Mongo image does not need to be built, 
+    # uses https://hub.docker.com/_/mongo
+    image: mongo
+    port: 27017
+    mounts:
+      - mongodb-data
+    strategy:
+      type: Recreate
+
+mounts:
+  mongodb-data:
+    enabled: true
+    storage: 5Gi
+    mountPath: /data/db
+    # GKE storage class
+    storageClassName: standard
+    accessModes: ReadWriteOnce
+```
+
+- `storageClassName` is only available on GKE. AWS and other cloud providers have different storageclasses, so it depends on cloud provider. There are several options and they differ by access (read / write) speed. `standard` is a safe choice.
+- `accessModes` depends on storageClass. `standard` on GKE provides `ReadWriteOnce`. See https://kubernetes.io/docs/concepts/storage/persistent-volumes/#access-modes for more information
+- `.Values.services.mongo.strategy.type: Recreate` is required for "read write once" type storage mounts, because they only allow mounting storage once, but default strategy for services is `RollingUpdate` and it would fail deployment. See  https://kubernetes.io/docs/concepts/workloads/controllers/deployment/#strategy for more information.
 
 ## Run a custom cron job
 
