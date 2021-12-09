@@ -1,6 +1,6 @@
 ---
 id: anatomy-of-silta
-title: Anatomy of a Silta project
+title: Silta project build process
 ---
 
 A silta project requires two main configuration files, which give you the possibility to customize the behavior according to your requirements:
@@ -95,6 +95,8 @@ You can also add additional validation, like `eslint` by adding custom steps in 
 ```
 This is the main build and deployment job (we run them together to keep things simple and fast). 
 The `&build-deploy` is a yaml reference so we can reuse this content later on.
+
+`drupal-build-deploy` job is used for drupal chart deployments, there are more predefined jobs (i.e. `silta/frontend-build-deploy`, `silta/simple-build-deploy`)for other deployment tasks. 
 
 The `codebase-build` parameter lets you specify how your project is built: by default we use two custom steps to 
 get php dependencies with composer and frontend dependencies with npm. 
