@@ -63,6 +63,8 @@ orbs:
 CircleCI has a packaging system called [orbs](https://circleci.com/docs/2.0/orb-intro/#section=configuration). 
 We have published our own orb called `silta/silta`, which enables you to use predefined jobs and commands.
 
+See available jobs in silta orb here: https://circleci.com/orbs/registry/orb/silta/silta
+
 ```yaml
 workflows:
   version: 2
@@ -96,7 +98,8 @@ You can also add additional validation, like `eslint` by adding custom steps in 
 This is the main build and deployment job (we run them together to keep things simple and fast). 
 The `&build-deploy` is a yaml reference so we can reuse this content later on.
 
-`drupal-build-deploy` job is used for drupal chart deployments, there are more predefined jobs (i.e. `silta/frontend-build-deploy`, `silta/simple-build-deploy`)for other deployment tasks. 
+`drupal-build-deploy` job is used for drupal chart deployments. There are more predefined jobs (i.e. `silta/frontend-build-deploy`, `silta/simple-build-deploy`) for other deployment jobs available in [silta orb](https://circleci.com/orbs/registry/orb/silta/silta
+).
 
 The `codebase-build` parameter lets you specify how your project is built: by default we use two custom steps to 
 get php dependencies with composer and frontend dependencies with npm. 
