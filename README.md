@@ -16,8 +16,7 @@ as a stable production hosting.
 
 ### Working with Silta
 - [Creating a new project](docs/creating_a_new_project.md)
-- [Migrating an existing project Drupal 8+](docs/migrating_existing_project.md)
-- [Migrating an existing project Drupal 7](docs/migrating_drupal7_project.md)
+- [Migrating an existing project Drupal project](docs/migrating_existing_project.md)
 - [Anatomy of a Silta project](docs/anatomy_of_a_silta_project.md)
 - [CircleCI configuration examples](docs/circleci-examples.md)
 - [silta.yml configuration examples](docs/silta-examples.md)
