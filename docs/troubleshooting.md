@@ -14,6 +14,20 @@ Error:
 A: This error happens when a release that created a new resource failed.
 The resource that is now in the way needs to be deleted, please ask someone with direct access to the cluster to do that.
 
+## Q: Helm deployment fails with retry404 option
+Error:
+> [emerg] 1#1: unknown directive "echo_sleep" in /etc/nginx/conf.d/drupal.conf:292
+> nginx: [emerg] unknown directive "echo_sleep" in /etc/nginx/conf.d/drupal.conf:292
+
+A: Ensure you are using an nginx version with this `echo` module compiled in.
+In silta/nginx.Dockerfile, the FROM instructive should point to one of the newer versions, for example, latest available.
+
+Versions available are listed here: https://github.com/wunderio/silta-images/tree/master/nginx
+
+Note: nginx:v0.1, wunderio/drupal Docker images do not have this module.
+
+Example: `FROM eu.gcr.io/silta-images/nginx:latest`
+
 # Issues with the deployed environments
 
 ## Q: How to connect to silta ssh?
