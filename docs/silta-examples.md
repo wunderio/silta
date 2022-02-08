@@ -330,31 +330,31 @@ exposeDomains:
       # Encrypt key and certificate. See: docs/encrypting_sensitive_configuration.md
       ca: |
         -----BEGIN CERTIFICATE-----
-                      < CA CHAIN ROOT >
+        < CA CHAIN ROOT >
         -----END CERTIFICATE-----
         -----BEGIN CERTIFICATE-----
-                      < CA CHAIN RCA >
+        < CA CHAIN RCA >
         -----END CERTIFICATE-----
         -----BEGIN CERTIFICATE-----
-                      < CA CERTIFICATE >
+        < CA CERTIFICATE >
         -----END CERTIFICATE-----
       key: |
         -----BEGIN RSA PRIVATE KEY-----
-                      <KEY>
+        <KEY>
         -----END RSA PRIVATE KEY-----
 
       crt: |
         -----BEGIN CERTIFICATE-----
-                      < CERTIFICATE >
+        < CERTIFICATE >
         -----END CERTIFICATE-----
         -----BEGIN CERTIFICATE-----
-                      < CA CHAIN ROOT >
+        < CA CHAIN ROOT >
         -----END CERTIFICATE-----
         -----BEGIN CERTIFICATE-----
-                      < CA CHAIN RCA >
+        < CA CHAIN RCA >
         -----END CERTIFICATE-----
         -----BEGIN CERTIFICATE-----
-                      < CA CERTIFICATE >
+        < CA CERTIFICATE >
         -----END CERTIFICATE-----
 ```
 You don't need a custom static ip (via gce ingress) normally, but if Your project requires, here's how - 
