@@ -25,6 +25,11 @@ as a stable production hosting.
 - [Troubleshooting](docs/troubleshooting.md)
 - [Go-live checklist](docs/go-live-checklist.md)
 
+### Vendor specifics
+- [Google Cloud / GKE](docs/vendor-gcs.md)
+- [Azure Services / AKS](docs/vendor-aks.md)
+- [Amazon Web Services / EKS](docs/vendor-eks.md)
+
 ## How it works in practice
 
 All infrastructure configuration is based on Git, a deployment is triggered automatically when pushing code to Github. 
