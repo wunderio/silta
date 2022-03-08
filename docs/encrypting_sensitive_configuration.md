@@ -38,6 +38,10 @@ We therefore recommend the following process:
   ```yaml
   decrypt_files: path/to/file
   ```
+  - *Drupal chart*: Multiple encrypted files can be added by separating them with a space.
+  ```yaml
+  decrypt_files: silta/secrets silta/some-other-secrets
+  ```
   - *Frontend chart*: Add following under `codebase-build`:
   ```yaml
   - silta/decrypt-files:
