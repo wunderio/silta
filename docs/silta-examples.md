@@ -1,11 +1,11 @@
 ---
 id: silta-examples
 title: Silta examples
---- 
+---
 
 ## silta.yml configuration examples
 
-The default values are documented here: 
+The default values are documented here:
  - Drupal chart: https://github.com/wunderio/charts/blob/master/drupal/values.yaml
  - Frontend chart: https://github.com/wunderio/charts/blob/master/frontend/values.yaml
  - Simple chart: https://github.com/wunderio/charts/blob/master/simple/values.yaml
@@ -24,7 +24,7 @@ mariadb:
     persistence:
       size: 2G
 ```
-Note that storage can only be increased, not decreased. 
+Note that storage can only be increased, not decreased.
 
 Note 2: If you change it for existing deployment, You'll need to run special comands in cluster to expand the storage or deployment will fail (see [Mariadb or Elasticsearch running out of disk space](troubleshooting.md#mariadb-or-elasticsearch-running-out-of-disk-space) in troubleshooting page).
 
@@ -63,9 +63,9 @@ php:
 
 While Frontend chart was originally meant to host NodeJS frontend projects, it also allows running custom docker images and optionally exposing them via nginx reverse proxy. These containers are called "services" in Frontend chart.
 
-In this example, we are setting up two custom services - "mynodeservice" that will use a custom built image (see circleci configuration below) and "mongo" that will use prebuilt mongodb docker imageservice. 
+In this example, we are setting up two custom services - "mynodeservice" that will use a custom built image (see circleci configuration below) and "mongo" that will use prebuilt mongodb docker imageservice.
 
-Note: This ".Values.services.mongo" service is not the same as ".Values.mongodb", it's just an example. 
+Note: This ".Values.services.mongo" service is not the same as ".Values.mongodb", it's just an example.
 
 *Frontend chart*:
 ```yaml
@@ -77,9 +77,9 @@ services:
       VARIABLE: 'VALUE'
     # Exposed at [hostname]/servicepath
     exposedRoute: '/servicepath'
-  
+
   mongo:
-    # Mongo image does not need to be built, 
+    # Mongo image does not need to be built,
     # uses https://hub.docker.com/_/mongo
     image: mongo
     port: 27017
@@ -102,15 +102,15 @@ workflows:
 
 It is very important to understand kubernetes containers are stateless, the moment container gets restarted, it will reset the storage to contents of docker image. To persist some particular filesystem path, you need to define persistent storage at `.Values.mounts` and attach it to the service (this only applies to containers defined at `.Values.services` since other applications (`.Values.mongodb`, `.Values.mariadb`, etc.) have default configurations in chart that persist data).
 
-In this example, we are setting up a custom "mongo" service that will use prebuilt mongodb docker imageservice. 
+In this example, we are setting up a custom "mongo" service that will use prebuilt mongodb docker imageservice.
 
-Note: This ".Values.services.mongo" service is not the same as ".Values.mongodb", it's just an example. 
+Note: This ".Values.services.mongo" service is not the same as ".Values.mongodb", it's just an example.
 
 *Frontend chart*:
 ```yaml
 services:
   mongo:
-    # Mongo image does not need to be built, 
+    # Mongo image does not need to be built,
     # uses https://hub.docker.com/_/mongo
     image: mongo
     port: 27017
@@ -192,6 +192,59 @@ elasticsearch:
   enabled: true
 ```
 
+## Using plugins with Elasticsearch
+
+**Create a custom elasticsearch dockerfile to silta/elasticsearch.Dockerfile:**
+```
+ARG ES_VERSION=7.17.0
+FROM docker.elastic.co/elasticsearch/elasticsearch:${ES_VERSION}
+ARG ES_VERSION
+
+USER root
+
+# Install Elasticsearch plugins
+RUN elasticsearch-plugin install analysis-icu
+
+USER elasticsearch
+```
+
+**Build the custom Elasticsearch image in CircleCI:**
+
+When using `silta/drupal-build-deploy`:
+
+```
+      - silta/drupal-build-deploy:
+          pre-release:
+            - silta/build-docker-image:
+                dockerfile: silta/elasticsearch.Dockerfile
+                tag: with-plugins
+                identifier: elasticsearch
+                expose_image: false
+```
+
+When using `silta/frontend-build-deploy`:
+```
+      - silta/frontend-build-deploy:
+          image_build_steps:
+            - silta/build-docker-image:
+                dockerfile: silta/elasticsearch.Dockerfile
+                tag: with-plugins
+                identifier: elasticsearch
+                expose_image: false
+```
+
+**Use the custom elasticsearch image in your silta helm charts file:**
+
+The container URL could be found in the CircleCI container build information.
+
+```
+elasticsearch:
+  enabled: true
+  image: <CONTAINER-URL>
+  imageTag: 'with-plugins'
+  imagePullPolicy: Always
+```
+
 ## Enable memcached
 
 *Drupal chart*:
@@ -238,14 +291,14 @@ if (getenv('SILTA_CLUSTER') && getenv('VARNISH_ADMIN_HOST')) {
 ```
 Make sure to replace `<PURGER_ID>` with an actual id of purger configuration!
 
-**Changing varnish default control-key value**   
+**Changing varnish default control-key value**
 
-This can be done by adding `secret` variable. 
+This can be done by adding `secret` variable.
 ```yaml
 varnish:
   secret: 'my-secret-key'
 ```
-Please remember: best practice is to encrypt secrets.  
+Please remember: best practice is to encrypt secrets.
 
 **Changing varnish cache backend**
 
@@ -272,7 +325,7 @@ For some sites with a lot of files, taking a reference data dump after each depl
 
 ## Sending e-mail
 
-Note: There is no e-mail handling for frontend chart. You must implement the smtp workflow via application. 
+Note: There is no e-mail handling for frontend chart. You must implement the smtp workflow via application.
 
 If you just want to test email, you can use mailhog:
 
@@ -302,13 +355,13 @@ Note: To get the sparkpost API key, you have to [validate your domain](https://w
 If the `smtp` is configured and enabled, but it does not appear to send anything, make sure `mailhog` is not enabled.
 
 ## Domain names and SSL certificates
-All environments are given a hostname by default. It is possible to attach a custom domain name to environment by configuring `exposeDomains` configuration parameter. All hostnames attached to environment are printed in release notes. 
+All environments are given a hostname by default. It is possible to attach a custom domain name to environment by configuring `exposeDomains` configuration parameter. All hostnames attached to environment are printed in release notes.
 
 Note: You can also use `letsencrypt-staging` issuer to avoid hitting `letsencrypt` [rate limits](https://letsencrypt.org/docs/rate-limits/).
 
 Note 2: For custom certificates it's advised to add CA root certificate to `exposeDomains[].ssl.crt` value. Having it under `exposeDomains[].ssl.ca` is not enough.
 
-Note 3: Deploy `exposeDomains` entries only when DNS entries are changed or are soon to be changed. Otherwise, Letsencrypt validation might eventually get stuck due to retries.  
+Note 3: Deploy `exposeDomains` entries only when DNS entries are changed or are soon to be changed. Otherwise, Letsencrypt validation might eventually get stuck due to retries.
 
 Note 4: Put `exposeDomains` in a dedicated configuration yaml file, so only one environment (branch) would be assigned this hostname. Having multiple environments with the same domain will act as a round robin load balancer for all environments and unexpected responses might be returned.
 
@@ -347,7 +400,7 @@ exposeDomains:
         jyj9OmdjZTJAwwqDdcs6TaRXxQ==
         -----END CERTIFICATE-----
 ```
-You don't need a custom static ip (via gce ingress) normally, but if Your project requires, here's how - 
+You don't need a custom static ip (via gce ingress) normally, but if Your project requires, here's how -
 ```yaml
 exposeDomains:
   example-gce-ingress:
@@ -364,16 +417,16 @@ ingress:
     staticIpAddressName: custom-ip-name
 
 nginx:
-  # Reverse proxy IP's to trust with contents of X-Forwarded-For header 
-  realipfrom: 
+  # Reverse proxy IP's to trust with contents of X-Forwarded-For header
+  realipfrom:
     gke-internal: 10.0.0.0/8
     # Load Balancer IP (static ip you were given)
     gce-lb-ip: 1.2.3.4/32;
 
-# Depending on the cluster type, You might need to enable this. 
-# A safe default is "false" (works in both cases), but "VPC Native" 
+# Depending on the cluster type, You might need to enable this.
+# A safe default is "false" (works in both cases), but "VPC Native"
 # clusters work more correcly with cluster.vpcNative set to "true".
-cluster: 
+cluster:
   vpcNative: true
 ```
 
@@ -386,16 +439,16 @@ If You are scattering the redirect rules into separate yaml's use keys (or the l
 ```yaml
 nginx:
   redirects:
-    - from: /test1 
+    - from: /test1
       to: /
     - from: http://exact-matching.example.com/test2
       to: /test2-redirect
     - description: 'Redirect non-www site to www site.'
       from: '~://example.com'
       to: https://www.example.com$request_uri
-    - from: '~://exact-matching-url-with-protocol-wildcard.example.com/test3$' 
+    - from: '~://exact-matching-url-with-protocol-wildcard.example.com/test3$'
       to: /test3-redirect
-    - from: ~/test4$ 
+    - from: ~/test4$
       to: https://another-domain.example.com/test4-redirect
 ```
 Note: `description` key does not do anything currently, it's a documentation comment for configuration maintainer.
@@ -434,7 +487,7 @@ or if you `COPY` the file under `/etc/nginx/conf.d` they will be included automa
 
 ## Deploy sub-project from the same repo using simple chart
 
-Having e.g. Storybook or other frontend application included in the base project codebase that require 
+Having e.g. Storybook or other frontend application included in the base project codebase that require
 separate deployment can be easily done even using different chart.
 See [https://wunderio.github.io/silta/docs/circleci-conf-examples](circleci-examples.md) for the deployment setup part.
 
