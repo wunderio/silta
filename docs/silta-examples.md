@@ -382,22 +382,32 @@ exposeDomains:
       issuer: custom
       # Encrypt key and certificate. See: docs/encrypting_sensitive_configuration.md
       ca: |
-        -----BEGIN PRIVATE KEY-----
-        MIIEvQIBADANBgkqhkiG9w0BAQEFAASCBKcwggSjAgEAAoIBAQC1AnQnJXBJWw3A
-        (..)
-        N/a90beSt0vJ6Cy+jMCVQ0s=
-        -----END PRIVATE KEY-----
+        -----BEGIN CERTIFICATE-----
+        < CA CHAIN ROOT >
+        -----END CERTIFICATE-----
+        -----BEGIN CERTIFICATE-----
+        < CA CHAIN RCA >
+        -----END CERTIFICATE-----
+        -----BEGIN CERTIFICATE-----
+        < CA CERTIFICATE >
+        -----END CERTIFICATE-----
       key: |
-        -----BEGIN PRIVATE KEY-----
-        MIIEvQIBADANBgkqhkiG9w0BAQEFAASCBKcwggSjAgEAAoIBAQC1AnQnJXBJWw3A
-        (..)
-        N/a90beSt0vJ6Cy+jMCVQ0s=
-        -----END PRIVATE KEY-----
+        -----BEGIN RSA PRIVATE KEY-----
+        <KEY>
+        -----END RSA PRIVATE KEY-----
+
       crt: |
         -----BEGIN CERTIFICATE-----
-        MIIDPzCCAiegAwIBAgIUe0NEJnh4ffNBsdKzT5/PTlFRoQYwDQYJKoZIhvcNAQEL
-        (..)
-        jyj9OmdjZTJAwwqDdcs6TaRXxQ==
+        < CERTIFICATE >
+        -----END CERTIFICATE-----
+        -----BEGIN CERTIFICATE-----
+        < CA CHAIN ROOT >
+        -----END CERTIFICATE-----
+        -----BEGIN CERTIFICATE-----
+        < CA CHAIN RCA >
+        -----END CERTIFICATE-----
+        -----BEGIN CERTIFICATE-----
+        < CA CERTIFICATE >
         -----END CERTIFICATE-----
 ```
 You don't need a custom static ip (via gce ingress) normally, but if Your project requires, here's how -
