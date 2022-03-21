@@ -64,12 +64,22 @@ backendConfig:
 ### Filestore
 
 [Filestore](https://cloud.google.com/filestore) - add an alternate storageclass with a shared Filestore volume.<br/>
+Public and private files can be stored on Google Filestore via NFS mount, providing higher i/o access than default storage. This option is useful for projects with lots of files served.<br/>
 Have an exported share named `/main_share`.<br/>
-Example on using the provisioned storageclass [here](storage_migration.md)
 
+Short example for **new** projects.
 ```yaml
-nfs-subdir-external-provisioner:
-  enabled: true
-  nfs:
-    server: x.x.x.x
+mounts:
+  public-files:
+    enabled: true
+    storage: 1G
+    mountPath: /app/web/sites/default/files
+    storageClassName: nfs-shared
+  private-files:
+    enabled: true
+    storage: 1G
+    mountPath: /app/private
+    storageClassName: nfs-shared
 ```
+
+Full example on using the provisioned storageclass in **new and existing** projects [here](storage_migration.md)
