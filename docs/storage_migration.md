@@ -51,9 +51,7 @@ mounts:
     storageClassName: nfs-shared
 ```
 2. Deploy - this is your first deployment for the project.
-
-
-
+<br><br>
 ### !! LIMITATIONS, PITFALLS
 1. Do not delete the old public-files section, nor change their names. Kubernetes tracks the volumes by these names.
 2. Do not change storage size after the first deployment.
