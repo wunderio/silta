@@ -67,7 +67,7 @@ backendConfig:
 Public and private files can be stored on Google Filestore via NFS mount, providing higher i/o access than default storage. This option is useful for projects with lots of files served.<br/>
 Have an exported share named `/main_share`.<br/>
 
-Short example for **new** projects.
+Example configuration for **new** projects.
 ```yaml
 mounts:
   public-files:
