@@ -61,3 +61,15 @@ backendConfig:
   securityPolicy:
     name: "silta-ingress"
 ```
+### Filestore
+
+[Filestore](https://cloud.google.com/filestore) - add an alternate storageclass with a shared Filestore volume.<br/>
+Have an exported share named `/main_share`.<br/>
+Example on using the provisioned storageclass [here](storage_migration.md)
+
+```yaml
+nfs-subdir-external-provisioner:
+  enabled: true
+  nfs:
+    server: x.x.x.x
+```
