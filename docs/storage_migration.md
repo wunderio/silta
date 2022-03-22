@@ -6,6 +6,10 @@ Repeat the same steps for other volumes, such as private files.
 ### !! LIMITATIONS, PITFALLS
 1. Do not delete the old public-files section, nor change their names. Kubernetes tracks the volumes by these names.
 2. Do not change storage size after the first deployment.
+3. The provisioned storage is not guaranteed. You may allocate more than the NFS share's total size. The share may also not have enough storage space left to actually accommodate the request.
+4. The provisioned storage limit is not enforced. The application can expand to use all the available storage regardless of the provisioned size.
+5. Storage resize/expansion operations are not presently supported in any form. You will end up in an error state: Ignoring the PVC: didn't find a plugin capable of expanding the volume; waiting for an external controller to process this PVC.
+
 
 ## Changing storage for an existing environment:
 
