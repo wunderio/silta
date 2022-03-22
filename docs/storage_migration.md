@@ -10,7 +10,6 @@ Repeat the same steps for other volumes, such as private files.
 4. The provisioned storage limit is not enforced. The application can expand to use all the available storage regardless of the provisioned size.
 5. Storage resize/expansion operations are not presently supported in any form. You will end up in an error state: Ignoring the PVC: didn't find a plugin capable of expanding the volume; waiting for an external controller to process this PVC.
 
-
 ## Changing storage for an existing environment:
 
 1. Add a new location which uses the new storage. We will extend default values from https://github.com/wunderio/charts/blob/039f29d9d507813d40a182fa2320adfd6a3db06a/drupal/values.yaml#L355
