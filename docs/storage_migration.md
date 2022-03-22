@@ -3,9 +3,13 @@
 This example will change storage for Drupal public files.
 Repeat the same steps for other volumes, such as private files. 
 
+### !! LIMITATIONS, PITFALLS
+1. Do not delete the old public-files section, nor change their names. Kubernetes tracks the volumes by these names.
+2. Do not change storage size after the first deployment.
+
 ## Changing storage for an existing environment:
 
-1. Add a new location which uses the new storage. We will extend default values in https://github.com/wunderio/charts/blob/039f29d9d507813d40a182fa2320adfd6a3db06a/drupal/values.yaml#L355
+1. Add a new location which uses the new storage. We will extend default values from https://github.com/wunderio/charts/blob/039f29d9d507813d40a182fa2320adfd6a3db06a/drupal/values.yaml#L355
 
 ```
 mounts:
@@ -51,7 +55,3 @@ mounts:
     storageClassName: nfs-shared
 ```
 2. Deploy - this is your first deployment for the project.
-<br><br>
-### !! LIMITATIONS, PITFALLS
-1. Do not delete the old public-files section, nor change their names. Kubernetes tracks the volumes by these names.
-2. Do not change storage size after the first deployment.
