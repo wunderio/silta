@@ -38,7 +38,7 @@ mounts:
 ```
 
 
-## Changing storage for a new site, project:
+## Changing storage for a new deployment, project:
 
 1. Redefine the default public and private files volumes.
 ```
@@ -54,4 +54,4 @@ mounts:
     mountPath: /app/private
     storageClassName: nfs-shared
 ```
-2. Deploy - this is your first deployment for the project.
+2. Deploy - this is your first deployment for the project or environment.
