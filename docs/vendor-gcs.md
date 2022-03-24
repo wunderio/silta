@@ -82,4 +82,4 @@ mounts:
     storageClassName: nfs-shared
 ```
 
-Full example on using the provisioned storageclass in **new and existing** projects [here](storage_migration.md)
+Full example on using the provisioned storageclass in **new and existing** projects [here](gcp_filestore_migration.md)
