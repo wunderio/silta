@@ -38,9 +38,9 @@ We therefore recommend the following process:
   ```yaml
   decrypt_files: path/to/file
   ```
-  - *Drupal chart*: Multiple encrypted files can be added by separating them with a space.
+  - *Drupal chart*: If using multiple secret files separate them with a comma (space separation work but is deprecated). For example:
   ```yaml
-  decrypt_files: silta/secrets silta/some-other-secrets
+  decrypt_files: silta/secrets,silta/secrets-this,silta/secrets-that
   ```
   - *Frontend chart*: Add following under `codebase-build`:
   ```yaml
