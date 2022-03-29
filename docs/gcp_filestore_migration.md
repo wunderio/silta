@@ -14,7 +14,7 @@ If you run out of free space on volume, contact cluster administrator for its ex
 
 1. Add a new location which uses the new storage. We will extend default values from https://github.com/wunderio/charts/blob/039f29d9d507813d40a182fa2320adfd6a3db06a/drupal/values.yaml#L355
 
-```
+```yaml
 mounts:
   public-files-filestore:
     enabled: true
@@ -28,7 +28,7 @@ mounts:
 
 4. Map the new volume to public files location, disable the old volume.
 
-```
+```yaml
 mounts:
   public-files-filestore:
     enabled: true
@@ -40,11 +40,18 @@ mounts:
     mountPath: /app/web/sites/default/files-old
 ```
 
+5. Add the original Drupal file paths as environment variables.
+```yaml
+php:
+  env:
+    PRIVATE_FILES_PATH: /app/private
+    PUBLIC_FILES_PATH: /app/web/sites/default/files
+```
 
 ## Changing storage for a new deployment, project:
 
 1. Redefine the default public and private files volumes.
-```
+```yaml
 mounts:
   public-files:
     enabled: true
