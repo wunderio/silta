@@ -352,6 +352,8 @@ smtp:
 ```
 Note: To get the sparkpost API key, you have to [validate your domain](https://www.sparkpost.com/docs/getting-started/setting-up-domains/) first.
 
+Note 2: Because of [long-standing bugs in the Ssmpt package](https://serverfault.com/questions/826875/what-characters-are-illegal-in-password-in-ssmtp-conf), __the smtp password cannot contain the special characters `#`, `=` or `:`__. 
+
 If the `smtp` is configured and enabled, but it does not appear to send anything, make sure `mailhog` is not enabled.
 
 ## Domain names and SSL certificates
