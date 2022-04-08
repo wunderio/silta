@@ -511,10 +511,10 @@ nginx:
       from: '~^http://example\.com'
       to: 'https://www.example.com$request_uri'
     - description: 'Redirect exact url, matching both www and non-www.'
-      from: "~http://(www\.)?example.com/old-page$"
+      from: '~http://(www\.)?example.com/old-page$'
       to: '/new-page'
     - description: 'Redirect case-insensitive url match.'
-      from: "~*http://www.example.com/oLd-pAgE$"
+      from: '~*http://www.example.com/oLd-pAgE$'
       to: '/new-page'
     - description: 'Redirect regex match, using positional capturing groups.'
       from: '~^/old-articles/(.+)/view/(\d+)$'
