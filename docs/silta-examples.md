@@ -490,8 +490,13 @@ By default, strings are matched using case-insensitive exact matching.
 
 Regular expressions can be used by prefixing the value with `~` for a case-sensitive matching, or with `~*` for case-insensitive matching. Regular expressions can contain named and positional captures that can be referenced in the `to` value.
 
+Make sure to use proper anchors (`^` and `$`) and character escaping in regular expressions, to get exactly the match you want and nothing extra.
+
+- Bad example: `from: '~/old-page` matches any string containing `/old-page`, e.g. `/anypath/old-page` or `/old-page/anypath` or even `/valid/path?/old-page`.
+- Good example: `from: ~^/old-page/.+\.html` matches specifically path `/old-page/*.html`.
+
 #### `to`
-Can include references to captured values from regular expressions, and special [nginx variables](http://nginx.org/en/docs/http/ngx_http_core_module.html#variables) like $request_uri or $query_string.
+Can include references to captured values from regular expressions, and special [nginx variables](http://nginx.org/en/docs/http/ngx_http_core_module.html#variables) like `$request_uri`or `$query_string`.
 
 _Drupal chart and Frontend chart_:
 
