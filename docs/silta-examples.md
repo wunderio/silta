@@ -479,29 +479,56 @@ cluster:
 
 ## Add redirects
 
-Redirects can be relative to current domain or contain full domain for more targeted redirects when multiple external domains (`exposeDomains`) are attached to deployment, and you only need this redirect for a specific URL. Redirect URL's can have regular expressions.
+Redirects can be relative to current domain or contain full domain for more targeted redirects when multiple external domains (`exposeDomains`) are attached to deployment, and you only need this redirect for a specific URL.
 
-If You are scattering the redirect rules into separate yaml's use keys (or the latter yaml will overwrite the whole `nginx.redirects` object) and the alphabetical order of keys will be respected in nginx redirect map. Because of this, it's better to put everything in one file without keys, just descriptions and the order of the yaml will be respected.
+If you are scattering the redirect rules into separate yaml's, use keys (or the latter yaml will overwrite the whole `nginx.redirects` object) and the alphabetical order of keys will be respected in the nginx redirect map. Because of this, it's better to put everything in one file without keys, just descriptions and the order of the yaml will be respected.
+
+Each redirect has `from` and `to` keys, and an optional `description` key, which does not do anything currently, it's a documentation comment for configuration maintainer.
+
+#### `from`
+By default, strings are matched using case-insensitive exact matching.
+
+Regular expressions can be used by prefixing the value with `~` for a case-sensitive matching, or with `~*` for case-insensitive matching. Regular expressions can contain named and positional captures that can be referenced in the `to` value.
+
+Make sure to use proper anchors (`^` and `$`) and character escaping in regular expressions, to get exactly the match you want and nothing extra.
+
+- Bad example: `from: '~/old-page` matches any string containing `/old-page`, e.g. `/anypath/old-page` or `/old-page/anypath` or even `/valid/path?/old-page`.
+- Good example: `from: ~^/old-page/.+\.html` matches specifically path `/old-page/*.html`.
+
+#### `to`
+Can include references to captured values from regular expressions, and special [nginx variables](http://nginx.org/en/docs/http/ngx_http_core_module.html#variables) like `$request_uri`or `$query_string`.
 
 _Drupal chart and Frontend chart_:
 
 ```yaml
 nginx:
   redirects:
-    - from: /test1
-      to: /
-    - from: http://exact-matching.example.com/test2
-      to: /test2-redirect
-    - description: "Redirect non-www site to www site."
-      from: "~://example.com"
-      to: https://www.example.com$request_uri
-    - from: "~://exact-matching-url-with-protocol-wildcard.example.com/test3$"
-      to: /test3-redirect
-    - from: ~/test4$
-      to: https://another-domain.example.com/test4-redirect
-```
+    - description: 'Redirect exact path match to another path on same the domain.'
+      from: '/old-page'
+      to: '/new-page'
+    - description: 'Redirect exact path match to another path on another the domain.'
+      from: '/old-page'
+      to: 'https://another-domain.example.com/new-page'
+    - description: 'Redirect exact url match to another path on same the domain. Note: Matching using https does not work because of SSL/TLS offloading.'
+      from: 'http://example.com/old-page'
+      to: '/new-page'
+    - description: 'Redirect all non-www requests to www, keeping the request path intact.'
+      from: '~^http://example\.com'
+      to: 'https://www.example.com$request_uri'
+    - description: 'Redirect exact url, matching both www and non-www.'
+      from: '~http://(www\.)?example\.com/old-page$'
+      to: '/new-page'
+    - description: 'Redirect case-insensitive url match.'
+      from: '~*http://www\.example\.com/oLd-pAgE$'
+      to: '/new-page'
+    - description: 'Redirect regex match, using positional capturing groups.'
+      from: '~^/old-articles/(.+)/view/(\d+)$'
+      to: '/new-articles/$1/?article_id=$2'
+    - description: 'Redirect regex match, using named capturing groups.'
+      from: '~^/old-articles/(?<date>.+)/view/(?<id>\d+)$'
+      to: '/new-articles/$date/?article_id=$id'
 
-Note: `description` key does not do anything currently, it's a documentation comment for configuration maintainer.
+```
 
 ## Add custom include files for nginx
 
