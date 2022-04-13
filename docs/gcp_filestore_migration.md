@@ -26,7 +26,12 @@ mounts:
 
 3. Copy public files from `/app/web/sites/default/files` to this new location, `/app/web/sites/default/files-new`
 
-4. Map the new volume to public files location, disable the old volume.
+4. Set permissions for the new directory and copied files
+```bash
+chown -R www-data:www-data /app/web/sites/default/files-new
+```
+
+5. Map the new volume to public files location, disable the old volume.
 
 ```yaml
 mounts:
@@ -40,14 +45,23 @@ mounts:
     mountPath: /app/web/sites/default/files-old
 ```
 
-5. Add the original Drupal file paths as environment variables.
+6. Add the original Drupal file paths as environment variables.
 ```yaml
 php:
   env:
     PRIVATE_FILES_PATH: /app/private
     PUBLIC_FILES_PATH: /app/web/sites/default/files
 ```
+7. Deploy
 
+8. Check owners of the files directory, it should be www-data
+```bash
+ls -alh /app/web/sites/default/files
+```
+If some of the files are owned by root - rerun step 4, but for the files path
+```bash
+chown -R www-data:www-data /app/web/sites/default/files
+```
 ## Changing storage for a new deployment, project:
 
 1. Redefine the default public and private files volumes.
