@@ -52,9 +52,24 @@ php:
     PRIVATE_FILES_PATH: /app/private
     PUBLIC_FILES_PATH: /app/web/sites/default/files
 ```
-7. Deploy
+7. Add this line in your `silta/php.Dockerfile` to run PHP as user `www-data`
+```
+USER www-data
+```
+this goes right after COPY step. 
 
-8. Check owners of the files directory, it should be www-data
+Dockerfile example of a project
+```
+FROM eu.gcr.io/silta-images/php:8.0-fpm-v0.1
+
+COPY --chown=www-data:www-data . /app
+
+USER www-data
+```
+
+8. Deploy
+
+9. Check owners of the files directory, it should be www-data
 ```bash
 ls -alh /app/web/sites/default/files
 ```
