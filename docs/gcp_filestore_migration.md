@@ -13,70 +13,81 @@ If you run out of free space on volume, contact cluster administrator for its ex
 ## Changing storage for an existing environment:
 
 1. Add a new location which uses the new storage. We will extend default values from https://github.com/wunderio/charts/blob/039f29d9d507813d40a182fa2320adfd6a3db06a/drupal/values.yaml#L355
+    ```yaml
+    mounts:
+      public-files-filestore:
+        enabled: true
+        storage: 10G
+        mountPath: /app/web/sites/default/files-new
+        storageClassName: nfs-shared
+    ```
 
-```yaml
-mounts:
-  public-files-filestore:
-    enabled: true
-    storage: 10G
-    mountPath: /app/web/sites/default/files-new
-    storageClassName: nfs-shared
-```
 2. Deploy
 
-3. Copy public files from `/app/web/sites/default/files` to this new location, `/app/web/sites/default/files-new`
+3. Find and exec into the shell deployment to get root access
+    ```bash
+    kubectl --namespace=<namespace> get deployments | grep shell
+    kubectl --namespace=<namespace> exec -it deployment/<shell deployment name> -- sh
+    ```
 
-4. Set permissions for the new directory and copied files
-```bash
-chown -R www-data:www-data /app/web/sites/default/files-new
-```
+4. Copy public files from the old location to the new one
+    ```bash
+    cp -rT /app/web/sites/default/files /app/web/sites/default/files-new
+    ```
 
-5. Map the new volume to public files location, disable the old volume.
+5. Set ownership and permissions for the new location
+    ```bash
+    chown -R www-data:www-data /app/web/sites/default/files-new
+    chmod 770 /app/web/sites/default/files-new
+    find /app/web/sites/default/files-new -type d -exec chmod 770 '{}' \;
+    find /app/web/sites/default/files-new -type f -exec chmod 660 '{}' \;
+    ```
 
-```yaml
-mounts:
-  public-files-filestore:
-    enabled: true
-    storage: 1G
-    mountPath: /app/web/sites/default/files
-    storageClassName: nfs-shared
-  public-files:
-    enabled: false
-    mountPath: /app/web/sites/default/files-old
-```
+6. Update the mount path for the new mount, disable the old one
+    ```yaml
+    mounts:
+      public-files-filestore:
+        enabled: true
+        storage: 1G
+        mountPath: /app/web/sites/default/files
+        storageClassName: nfs-shared
+      public-files:
+        enabled: false
+        mountPath: /app/web/sites/default/files-old
+    ```
 
-6. Add the original Drupal file paths as environment variables.
-```yaml
-php:
-  env:
-    PRIVATE_FILES_PATH: /app/private
-    PUBLIC_FILES_PATH: /app/web/sites/default/files
-```
-7. Add this line in your `silta/php.Dockerfile` to run PHP as user `www-data`
-```
-USER www-data
-```
-this goes right after COPY step. 
+7. Add the original Drupal file paths as environment variables
+    ```yaml
+    php:
+      env:
+        PRIVATE_FILES_PATH: /app/private
+        PUBLIC_FILES_PATH: /app/web/sites/default/files
+    ```
+   
+8. To run PHP as user `www-data`, add this line in your `silta/php.Dockerfile` right after the `COPY` line
+    ```dockerfile
+    USER www-data
+    ```
+    Dockerfile example of a project
+    ```dockerfile
+    FROM eu.gcr.io/silta-images/php:8.0-fpm-v0.1
+    
+    COPY --chown=www-data:www-data . /app
+    
+    USER www-data
+    ```
 
-Dockerfile example of a project
-```
-FROM eu.gcr.io/silta-images/php:8.0-fpm-v0.1
+9. Deploy
 
-COPY --chown=www-data:www-data . /app
+10. Check owners of the files directory, it should be www-data
+    ```bash
+    ls -alh /app/web/sites/default/files
+    ```
+    If some of the files are owned by root - rerun step 5, but for the files path (not files-new)
+    
+11. Check that the public files path shows up correctly when running `drush status`.
+    If it doesn't, make sure that it has not been overridden in settings.php file.
 
-USER www-data
-```
-
-8. Deploy
-
-9. Check owners of the files directory, it should be www-data
-```bash
-ls -alh /app/web/sites/default/files
-```
-If some of the files are owned by root - rerun step 4, but for the files path
-```bash
-chown -R www-data:www-data /app/web/sites/default/files
-```
 ## Changing storage for a new deployment, project:
 
 1. Redefine the default public and private files volumes.
@@ -84,7 +95,7 @@ chown -R www-data:www-data /app/web/sites/default/files
 mounts:
   public-files:
     enabled: true
-    storage: 1G
+    storage: 10G
     mountPath: /app/web/sites/default/files
     storageClassName: nfs-shared
   private-files:
