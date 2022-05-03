@@ -48,7 +48,7 @@ If you run out of free space on volume, contact cluster administrator for its ex
     mounts:
       public-files-filestore:
         enabled: true
-        storage: 1G
+        storage: 10G
         mountPath: /app/web/sites/default/files
         storageClassName: nfs-shared
       public-files:
