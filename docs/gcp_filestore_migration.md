@@ -32,7 +32,7 @@ If you run out of free space on volume, contact cluster administrator for its ex
 
 4. Copy public files from the old location to the new one
     ```bash
-    cp -rT /app/web/sites/default/files /app/web/sites/default/files-new
+    rsync --info=progress2 -az /app/web/sites/default/files/ /app/web/sites/default/files-new/
     ```
 
 5. Set ownership and permissions for the new location
