@@ -322,7 +322,14 @@ if (getenv("SILTA_CLUSTER") && getenv('MEMCACHED_HOST')) {
   }
 }
 ```
-
+For D7 use
+```
+  if (getenv('MEMCACHED_HOST')) {
+    if (class_exists('Memcache', FALSE) || class_exists('Memcached', FALSE)) {
+      $conf['memcache_servers'] = [getenv('MEMCACHED_HOST') . ':11211' => 'default'];
+    }
+  }
+```
 
 ## Using varnish
 
