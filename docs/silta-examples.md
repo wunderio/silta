@@ -272,6 +272,64 @@ _Drupal chart_:
 memcached:
   enabled: true
 ```
+Adjust resources and arguments as needed
+```
+  resources:
+    requests:
+      cpu: 150m
+      memory: 1200M
+    limits:
+      cpu: 250m
+      memory: 1500M
+  arguments:
+    - /run.sh
+    # MaxMemoryLimit, this should be less than the resources.limits.memory, or memcached will crash.
+    - -m 1200
+    # MaxItemSize
+    - -I 16M
+```
+
+Modify settings.php file (example is from D9)
+```
+/**
+ * Set the memcache server hostname when a memcached server is available.
+ */
+if (getenv("SILTA_CLUSTER") && getenv('MEMCACHED_HOST')) {
+  $settings['memcache']['servers'] = [getenv('MEMCACHED_HOST') . ':11211' => 'default'];
+
+  // Set the default cache backend to use memcache if memcache host is set and
+  // if one of the memcache libraries was found. Cache backends should not be
+  // set to memcache during installation. The existence of the memcache drupal
+  // module should also be checked but this is not possible until this issue
+  // has been fixed: https://www.drupal.org/project/drupal/issues/2766509
+  if (!InstallerKernel::installationAttempted() && (class_exists('Memcache', FALSE) || class_exists('Memcached', FALSE))) {
+    $settings['cache']['default'] = 'cache.backend.memcache';
+  }
+
+  /**
+   * Memcache configuration.
+   */
+  if (class_exists('Memcached', FALSE)) {
+    $settings['memcache']['extension'] = 'Memcached';
+    // Memcached PECL Extension Support.
+    $settings['memcache']['options'] = [
+      // Enable compression for PHP 7.
+      \Memcached::OPT_COMPRESSION => TRUE,
+      \Memcached::OPT_DISTRIBUTION => \Memcached::DISTRIBUTION_CONSISTENT,
+      // Decrease latency.
+      \Memcached::OPT_TCP_NODELAY => TRUE,
+    ];
+  }
+}
+```
+For D7 use
+```
+  if (getenv('MEMCACHED_HOST')) {
+    if (class_exists('Memcache', FALSE) || class_exists('Memcached', FALSE)) {
+      $conf['memcache_servers'] = [getenv('MEMCACHED_HOST') . ':11211' => 'default'];
+    }
+  }
+```
 
 ## Using varnish
 
