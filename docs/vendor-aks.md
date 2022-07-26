@@ -59,7 +59,7 @@ az provider register --namespace Microsoft.Storage
 ```
 - Nginx open file cache prevents file removal
 
-When the file is cached in nginx open_file_cache, it opens file handle and does not release until cache is valid or nginx process is stopped. This only happens on (Azure) filestore-csi filesystem at the moment.
+When the file is cached in nginx open_file_cache, it opens file handle and does not release until cache is invalid or nginx process is stopped. This only happens on (Azure) filestore-csi filesystem at the moment.
 
 ```
 [warning] unlink(/app/web/sites/default/files/css/css_8SwtpM_JE4c-Hmf7Tw_VTpfz1GvHbLy26YQw6w7XWms.css): No such file or directory FileSystem.php:124
