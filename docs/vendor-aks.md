@@ -57,6 +57,24 @@ Troubleshooting:
 # Register Microsoft.Storage subscription for azurefile-csi mounts
 az provider register --namespace Microsoft.Storage
 ```
+- Nginx open file cache prevents file removal
+
+When the file is cached in nginx open_file_cache, it opens file handle and does not release until cache is valid or nginx process is stopped. This only happens on (Azure) filestore-csi filesystem at the moment.
+
+```
+[warning] unlink(/app/web/sites/default/files/css/css_8SwtpM_JE4c-Hmf7Tw_VTpfz1GvHbLy26YQw6w7XWms.css): No such file or directory FileSystem.php:124
+[error]  Failed to unlink file 'public://css/css_8SwtpM_JE4c-Hmf7Tw_VTpfz1GvHbLy26YQw6w7XWms.css'.
+In FileSystem.php line 340:
+Failed to unlink file 'public://css/css_8SwtpM_JE4c-Hmf7Tw_VTpfz1GvHbLy26YQ2022-07-26T05:10:37.660255490Z   w6w7XWms.css'.
+```
+
+Solution is to disable nginx open_file_cache in silta configuration.
+
+```yaml
+nginx:
+  open_file_cache:
+    enabled: false
+```
 
 ### Application Gateway
 
