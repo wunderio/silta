@@ -588,6 +588,52 @@ nginx:
 
 ```
 
+## Allowing cross-namespace / cross-deployment connections
+
+Resources in Silta charts are protected by [Calico NetworkPolicy](https://projectcalico.docs.tigera.io/security/calico-network-policy) rules. Rules are defined in helm `.Values.silta-release.ingressAccess` configuration object. There are few default rules that deny access to all pods in deployment from other deployments, but it is also possible to add extra [NetworkPolicy rules] (https://projectcalico.docs.tigera.io/security/policy-rules) to selecively allow access to deployment resources.
+
+Here are few examples:
+
+1. Allowing access to pods from another namespace:
+
+```yaml
+silta-release:
+  ingressAccess:
+    # Allow Frontend access to Drupal via internal connection 
+    allow-drupal:
+      additionalPodSelector:
+        app: drupal
+      from:
+        - namespaceSelector:
+            matchLabels:
+              name: frontend-ns
+``` 
+
+2. Allow direct elasticsearch access from frontend namespace 
+```
+silta-release:
+  # Allow Frontend access to elasticsearch via internal connection 
+  allowESaccess:
+    additionalPodSelector:
+      chart: elasticsearch
+    from:
+      - namespaceSelector:
+          matchLabels:
+              name: frontend-ns
+```
+
+3. Allow CIDR access to service (routed connection only, does not work with NAT'ted connections)
+```yaml
+silta-release:
+  # Allow Azure Application Gateway to drupal service
+  ingressAccess:
+    CustomAzureAppGWAccess:
+      from:
+        - ipBlock:
+            cidr: 1.2.3.4/5
+```
+
+
 ## Add custom include files for nginx
 
 Drupal chart builds nginx container using web/ folder as build context. This prevents files being included from outside the web folder and it's not a good idea to put config files under it.
