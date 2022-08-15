@@ -26,7 +26,7 @@ Versions available are listed here: https://github.com/wunderio/silta-images/tre
 
 Note: nginx:v0.1, wunderio/drupal Docker images do not have this module.
 
-Example: `FROM eu.gcr.io/silta-images/nginx:latest`
+Example: `FROM wunderio/silta-nginx:latest`
 
 # Issues with the deployed environments
 
@@ -52,7 +52,7 @@ Possible causes:
 
 - The `shell` pod is not done deploying. Wait for ten seconds and try again.
 
-- There is no `shell` access in frontend chart by default, You need to enable it (`shell.enabled: true`) and use customized base images from https://eu.gcr.io/silta-images/node 
+- There is no `shell` access in frontend chart by default, You need to enable it (`shell.enabled: true`) and use customized base images from https://wunderio/silta-node 
 
 ## Q: Timeout without error when connecting via SSH
 
@@ -285,7 +285,7 @@ Content of [silta/shell.Dockerfile](https://github.com/wunderio/drupal-project/b
 
 ```
 # Dockerfile for the Shell container.
-FROM eu.gcr.io/silta-images/shell:php7.4-v0.1
+FROM wunderio/silta-php-shell:php7.4-v0.1
 
 COPY --chown=www-data:www-data . /app
 ```
@@ -309,7 +309,7 @@ If You want to test docker images locally, You'd need to install docker or other
 
 Running a docker image:
 ```bash
-docker run -it --entrypoint sh eu.gcr.io/silta-images/shell:php7.4-v0.1
+docker run -it --entrypoint sh wunderio/silta-php-shell:php7.4-v0.1
 ```
 
 This will download shell image and run a shell inside it. Typing `exit` will quit and stop the container.
