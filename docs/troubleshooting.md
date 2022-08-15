@@ -52,7 +52,7 @@ Possible causes:
 
 - The `shell` pod is not done deploying. Wait for ten seconds and try again.
 
-- There is no `shell` access in frontend chart by default, You need to enable it (`shell.enabled: true`) and use customized base images from https://wunderio/silta-node 
+- There is no `shell` access in frontend chart by default, You need to enable it (`shell.enabled: true`) and use customized base images from https://hub.docker.com/r/wunderio/silta-node 
 
 ## Q: Timeout without error when connecting via SSH
 
