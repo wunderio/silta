@@ -432,8 +432,9 @@ _Drupal chart_:
 smtp:
   enabled: true
   address: smtp.sparkpostmail.com:587 # or smtp.eu.sparkpost.com:587
-  tls: "YES"
-  # StartTLS is required when you use smtp.office365.com:587
+  tls: true
+  # When using smtp.office365.com:587 instead of sparkpost both tls and starttls need to be set to "YES".
+  # tls: "YES"
   # starttls: "YES"
   username: "SMTP_Injection"
   # Encrypt this password. See: docs/encrypting_sensitive_configuration.md
