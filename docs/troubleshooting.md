@@ -209,6 +209,16 @@ A: Check silta documentation, "[Adding redirects](silta-examples.md#add-redirect
 
 A: Elasticsearch host address is available via `ELASTICSEARCH_HOST` environment variable.
 
+## Q: Custom certificate is not found
+Error:
+```
+ERROR: Error: template: drupal/templates/drupal-certificate.yaml:88:31: executing "drupal/templates/drupal-certificate.yaml" at <b64enc>: invalid value; expected string
+```
+
+A: It's possible that You have either:
+  - not defined `.Values.ssl` (or `.Values.exposeDomainsDefaults` or `.Values.exposeDomains.ssl`); or
+  - have forgotten to provide this configuration file containing secrets to deployment (i.e. `silta_config` in for CircleCI Silta orb's `silta/drupal-build-deploy` job or `--silta-config` for `silta ci release deploy` cli command). 
+  
 ## Q: Site keeps complaining about SSL certificate
 
 Error:
