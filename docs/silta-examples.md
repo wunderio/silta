@@ -438,6 +438,7 @@ smtp:
   # starttls: "YES"
   username: "SMTP_Injection"
   # Encrypt this password. See: docs/encrypting_sensitive_configuration.md
+  # Please note that when using smtp.office365.com:587, password may not contain following special characters =, :, or #
   password: "MYAPIKEY"
 ```
 
