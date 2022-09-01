@@ -22,7 +22,7 @@ Error:
 A: Ensure you are using an nginx version with this `echo` module compiled in.
 In silta/nginx.Dockerfile, the FROM instructive should point to one of the newer versions, for example, latest available.
 
-Versions available are listed here: https://github.com/wunderio/silta-images/tree/master/nginx
+Versions available are listed here: https://github.com/wunderio/silta-images/tree/master/silta-nginx
 
 Note: nginx:v0.1, wunderio/drupal Docker images do not have this module.
 
