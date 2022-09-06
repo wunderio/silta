@@ -61,7 +61,7 @@ If you run out of free space on volume, contact cluster administrator for its ex
     php:
       env:
         PRIVATE_FILES_PATH: /app/private
-        PUBLIC_FILES_PATH: /app/web/sites/default/files
+        PUBLIC_FILES_PATH: sites/default/files
     ```
    
 8. To run PHP as user `www-data`, add this line in your `silta/php.Dockerfile` right after the `COPY` line
