@@ -685,3 +685,41 @@ separate deployment can be easily done even using different chart.
 See [https://wunderio.github.io/silta/docs/circleci-conf-examples](circleci-examples.md) for the deployment setup part.
 
 When using different charts (e.g. drupal and simple) you need to separate chart specific configurations to their own silta-\*.yml files if you want to share any configs between the application deployments (for example basic auth credentials). Best way to do it is to put only the shared configurations to the silta.yml file and have e.g. silta-cms.yml and silta-storybook.yml for application specific configurations.
+
+## Add custom subcharts to deployment
+
+1. In `silta` folder, create `extra_charts.yml` which contains list of subcharts to add.
+
+Following examples add a redis subchart to drupal chart deployment.
+```yaml
+charts:
+- name: redis
+  version: 16.8.x
+  repository: https://charts.bitnami.com/bitnami
+  condition: redis.enabled
+```
+
+
+To use a local subchart, replace repository link with `file://<path>/<to>/<subchart>`
+
+
+2. Add these 2 parameters to `drupal-build-deploy` CircleCI job:
+```yaml
+      - silta/drupal-build-deploy:
+          source_chart: wunderio/drupal
+          extension_file: silta/extra_charts.yml
+```
+
+3. If desired, modify variables for the subchart in `silta.yml` under the key of subcharts' name. For example above, it's `redis`.
+```yaml
+[..]
+redis:
+  enabled: true
+  auth:
+    password: test
+```
+*Sets redis password to test*
+
+Notice the `condition` key in `extra_charts.yml` for the redis subchart. It makes it possible to deploy this subchart conditionally, when `redis: enabled` is passed in `silta.yml`. 
+
+Delete the `condition: redis.enabled` line if you want this subchart installed in all your future deployments, regardless of settings in `silta.yml`.
