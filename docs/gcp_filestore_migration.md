@@ -40,8 +40,8 @@ If you run out of free space on volume, contact cluster administrator for its ex
     dir=/app/web/sites/default/files-new
     chown -R www-data:www-data "$dir"
     chmod 770 "$dir"
-    find "$dir" -type d -print0 | xargs -0 chmod 770
-    find "$dir" -type f -print0 | xargs -0 chmod 660
+    find "$dir" -type d -print0 | xargs -0 --max-args=100 chmod 770
+    find "$dir" -type f -print0 | xargs -0 --max-args=100 chmod 660
     ```
 
 6. Update the mount path for the new mount, disable the old one
