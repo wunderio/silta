@@ -1,7 +1,9 @@
 # Replace file storage with Google's Filestore volume.
 
 This example will change storage for Drupal public files.
-Repeat the same steps for other volumes, such as private files. 
+Repeat the same steps for other volumes, such as private files.
+
+This will first add a new mount for the new Google filestore to `/app/web/sites/default/files-new` where the files from the existing object storage `public-files` mount `/app/web/sites/default/files` are copied from and then the new filestore is mounted to the existing `/app/web/sites/default/files` mount at the same time when the old `public-files` mount is disabled.
 
 ### !! LIMITATIONS, PITFALLS
 1. Do not delete the old public-files section, nor change their names. Kubernetes tracks the volumes by these names.
@@ -57,7 +59,7 @@ If you run out of free space on volume, contact cluster administrator for its ex
         mountPath: /app/web/sites/default/files-old
     ```
 
-7. Add the original Drupal file paths as environment variables
+7. Add the original Drupal file paths as environment variables (ignore the private files path if the project doesn't have private file system enabled)
     ```yaml
     php:
       env:
