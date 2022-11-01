@@ -5,7 +5,7 @@ title: Docker images
 
 ## Base images
 
-Base images for silta deployments available at https://eu.gcr.io/silta-images. Image source available at https://github.com/wunderio/silta-images
+Base images for silta deployments available at https://hub.docker.com/u/wunderio. Image source available at https://github.com/wunderio/silta-images
 
 ## Cluster tools
 
@@ -27,8 +27,7 @@ This image provides a web server that can be configured to respond to certain re
 
 ## Tools
 
-### test images
-https://github.com/wunderio/silta-test-codebase
+### Silta CLI
+https://github.com/wunderio/silta-cli
 
-This set of images are used when running automated test in place of the built
-images from specific projects.
+CI/CD deployment command abstraction, utilities and tools for Silta.
