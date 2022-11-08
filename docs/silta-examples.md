@@ -169,6 +169,32 @@ services:
         command: "my-custom-command"
 ```
 
+### Cron logs
+
+(Since there is no proper place for this documentation it will be here under examples.)
+
+The cron logs can be seen container output.
+While the job is running, the output is synchronously sent in real time to container stdout/log.
+At the end of the execution, some stats are provided in JSON format:
+
+```json
+{
+  "cron_name":"world:world-cli",
+  "elapsed_time_s":0.02,
+  "peak_mem_kb":7360,
+  "exit_code":0,
+  "output":"..."
+}
+```
+
+Note that the output is also available there in one piece at the end of the execution.
+
+The script is being run in verbose mode: `set -x` in `bash`.
+
+The container terminates with the same exit code as the job terminates.
+It is up to the Kubernetes to handle the error condition (the exit code is greater than 0),
+and determine how many times to retry.
+
 ## Add additional environment variables
 
 _Drupal chart_:
