@@ -180,7 +180,7 @@ At the end of the execution, some stats are provided in JSON format:
 ```json
 {
   "cron_name":"world:world-cli",
-  "elapsed_time_s":0.02,
+  "duration_s":0.02,
   "peak_mem_kb":7360,
   "exit_code":0,
   "output":"..."
