@@ -31,6 +31,13 @@ We therefore recommend the following process:
   ```
   The port and IP should be the same as the SSH instructions. Note that `-P` is uppercase for `scp`!
 
+  You might get an error like "subsystem request failed on channel 0
+  scp: Connection closed"
+  Try to use -O as an argument, like this:
+  ```bash
+  scp -O -P 64537 3.80.240.10:/tmp/encrypted_file path/to/file
+  ```
+
 - Commit the encrypted file to git at the location where you want to have it.
 
 - In your CircleCI configuration, add following 
