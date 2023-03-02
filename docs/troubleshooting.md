@@ -388,3 +388,37 @@ If You want to run some silta image locally for debugging or other purpose, foll
     ```
     - You can't run nginx image properly in local environment because silta mounts resources (storage, secrets, environment variables) that are only available in the cluster
     - There will be some resources (mounts) missing in shell container (i.e. no content in `sites/default/files`) and some environment variables missing.
+
+## Q: CloudFront responses with 502 Bad Gateway
+
+It may be because of CDN using `https` origin request and Silta is not providing a valid certificate request.
+
+You must verify that given domain has a verified certificate and is mapped correctly in the certificate under `SubjectName` and/or `CommonName`.
+
+Assuming your:
+  - `exposedDomain` index domain name is `cloudfront`
+  - namepsace: `my-project`
+  - branch is `develop`
+
+...you may inspect your certificate with following command:
+
+```shell
+kubectl get develop-tls-cloudfront -n my-project -o json | jq -r '.data["tls.crt"]' | base64 -d | openssl x509 -text
+```
+
+In certificate details, confirm that `www.example.com` domain matches your CDN domain:
+
+```
+Subject: CN = www.example.com
+```
+
+Otherwise you might need to delete TLS secret and restart the verification process.
+
+[Please read more about configuring CDN](./configuring_cdn.md)
+
+## Q: Drupal is generating wrong URLs with CDN
+You may not be properly forwarding your `Host` header to the origin requests.
+
+Drupal will pickup the scheme and hostname properly from request headers. If these are not properly forwarded, Drupal wont be able to initialize those and generate URLs properly.
+
+[Please read more about configuring CDN](./configuring_cdn.md)

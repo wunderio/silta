@@ -12,6 +12,7 @@ module.exports = {
       "key-components",
       "migrating-an-existing-drupal-project",
       "request-workflow",
+      "configuring-cdn",
       "silta-examples",
       "troubleshooting"
     ],
