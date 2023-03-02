@@ -38,7 +38,7 @@ If you decide to use custom verified certificate, then you may configure everyth
 ### Forwarding `Host` header
 You want Drupal to generate URLs according to the domain and scheme that user is accessing the site.
 
-Without forwarding `Host` header, Drupal would use its' Silta domain and scheme (for example `https://production.my-project.dev.wdr.io`) to generate content URL addresses.
+Without forwarding `Host` header, Drupal would use its' Silta domain and scheme (for example `https://production.my-project.dev.[clusterDomain]`) to generate content URL addresses.
 
 To overcome this problem, **you must configure CloudFront to forward `Host` header to origin**.
 
