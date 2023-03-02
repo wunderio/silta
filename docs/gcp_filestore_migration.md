@@ -33,9 +33,23 @@ If you run out of free space on volume, contact cluster administrator for its ex
     ```
 
 4. Copy public files from the old location to the new one
-    ```bash
-    rsync --info=progress2 -az /app/web/sites/default/files/ /app/web/sites/default/files-new/
-    ```
+
+     4.1. Simple way, for small amounts of files:
+      ```bash
+      rsync --info=progress2 -az /app/web/sites/default/files/ /app/web/sites/default/files-new/
+      ```
+   
+     4.2. Advanced way, for large amounts of files:
+      ```bash
+      cd /app/web/sites/default/files
+      find . -maxdepth 2 -mindepth 2 -type d | xargs -P15 -I% rsync --relative --info=progress2 -az % /app/web/sites/default/files-new/ \
+        && find . -maxdepth 2 -mindepth 2 -type f  | xargs -P15 -I% rsync --relative --info=progress2 -az % /app/web/sites/default/files-new/ \
+        && find . -maxdepth 1 -mindepth 1 -type f  | xargs -P15 -I% rsync --relative --info=progress2 -az % /app/web/sites/default/files-new/
+      
+      # Verify file count matches in both directories
+      find /app/web/sites/default/files/ | wc -l \
+        && find /app/web/sites/default/files-new/ | wc -l
+      ```
 
 5. Set ownership and permissions for the new location
     ```bash
