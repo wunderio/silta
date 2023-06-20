@@ -521,6 +521,17 @@ exposeDomains:
         -----END CERTIFICATE-----
 ```
 
+If you have same SSL certificate for multiple domains You can reuse `ssl` block. 
+```yaml
+exposeDomains:
+  example-customcert: &shared-ssl
+    ssl:
+      [....]
+  example-anothercert:
+    <<: *shared-ssl
+```
+
+
 You don't need a custom static ip (via gce ingress) normally, but if Your project requires, here's how -
 
 ```yaml
