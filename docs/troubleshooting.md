@@ -54,7 +54,7 @@ Possible causes:
 
 - There is no `shell` access in frontend chart by default, You need to enable it (`shell.enabled: true`) and use customized base images from https://hub.docker.com/r/wunderio/silta-node 
 
-- The environment has been downscaled to standby and has not been yet re-launched
+- The environment has been downscaled to standby and has not been yet re-launched. Visit the environment URL and press the button to trigger upscaling.
 
 ## Q: Timeout without error when connecting via SSH
 
