@@ -2,8 +2,6 @@
 id: migrating-an-existing-drupal-project
 title: Migrating an existing Drupal project
 --- 
-## General tips
-
 ## Step by step instructions
 
 1. Make sure you have a clean, up-to-date checkout of your repository.
