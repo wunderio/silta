@@ -44,7 +44,7 @@ Extraction (legacy flag is required if older version of PKCS#12 was used to crea
 Creating full chain:
 `cat domain.crt ca.crt > fullchain.crt`
 
-You can also use [these scripts](https://github.com/wunderio/internal-ops-utils/blob/master/silta-scripts/pfx-readme.md).
+You can also use [this script](../scripts/pfx-ready.sh).
 
 ## SSL certificate verification
 
