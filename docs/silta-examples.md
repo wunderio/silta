@@ -398,6 +398,21 @@ varnish:
   storageBackend: 'file,/var/lib/varnish/varnish_storage.bin,512M'
 ```
 
+## Using Redis
+
+By default, redis service does not set max memory value. You can do it by setting flags:
+
+```yaml
+redis:
+  enabled: true
+  master:
+    persistence:
+      size: 2Gi
+    extraFlags:
+      - "--maxmemory-policy allkeys-lru"
+      - "--maxmemory 1700mb"
+```
+
 ## Skip taking reference data dumps on each deployment
 
 _Drupal chart_:
@@ -505,6 +520,17 @@ exposeDomains:
         < CA CERTIFICATE >
         -----END CERTIFICATE-----
 ```
+
+If you have same SSL certificate for multiple domains You can reuse `ssl` block. 
+```yaml
+exposeDomains:
+  example-customcert: &shared-ssl
+    ssl:
+      [....]
+  example-anothercert:
+    <<: *shared-ssl
+```
+
 
 You don't need a custom static ip (via gce ingress) normally, but if Your project requires, here's how -
 

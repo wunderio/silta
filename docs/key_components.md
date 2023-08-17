@@ -23,6 +23,8 @@ registry or to interact with the Kubernetes master. These credentials are stored
 [CircleCI Contexts](https://circleci.com/docs/2.0/contexts/) and are available to any repository
 in our Github organisation.
 
+See CircleCI context variable requirements for Silta deployments in docs: [Silta CircleCI Context](circleci-context.md).
+
 ## Kubernetes
 [Kubernetes](https://kubernetes.io/) is an open source container orchestration platform supported by all major cloud hosting providers.
 
