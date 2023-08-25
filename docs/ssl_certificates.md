@@ -55,9 +55,19 @@ And then matching with private key
 `openssl rsa -noout -modulus -in private.key | openssl md5`  
 Output values should match.
 
-Testing certificate on live server can be done only on different cluster/environment. In this case `/etc/hosts` 
-should be changed accordingly.  
-!NB Do not try to test it on Production cluster/environment where production hostname is in use already.  
+Testing certificate on live server can be done only on different cluster/environment.
+*!NB Do not try to test it on Production cluster/environment where production hostname is in use already.*  
+#### Steps to test SSL certificate on Development cluster
+ * Make a new Git branch
+ * Add SSL certificates domain to Exposed domains in `stila.yml`
+ * Create secrets file, put relevant structure and encrypt it with cluster's secret key
+ * Modify `.circleci/config.yml` to decrypt secret and use it in `silta_config` part
+ * Push branch to trigger deployment  
+ * Verify SSL certificate with `openssl s_client -connect [IP]:443 -servername [hostname]`. Expected result    
+ `SSL handshake has read 7583 bytes and written 408 bytes Verification: OK`. If something is wrong You'll get  
+ `Verification error: unable to verify the first certificate` and/or `Verify return code: 21 (unable to verify the first certificate)` 
+ * You can also change `/etc/hosts` to resolve hostname and verify SSL certificate via browser
+ * When everything looks good delete the testing branch and proceed with production release. 
 
 
 ## Tips
