@@ -47,7 +47,7 @@ nginx:
   # Reverse proxy IP's to trust with contents of X-Forwarded-For header 
   realipfrom: 
     # Load Balancer IP (static ip you were given)
-    gce-lb-ip: 1.2.3.4/32;
+    gce-lb-ip: 1.2.3.4/32
 ```
 
 ### Cloud Armor
