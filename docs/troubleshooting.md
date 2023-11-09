@@ -20,7 +20,7 @@ Error:
 > nginx: [emerg] unknown directive "echo_sleep" in /etc/nginx/conf.d/drupal.conf:292
 
 A: Ensure you are using an nginx version with this `echo` module compiled in.
-In silta/nginx.Dockerfile, the FROM instructive should point to one of the newer versions, for example, latest available.
+In silta/nginx.Dockerfile, the FROM instructive should point to one of the newer versions.
 
 Versions available are listed here: https://github.com/wunderio/silta-images/tree/master/silta-nginx
 
