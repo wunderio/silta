@@ -16,7 +16,7 @@ This file is located in the project root at `.circleci/config.yml` and uses the 
 version: 2.1
 
 orbs:
-  silta: silta/silta@0.1
+  silta: silta/silta@1
 
 workflows:
   version: 2
@@ -58,7 +58,7 @@ We use version 2.1 of the CircleCI API. If your project configured to use an old
 
 ```yaml
 orbs:
-  silta: silta/silta@0.1
+  silta: silta/silta@1
 ```
 CircleCI has a packaging system called [orbs](https://circleci.com/docs/2.0/orb-intro/#section=configuration). 
 We have published our own orb called `silta/silta`, which enables you to use predefined jobs and commands.

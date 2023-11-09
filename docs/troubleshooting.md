@@ -297,7 +297,7 @@ Content of [silta/shell.Dockerfile](https://github.com/wunderio/drupal-project/b
 
 ```
 # Dockerfile for the Shell container.
-FROM wunderio/silta-php-shell:php7.4-v0.1
+FROM wunderio/silta-php-shell:php7.4-v1
 
 COPY --chown=www-data:www-data . /app
 ```
@@ -321,7 +321,7 @@ If You want to test docker images locally, You'd need to install docker or other
 
 Running a docker image:
 ```bash
-docker run -it --entrypoint sh wunderio/silta-php-shell:php7.4-v0.1
+docker run -it --entrypoint sh wunderio/silta-php-shell:php7.4-v1
 ```
 
 This will download shell image and run a shell inside it. Typing `exit` will quit and stop the container.
