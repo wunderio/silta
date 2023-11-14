@@ -50,6 +50,44 @@ Silta is mostly Upcloud compatible, there are some requirements for environments
         ]
         }
     ```
+    - To enable whitelist for VPN, SSH service has to annotated with:
+    ```
+    gitAuth:
+      annotations:
+            service.beta.kubernetes.io/upcloud-load-balancer-config: |
+              {
+                "name": "silta-ssh-1",
+                "plan": "development",
+                "frontends": [
+                  {
+                    "name": "ssh",
+                    "mode": "tcp",
+                    "port": 22,
+                    "rules": [
+                      {
+                        "name": "allow-vpn",
+                        "priority": 100,
+                        "matchers": [
+                          {
+                              "type": "src_ip",
+                              "inverse": true,
+                              "match_src_ip": {
+                                  "value": "<VPN_IP_HERE>"
+                              }
+                          }
+                        ],
+                        "actions": [
+                          {
+                            "type": "tcp_reject",
+                            "action_tcp_reject": {}
+                          }
+                        ]
+                      }
+                    ]
+                  }
+                ]
+              }
+    ```
 
 - Creating an object storage and configuring rclone is quite well explained at https://upcloud.com/resources/tutorials/migrate-object-storage-rclone
   - Example configuration:
@@ -65,6 +103,10 @@ Silta is mostly Upcloud compatible, there are some requirements for environments
         s3-region: fi-hel2
         s3-secret-access-key: <SECRET_KEY>
     ```
+
+- If using managed database, create a new database user and set authentication method to `mysql_native_password`
+
+- Smallest size for UKS storage volumes is 1Gi - set this for mariadb, elasticsearch pods
 
 There are few more requirements listed on [silta-cluster chart page](https://github.com/wunderio/charts/tree/master/silta-cluster#requirements), those are common for all silta-cluster installations 
 
