@@ -31,6 +31,25 @@ Note that storage can only be increased, not decreased.
 
 Note 2: If you change it for existing deployment, You'll need to run special comands in cluster to expand the storage or deployment will fail (see [Mariadb or Elasticsearch running out of disk space](troubleshooting.md#mariadb-or-elasticsearch-running-out-of-disk-space) in troubleshooting page).
 
+## Using different version of MariaDB than provided in chart defaults.
+
+While it's normally not advised, it's possible to adjust MariaDB image version -
+
+_Drupal chart and Frontend chart_:
+
+```yaml
+mariadb:
+  image:
+    # Available image tags listed at https://hub.docker.com/r/bitnami/mariadb/tags. Use debian images.
+    # tag: 10.10.6-debian-11-r25
+    # tag: 10.11.5-debian-11-r24
+    tag: 11.0.3-debian-11-r25
+```
+
+It's highly suggested to create mysql data backup before image change.
+
+Note: Do not change image to an earlier version, it may break the data.
+
 ## Mount Drupal public files to a different location
 
 _Drupal chart_:
