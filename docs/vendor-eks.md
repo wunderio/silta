@@ -26,8 +26,9 @@ On new, empty cluster, before installing silta-cluster chart:
 Enabling proxy protocol over ingress-nginx, for passing client IP to pods:
 ```yaml
   ingress-nginx:
-    config:
-      use-proxy-protocol: true
+    controller:
+      config:
+        use-proxy-protocol: true
     service:
       annotations:
         "service.beta.kubernetes.io/aws-load-balancer-proxy-protocol": "*"
