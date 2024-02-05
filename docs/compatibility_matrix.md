@@ -12,11 +12,11 @@ K8s versions                                                                    
 Web Application Firewall\*                                                                                              |[Cloud Armor (only for GKE ingress)](https://cloud.google.com/armor/)                                              |[Application Gateway](https://azure.microsoft.com/en-us/products/application-gateway) (only for azure/application-gateway ingress)   |AWS WAF***                                                                                                         |                                                                   |                                                                 |                                                                
 
 ___
-Notes:   
-Load Balancing - all vendors support installing own ingress controller (Ingress-Nginx, Traefik)
-Web Application Firewall - all vendors support [Signal Sciences WAF](https://www.signalsciences.com/) (in cluster agent)  
-ELB provides client ip via PROXY protocol  
-silta-proxy - requires separate nodepool and taints, does not work with all applications  
+Notes:
+- Load Balancing - all vendors support installing own ingress controller (Ingress-Nginx, Traefik)
+- Web Application Firewall - all vendors support [Signal Sciences WAF](https://www.signalsciences.com/) (in cluster agent)
+- ELB provides client ip via PROXY protocol
+- silta-proxy - requires separate nodepool and taints, does not work with all applications
 ___
 *Have to install  
 **Missing  
