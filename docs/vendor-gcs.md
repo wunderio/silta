@@ -82,6 +82,18 @@ mounts:
     storageClassName: nfs-shared
 ```
 
+Add `USER` directive to `silta/php.Dockerfile` right after the COPY line so files are created with correct permissions and can be modified via shell (i.e. `drush cr`).
+```yaml
+USER www-data
+```
+
+Dockerfile example of a project
+```yaml
+FROM wunderio/silta-php-fpm:8.2-fpm-v1
+COPY --chown=www-data:www-data . /app
+USER www-data
+```
+
 Full example on using the provisioned storageclass in **new and existing** projects [here](gcp_filestore_migration.md)
 
 ### ingress-nginx load balancer on GKE private cluster
