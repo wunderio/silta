@@ -46,7 +46,7 @@ gitAuth:
     "service.beta.kubernetes.io/aws-load-balancer-type": "nlb"
     # the length of the list must be equal to the number of subnets
     "service.beta.kubernetes.io/aws-load-balancer-eip-allocations": "<elastic IP id>"
-    "service.beta.kubernetes.io/aws-load-balancer-subnets": "<subnet name here"
+    "service.beta.kubernetes.io/aws-load-balancer-subnets": "<subnet name here>,<subnet name here>,..."
     "service.beta.kubernetes.io/aws-load-balancer-nlb-target-type": "instance"
     "service.beta.kubernetes.io/aws-load-balancer-ip-address-type": "ipv4"
     "service.beta.kubernetes.io/aws-load-balancer-target-group-attributes": "stickiness.enabled=true,stickiness.type=source_ip,preserve_client_ip.enabled=true"
