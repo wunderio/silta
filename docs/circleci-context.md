@@ -34,6 +34,7 @@
 - `IMAGE_REPO_HOST`: Example: `europe-north1-docker.pkg.dev`.
 - `DOCKER_REPO_HOST`: Use `IMAGE_REPO_HOST` instead!
 - `DOCKER_REPO_PROJ`: Example: `silta-test-123456/images`.
+- `IMAGE_PULL_SECRET`: Optional. Allows passing base64 encoded docker registry secret to deployment.
 
 **Image registry, GCR & AR specifics**
 - `GOOGLE_APPLICATION_CREDENTIALS`: Example: `/home/circleci/gcp-service-key.json`.
