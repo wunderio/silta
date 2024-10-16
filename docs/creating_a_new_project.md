@@ -16,5 +16,5 @@ title: Creating a new project
 ## Frontend project guidelines
 
 - Make a copy of Wunder's [frontend-project](https://github.com/wunderio/frontend-project), and push it as a new repository within the wunderio Github organisation.
-- Log in to CircleCI with your Github credentials, select "wunderio" and [enable your project](https://circleci.com/add-projects/gh/wunderio).
+- Log in to CircleCI with your Github credentials and [enable your project](https://circleci.com/docs/getting-started/).
 - Watch your project build, the CircleCI output has a link to your deployed environment.

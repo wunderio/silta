@@ -20,13 +20,13 @@ Error:
 > nginx: [emerg] unknown directive "echo_sleep" in /etc/nginx/conf.d/drupal.conf:292
 
 A: Ensure you are using an nginx version with this `echo` module compiled in.
-In silta/nginx.Dockerfile, the FROM instructive should point to one of the newer versions, for example, latest available.
+In silta/nginx.Dockerfile, the FROM instructive should point to one of the newer versions.
 
 Versions available are listed here: https://github.com/wunderio/silta-images/tree/master/silta-nginx
 
 Note: nginx:v0.1, wunderio/drupal Docker images do not have this module.
 
-Example: `FROM wunderio/silta-nginx:latest`
+Example: `FROM wunderio/silta-nginx:1.17-v1`
 
 # Issues with the deployed environments
 
@@ -53,6 +53,8 @@ Possible causes:
 - The `shell` pod is not done deploying. Wait for ten seconds and try again.
 
 - There is no `shell` access in frontend chart by default, You need to enable it (`shell.enabled: true`) and use customized base images from https://hub.docker.com/r/wunderio/silta-node 
+
+- The environment has been downscaled to standby and has not been yet re-launched. Visit the environment URL and press the button to trigger upscaling.
 
 ## Q: Timeout without error when connecting via SSH
 
@@ -295,7 +297,7 @@ Content of [silta/shell.Dockerfile](https://github.com/wunderio/drupal-project/b
 
 ```
 # Dockerfile for the Shell container.
-FROM wunderio/silta-php-shell:php7.4-v0.1
+FROM wunderio/silta-php-shell:php7.4-v1
 
 COPY --chown=www-data:www-data . /app
 ```
@@ -319,7 +321,7 @@ If You want to test docker images locally, You'd need to install docker or other
 
 Running a docker image:
 ```bash
-docker run -it --entrypoint sh wunderio/silta-php-shell:php7.4-v0.1
+docker run -it --entrypoint sh wunderio/silta-php-shell:php7.4-v1
 ```
 
 This will download shell image and run a shell inside it. Typing `exit` will quit and stop the container.

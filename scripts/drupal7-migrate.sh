@@ -15,7 +15,7 @@ cat > .circleci/config.yml << EOF
 version: 2.1
 
 orbs:
-  silta: silta/silta@0.1
+  silta: silta/silta@1
 
 workflows:
   version: 2

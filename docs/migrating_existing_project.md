@@ -2,12 +2,6 @@
 id: migrating-an-existing-drupal-project
 title: Migrating an existing Drupal project
 --- 
-## General tips
-
-- We automate as much as possible, but many projects have project-specific differences.
-- When in doubt, ask for advice.
-- Ask any questions in our #dev-silta slack channel.
-
 ## Step by step instructions
 
 1. Make sure you have a clean, up-to-date checkout of your repository.

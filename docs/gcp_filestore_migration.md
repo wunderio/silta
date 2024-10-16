@@ -87,7 +87,7 @@ If you run out of free space on volume, contact cluster administrator for its ex
     ```
     Dockerfile example of a project
     ```dockerfile
-    FROM wunderio/silta-php-fpm:8.0-fpm-v0.1
+    FROM wunderio/silta-php-fpm:8.0-fpm-v1
     
     COPY --chown=www-data:www-data . /app
     

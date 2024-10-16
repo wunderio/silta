@@ -31,6 +31,25 @@ Note that storage can only be increased, not decreased.
 
 Note 2: If you change it for existing deployment, You'll need to run special comands in cluster to expand the storage or deployment will fail (see [Mariadb or Elasticsearch running out of disk space](troubleshooting.md#mariadb-or-elasticsearch-running-out-of-disk-space) in troubleshooting page).
 
+## Using different version of MariaDB than provided in chart defaults.
+
+While it's normally not advised, it's possible to adjust MariaDB image version -
+
+_Drupal chart and Frontend chart_:
+
+```yaml
+mariadb:
+  image:
+    # Available image tags listed at https://hub.docker.com/r/bitnami/mariadb/tags. Use debian images.
+    # tag: 10.10.6-debian-11-r25
+    # tag: 10.11.5-debian-11-r24
+    tag: 11.0.3-debian-11-r25
+```
+
+It's highly suggested to create mysql data backup before image change.
+
+Note: Do not change image to an earlier version, it may break the data.
+
 ## Mount Drupal public files to a different location
 
 _Drupal chart_:
@@ -465,15 +484,12 @@ If the `smtp` is configured and enabled, but it does not appear to send anything
 
 ## Domain names and SSL certificates
 
-All environments are given a hostname by default. It is possible to attach a custom domain name to environment by configuring `exposeDomains` configuration parameter. All hostnames attached to environment are printed in release notes.
+All environments are given a hostname by default. It is possible to attach a custom domain name to environment by configuring `exposeDomains` configuration parameter. All hostnames attached to environment are printed in release notes.  
+You can also use `letsencrypt-staging` issuer to avoid hitting `letsencrypt` [rate limits](https://letsencrypt.org/docs/rate-limits/).
 
-Note: You can also use `letsencrypt-staging` issuer to avoid hitting `letsencrypt` [rate limits](https://letsencrypt.org/docs/rate-limits/).
+!NB Deploy `exposeDomains` entries only when DNS entries are changed or are soon to be changed. Otherwise, Letsencrypt validation might eventually get stuck due to retries.
 
-Note 2: For custom certificates it's advised to add CA root certificate to `exposeDomains[].ssl.crt` value. Having it under `exposeDomains[].ssl.ca` is not enough.
-
-Note 3: Deploy `exposeDomains` entries only when DNS entries are changed or are soon to be changed. Otherwise, Letsencrypt validation might eventually get stuck due to retries.
-
-Note 4: Put `exposeDomains` in a dedicated configuration yaml file, so only one environment (branch) would be assigned this hostname. Having multiple environments with the same domain will act as a round robin load balancer for all environments and unexpected responses might be returned.
+!NB Put `exposeDomains` in a dedicated configuration yaml file, so only one environment (branch) would be assigned this hostname. Having multiple environments with the same domain will act as a round robin load balancer for all environments and unexpected responses might be returned.
 
 _Drupal chart and Frontend chart_:
 
@@ -491,43 +507,35 @@ exposeDomains:
       enabled: true
       issuer: custom
       # Encrypt key and certificate. See: docs/encrypting_sensitive_configuration.md
-      ca: |
-        -----BEGIN CERTIFICATE-----
-        < CA CHAIN ROOT >
-        -----END CERTIFICATE-----
-        -----BEGIN CERTIFICATE-----
-        < CA CHAIN RCA >
-        -----END CERTIFICATE-----
-        -----BEGIN CERTIFICATE-----
-        < CA CERTIFICATE >
-        -----END CERTIFICATE-----
       key: |
         -----BEGIN RSA PRIVATE KEY-----
         <KEY>
         -----END RSA PRIVATE KEY-----
-
       crt: |
         -----BEGIN CERTIFICATE-----
-        < CERTIFICATE >
+        < DOMAIN CERTIFICATE >
         -----END CERTIFICATE-----
         -----BEGIN CERTIFICATE-----
-        < CA CHAIN ROOT >
+        < INTERMEDIATE CERTIFICATE >
         -----END CERTIFICATE-----
         -----BEGIN CERTIFICATE-----
-        < CA CHAIN RCA >
-        -----END CERTIFICATE-----
-        -----BEGIN CERTIFICATE-----
-        < CA CERTIFICATE >
+        < ROOT CA CERTIFICATE >
         -----END CERTIFICATE-----
 ```
+`key` value is certificates private key.   
+`crt` value is full chain of certificate.     
+`ca` value is not required anymore for exposed domains.  
+[See more information on how to convert and prepare SSL certificate for exposed domains](ssl_certificates.md)
 
 If you have same SSL certificate for multiple domains You can reuse `ssl` block. 
 ```yaml
 exposeDomains:
-  example-customcert: &shared-ssl
+  example-domain1: &shared-ssl
     ssl:
       [....]
-  example-anothercert:
+  example-domain2:
+    <<: *shared-ssl
+  example-domain3:
     <<: *shared-ssl
 ```
 

@@ -47,7 +47,7 @@ nginx:
   # Reverse proxy IP's to trust with contents of X-Forwarded-For header 
   realipfrom: 
     # Load Balancer IP (static ip you were given)
-    gce-lb-ip: 1.2.3.4/32;
+    gce-lb-ip: 1.2.3.4/32
 ```
 
 ### Cloud Armor
@@ -82,4 +82,43 @@ mounts:
     storageClassName: nfs-shared
 ```
 
+Add `USER` directive to `silta/php.Dockerfile` right after the COPY line so files are created with correct permissions and can be modified via shell (i.e. `drush cr`).
+```yaml
+USER www-data
+```
+
+Dockerfile example of a project
+```yaml
+FROM wunderio/silta-php-fpm:8.2-fpm-v1
+COPY --chown=www-data:www-data . /app
+USER www-data
+```
+
 Full example on using the provisioned storageclass in **new and existing** projects [here](gcp_filestore_migration.md)
+
+### ingress-nginx load balancer on GKE private cluster
+
+When using GKE private cluster, [ingress-nginx](https://github.com/kubernetes/ingress-nginx) requires an additional firewall rule that allows control plane connection to nodes on port 8443. 
+Example and solution is borrowed from https://github.com/kubernetes/ingress-nginx/issues/5401
+
+```
+# Control pane range (normally 172.16.0.0/28)
+# gcloud container clusters describe [CLUSTER_NAME] --region europe-north1 --format json | jq -r '.privateClusterConfig.masterIpv4CidrBlock'
+CONTROL_PLANE_RANGE=172.16.0.0/28
+
+# Get cluster tag
+NETWORK_TAGS=$(gcloud compute instances describe \
+    $(kubectl get nodes -o jsonpath='{.items[0].metadata.name}') \
+    --format="value(tags.items[0])")
+
+# Print firewall rule command
+echo gcloud compute firewall-rules create silta-nginx-lb-ingress \
+    --action ALLOW \
+    --direction INGRESS \
+    --source-ranges ${CONTROL_PLANE_RANGE} \
+    --rules tcp:8443 \
+    --target-tags ${NETWORK_TAGS}
+
+```
+Review and execute command printed above.
+
