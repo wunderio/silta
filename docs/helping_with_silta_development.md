@@ -12,7 +12,7 @@ Each chart (drupal, frontend, simple) has respective project that uses the chart
 Before making a pull request you should install the unittest helm plugin:
 
 ```bash
-helm plugin install https://github.com/quintush/helm-unittest --version 0.2.4
+helm plugin install https://github.com/quintush/helm-unittest
 ```
 
 and run in on your updated chart:
