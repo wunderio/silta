@@ -12,13 +12,13 @@ Each chart (drupal, frontend, simple) has respective project that uses the chart
 Before making a pull request you should install the unittest helm plugin:
 
 ```bash
-helm plugin install https://github.com/quintush/helm-unittest --version 0.2.4
+helm plugin install https://github.com/helm-unittest/helm-unittest --version 0.5.1
 ```
 
 and run in on your updated chart:
 
 ```bash
-helm unittest ./charts/drupal --helm3
+helm unittest ./charts/drupal
 ```
 
 To test charts locally You will need related helm repositories to be installed locally (see charts/chartname/Chart.yaml) and subcharts downloaded.
