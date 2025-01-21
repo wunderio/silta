@@ -738,9 +738,9 @@ charts:
 To use a local subchart, replace repository link with `file://<path>/<to>/<subchart>`
 
 
-2. Add these 2 parameters to `drupal-build-deploy` CircleCI job:
+2. Add these 2 parameters to `drupal-deploy` CircleCI job:
 ```yaml
-      - silta/drupal-build-deploy:
+      - silta/drupal-deploy:
           source_chart: wunderio/drupal
           extension_file: silta/extra_charts.yml
 ```
