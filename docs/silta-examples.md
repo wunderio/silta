@@ -105,6 +105,22 @@ services:
       VARIABLE: "VALUE"
     # Exposed at [hostname]/servicepath
     exposedRoute: "/servicepath"
+    # Configure security context for the service container
+    securityContext:
+      allowPrivilegeEscalation: false
+      readOnlyRootFilesystem: true
+      runAsNonRoot: true
+      runAsUser: 1000
+      runAsGroup: 1000
+      fsGroup: 1000
+      privileged: false
+      capabilities:
+        add:
+          - "NET_BIND_SERVICE"
+        drop:
+          - "ALL"
+      seccompProfile:
+        type: "RuntimeDefault"
 
   mongo:
     # Mongo image does not need to be built,
@@ -484,7 +500,7 @@ If the `smtp` is configured and enabled, but it does not appear to send anything
 
 ## Domain names and SSL certificates
 
-All environments are given a hostname by default. It is possible to attach a custom domain name to environment by configuring `exposeDomains` configuration parameter. All hostnames attached to environment are printed in release notes.  
+All environments are given a hostname by default. It is possible to attach a custom domain name to environment by configuring `exposeDomains` configuration parameter. All hostnames attached to environment are printed in release notes.
 You can also use `letsencrypt-staging` issuer to avoid hitting `letsencrypt` [rate limits](https://letsencrypt.org/docs/rate-limits/).
 
 !NB Deploy `exposeDomains` entries only when DNS entries are changed or are soon to be changed. Otherwise, Letsencrypt validation might eventually get stuck due to retries.
@@ -522,12 +538,12 @@ exposeDomains:
         < ROOT CA CERTIFICATE >
         -----END CERTIFICATE-----
 ```
-`key` value is certificates private key.   
-`crt` value is full chain of certificate.     
-`ca` value is not required anymore for exposed domains.  
+`key` value is certificates private key.
+`crt` value is full chain of certificate.
+`ca` value is not required anymore for exposed domains.
 [See more information on how to convert and prepare SSL certificate for exposed domains](ssl_certificates.md)
 
-If you have same SSL certificate for multiple domains You can reuse `ssl` block. 
+If you have same SSL certificate for multiple domains You can reuse `ssl` block.
 ```yaml
 exposeDomains:
   example-domain1: &shared-ssl
@@ -635,7 +651,7 @@ Here are few examples:
 ```yaml
 silta-release:
   ingressAccess:
-    # Allow Frontend access to Drupal via internal connection 
+    # Allow Frontend access to Drupal via internal connection
     allow-drupal:
       additionalPodSelector:
         app: drupal
@@ -643,12 +659,12 @@ silta-release:
         - namespaceSelector:
             matchLabels:
               name: frontend-ns
-``` 
+```
 
-2. Allow direct elasticsearch access from frontend namespace 
+2. Allow direct elasticsearch access from frontend namespace
 ```
 silta-release:
-  # Allow Frontend access to elasticsearch via internal connection 
+  # Allow Frontend access to elasticsearch via internal connection
   allowESaccess:
     additionalPodSelector:
       chart: elasticsearch
@@ -669,6 +685,152 @@ silta-release:
             cidr: 1.2.3.4/5
 ```
 
+
+## Configure security context for frontend services
+
+_Frontend chart_:
+
+Each individual service in the frontend chart can have its own security context configuration to enhance the security of your containers. The `securityContext` configuration allows you to control various security-related settings for your containers, including user/group permissions, Linux capabilities, and security profiles.
+
+Security contexts are crucial for implementing the principle of least privilege in your containerized applications, helping to minimize the potential impact of security vulnerabilities.
+
+### Security Context Properties
+
+```yaml
+services:
+  myservice:
+    securityContext:
+      # Controls whether a process can gain more privileges than its parent process
+      # Setting this to false ensures that no child process of the container can
+      # gain more privileges than the container itself
+      allowPrivilegeEscalation: false
+
+      # Makes the container's root filesystem read-only, preventing
+      # modifications to the container's filesystem at runtime
+      # This helps prevent malicious or accidental modifications
+      readOnlyRootFilesystem: true
+
+      # Forces the container to run as a non-root user
+      # This is a key security practice to reduce the impact of container breakouts
+      runAsNonRoot: true
+
+      # Specifies the user ID (UID) that processes in the container will run as
+      # Using a non-zero value ensures processes don't run as root (UID 0)
+      runAsUser: 1000
+
+      # Specifies the primary group ID (GID) for processes in the container
+      runAsGroup: 1000
+
+      # Sets the group ID for filesystem operations
+      # This is used for volume mounts and file creation
+      fsGroup: 1000
+
+      # Controls whether the container runs in privileged mode
+      # Privileged containers have nearly all the capabilities of the host machine
+      # This should almost always be set to false for security reasons
+      privileged: false
+
+      # Configures how proc is mounted in the container
+      # Options: "Default" or "Unmasked"
+      # "Default" is the standard masked proc mount
+      # "Unmasked" is less secure but may be required for certain applications
+      procMount: "Default"
+
+      # Linux capabilities provide fine-grained control over privileged operations
+      capabilities:
+        # Capabilities to add to the container
+        # Only add capabilities that are absolutely necessary
+        add:
+          # Allows binding to ports below 1024 without root privileges
+          - "NET_BIND_SERVICE"
+          # Other examples of capabilities:
+          # - "CHOWN" - Allows changing file ownership
+          # - "FOWNER" - Bypass permission checks on operations that normally require the filesystem UID to match the process's UID
+          # - "SETGID" - Make arbitrary manipulations of process GIDs
+          # - "SETUID" - Make arbitrary manipulations of process UIDs
+
+        # Capabilities to remove from the container
+        # It's a best practice to drop all capabilities and only add those needed
+        drop:
+          - "ALL"
+
+      # Seccomp (secure computing mode) profile configuration
+      # Seccomp restricts the system calls that a container can make
+      seccompProfile:
+        # Type of seccomp profile to use
+        # Options: "RuntimeDefault", "Localhost", or "Unconfined"
+        # "RuntimeDefault" uses the container runtime's default profile
+        # "Localhost" uses a profile defined on the host
+        # "Unconfined" disables seccomp restrictions (not recommended)
+        type: "RuntimeDefault"
+        # Path to a seccomp profile on the host when type is "Localhost"
+        localhostProfile: "my-profiles/profile-allow.json"
+
+      # SELinux (Security-Enhanced Linux) options
+      # These control the SELinux context of the container
+      seLinuxOptions:
+        # SELinux level label
+        level: "s0:c123,c456"
+        # SELinux role label
+        role: "object_r"
+        # SELinux type label
+        type: "spc_t"
+        # SELinux user label
+        user: "system_u"
+
+      # Sysctls allow setting kernel parameters at runtime
+      # These are applied to the container's namespace
+      sysctls:
+        - name: "kernel.shm_rmid_forced"
+          value: "0"
+        - name: "net.core.somaxconn"
+          value: "1024"
+        # Other examples:
+        # - name: "net.ipv4.ip_local_port_range"
+        #   value: "1024 65535"
+        # - name: "kernel.msgmax"
+        #   value: "65536"
+```
+
+### Best Practices for Security Context Configuration
+
+1. **Run as non-root**: Always run containers as a non-root user when possible by setting `runAsNonRoot: true` and specifying a non-zero `runAsUser` value.
+
+2. **Use read-only filesystem**: Set `readOnlyRootFilesystem: true` to prevent runtime modifications to the container's filesystem. For applications that need to write to specific directories, use volume mounts for those directories only.
+
+3. **Disable privilege escalation**: Always set `allowPrivilegeEscalation: false` to prevent processes from gaining more privileges than their parent.
+
+4. **Minimize capabilities**: Drop all capabilities with `capabilities.drop: ["ALL"]` and only add back the specific capabilities your application needs.
+
+5. **Use seccomp profiles**: Use the `RuntimeDefault` seccomp profile or create a custom profile that only allows the system calls your application needs.
+
+6. **Avoid privileged mode**: Never run containers in privileged mode (`privileged: true`) unless absolutely necessary, as this gives the container nearly all the capabilities of the host machine.
+
+7. **Set appropriate group IDs**: Configure `runAsGroup` and `fsGroup` to ensure proper permissions for file access and creation.
+
+### Common Use Cases
+
+**Web server running on port 80:**
+```yaml
+securityContext:
+  allowPrivilegeEscalation: false
+  readOnlyRootFilesystem: true
+  runAsNonRoot: true
+  runAsUser: 1000
+  capabilities:
+    add: ["NET_BIND_SERVICE"]
+    drop: ["ALL"]
+```
+
+**Application requiring file ownership changes:**
+```yaml
+securityContext:
+  runAsNonRoot: true
+  runAsUser: 1000
+  capabilities:
+    add: ["CHOWN"]
+    drop: ["ALL"]
+```
 
 ## Add custom include files for nginx
 
@@ -755,6 +917,6 @@ redis:
 ```
 *Sets redis password to test*
 
-Notice the `condition` key in `extra_charts.yml` for the redis subchart. It makes it possible to deploy this subchart conditionally, when `redis: enabled` is passed in `silta.yml`. 
+Notice the `condition` key in `extra_charts.yml` for the redis subchart. It makes it possible to deploy this subchart conditionally, when `redis: enabled` is passed in `silta.yml`.
 
 Delete the `condition: redis.enabled` line if you want this subchart installed in all your future deployments, regardless of settings in `silta.yml`.
