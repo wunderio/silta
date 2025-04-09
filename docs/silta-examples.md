@@ -105,22 +105,6 @@ services:
       VARIABLE: "VALUE"
     # Exposed at [hostname]/servicepath
     exposedRoute: "/servicepath"
-    # Configure security context for the service container
-    securityContext:
-      allowPrivilegeEscalation: false
-      readOnlyRootFilesystem: true
-      runAsNonRoot: true
-      runAsUser: 1000
-      runAsGroup: 1000
-      fsGroup: 1000
-      privileged: false
-      capabilities:
-        add:
-          - "NET_BIND_SERVICE"
-        drop:
-          - "ALL"
-      seccompProfile:
-        type: "RuntimeDefault"
 
   mongo:
     # Mongo image does not need to be built,
@@ -791,22 +775,6 @@ services:
         # - name: "kernel.msgmax"
         #   value: "65536"
 ```
-
-### Best Practices for Security Context Configuration
-
-1. **Run as non-root**: Always run containers as a non-root user when possible by setting `runAsNonRoot: true` and specifying a non-zero `runAsUser` value.
-
-2. **Use read-only filesystem**: Set `readOnlyRootFilesystem: true` to prevent runtime modifications to the container's filesystem. For applications that need to write to specific directories, use volume mounts for those directories only.
-
-3. **Disable privilege escalation**: Always set `allowPrivilegeEscalation: false` to prevent processes from gaining more privileges than their parent.
-
-4. **Minimize capabilities**: Drop all capabilities with `capabilities.drop: ["ALL"]` and only add back the specific capabilities your application needs.
-
-5. **Use seccomp profiles**: Use the `RuntimeDefault` seccomp profile or create a custom profile that only allows the system calls your application needs.
-
-6. **Avoid privileged mode**: Never run containers in privileged mode (`privileged: true`) unless absolutely necessary, as this gives the container nearly all the capabilities of the host machine.
-
-7. **Set appropriate group IDs**: Configure `runAsGroup` and `fsGroup` to ensure proper permissions for file access and creation.
 
 ### Common Use Cases
 
