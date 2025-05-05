@@ -72,8 +72,9 @@ curl -s https://raw.githubusercontent.com/wunderio/drupal-project/master/silta/s
 curl -s https://raw.githubusercontent.com/wunderio/drupal-project/master/silta/silta-prod.yml > silta/silta-prod.yml
 
 echo "Adding dockerignore files"
-curl -s https://raw.githubusercontent.com/wunderio/drupal-project/master/.dockerignore > .dockerignore
-curl -s https://raw.githubusercontent.com/wunderio/drupal-project/master/web/.dockerignore > web/.dockerignore
+curl -s https://raw.githubusercontent.com/wunderio/drupal-project/master/silta/nginx.Dockerfile.dockerignore > silta/nginx.Dockerfile.dockerignore
+curl -s https://raw.githubusercontent.com/wunderio/drupal-project/master/silta/php.Dockerfile.dockerignore > silta/php.Dockerfile.dockerignore
+curl -s https://raw.githubusercontent.com/wunderio/drupal-project/master/silta/shell.Dockerfile.dockerignore > silta/shell.Dockerfile.dockerignore
 
 echo "Updating settings.php"
 if ! grep -q "settings.silta.php" web/sites/default/settings.php
