@@ -458,6 +458,20 @@ mailhog:
 
 Mailhog access information will be printed in release notes.
 
+⚠️ **Deprecated**: _mailhog_ will be removed from future releases, use _mailpit_ instead (see below)
+
+---
+To enabled mailpit in Drupal or Frontend charts use:
+
+```yaml
+mailpit:
+  enabled: true
+```
+
+Mailpit access information will be printed in release notes.
+
+---
+
 For emails to be actually sent out of the cluster, you can use any external smtp server. Here's an example for sparkpost.
 
 _Drupal chart_:
@@ -480,7 +494,7 @@ Note: To get the sparkpost API key, you have to [validate your domain](https://w
 
 Note 2: Because of [long-standing bugs in the ssmtp package](https://serverfault.com/questions/826875/what-characters-are-illegal-in-password-in-ssmtp-conf), the smtp password cannot contain the special characters `#`, `=` or `:`.
 
-If the `smtp` is configured and enabled, but it does not appear to send anything, make sure `mailhog` is not enabled.
+If the `smtp` is configured and enabled, but it does not appear to send anything, make sure `mailhog` or `mailpit` is not enabled.
 
 ## Domain names and SSL certificates
 
