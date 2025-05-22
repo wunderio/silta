@@ -22,6 +22,7 @@ as a stable production hosting.
 - [silta.yml configuration examples](docs/silta-examples.md)
 - [Encrypting sensitive configuration](docs/encrypting_sensitive_configuration.md)
 - [Helping with Silta development](docs/helping_with_silta_development.md)
+- [Adding multiple private repositories](docs/multiple_private_repositories.md)
 - [Troubleshooting](docs/troubleshooting.md)
 - [Go-live checklist](docs/go-live-checklist.md)
 
