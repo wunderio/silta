@@ -14,8 +14,8 @@ module.exports = {
       disableSwitch: true,
     },
     prism: {
-      theme: require('prism-react-renderer/themes/github'), // would have used shadesOfPurple.js, but the .yaml highlightinng is buggy.
-      darkTheme: require('prism-react-renderer/themes/dracula'),
+      theme: require('prism-react-renderer').themes.github,
+      darkTheme: require('prism-react-renderer').themes.dracula,
     },
     navbar: {
       // title: 'Silta',
@@ -38,10 +38,11 @@ module.exports = {
       ],
     },
     algolia: {
-      apiKey: 'dea4d95a5d7d736429669fdf0169961e', // this can and will be public
+      appId: 'P70R8SQEIU',
+      apiKey: 'c2c3d7a21744f0d6f60ee42b2f7c5801',
       indexName: 'silta',
       contextualSearch: false,
-      searchParameters: {'facetFilters': ["content"]},
+      searchParameters: { 'facetFilters': ["content"] },
     },
     footer: {
       style: 'light',
