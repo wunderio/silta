@@ -4,8 +4,8 @@
   <ShortName>Silta</ShortName>
   <Description>Search Silta</Description>
   <InputEncoding>UTF-8</InputEncoding>
-  <Image width="16" height="16" type="image/x-icon">https://silta.wunder.io/img/favicon.ico</Image>
-  <Url type="text/html" method="get" template="https://silta.wunder.io/search?q={searchTerms}"/>
-  <Url type="application/opensearchdescription+xml" rel="self" template="https://silta.wunder.io/opensearch.xml" />
-  <moz:SearchForm>https://silta.wunder.io</moz:SearchForm>
+  <Image width="16" height="16" type="image/x-icon">https://silta.wunder.io/silta/img/favicon.ico</Image>
+  <Url type="text/html" method="get" template="https://silta.wunder.io/silta/search?q={searchTerms}"/>
+  <Url type="application/opensearchdescription+xml" rel="self" template="https://silta.wunder.io/silta/opensearch.xml" />
+  <moz:SearchForm>https://silta.wunder.io/silta/</moz:SearchForm>
 </OpenSearchDescription>
