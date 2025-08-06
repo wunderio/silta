@@ -30,6 +30,7 @@ as a stable production hosting.
 - [Google Cloud / GKE](docs/vendor-gcs.md)
 - [Azure Services / AKS](docs/vendor-aks.md)
 - [Amazon Web Services / EKS](docs/vendor-eks.md)
+- [UpCloud Kubernetes Service / UKS](docs/vendor-uks.md)
 
 ## How it works in practice
 
