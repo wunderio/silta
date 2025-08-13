@@ -37,7 +37,7 @@ Once you have the file ready for encryption, run:
 ```shell
 silta secrets encrypt --file /path/to/file --secret-key <secret-key>
 ```
-Or, you can store the encryption key in an environment variable on your local machine and use it as a reference instead:
+Or, if you have the encryption key stored as a local environment variable, use that as a reference instead:
 ```shell
 silta secrets encrypt --file /path/to/file --secret-key-env ENV_VAR_NAME
 ```
@@ -117,7 +117,7 @@ or, if you have secret key stored as local environment variable:
 silta secrets decrypt --file /path/to/encrypted/file --secret-key-env ENV_VAR_NAME
 ```
 
-Note that `silta secrets decrypt` decrypts the source file itself unless you specify the`--output-file` flag.
+Note that `silta secrets decrypt` decrypts the source file itself unless you specify the`--output-file` flag. See full docs of the decryption command [here](https://github.com/wunderio/silta-cli/blob/master/docs/silta_secrets_decrypt.md)
 
 Remember **not to** commit decrypted secret files!
 
