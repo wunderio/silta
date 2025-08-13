@@ -42,7 +42,7 @@ Or, you can store the encryption key in an environment variable on your local ma
 silta secrets encrypt --file /path/to/file --secret-key-env ENV_VAR_NAME
 ```
 
-Note that `silta secrets encrypt` encrypts the source file itself unless you specify a different target path via the `--output-file` flag.
+Note that `silta secrets encrypt` encrypts the source file itself unless you specify a different target path via the `--output-file` flag (see full docs [here](https://github.com/wunderio/silta-cli/blob/master/docs/silta_secrets_encrypt.md))
 
 ### 3. Add decryption to CircleCI configuration
 
@@ -63,7 +63,7 @@ Usage example:
 ```yaml
 decrypt_files: path/to/encrypted/file
 ```
-- `path/to/file` is relative to the build folder (root)
+- `path/to/encrypted/file` is relative to the build folder (root)
 
 ---
 
@@ -79,7 +79,7 @@ This approach has slightly more complex configuration however it also has more a
 
 Usage examples:
 
-I.e, in `silta/drupal-build` and others:
+In `silta/drupal-build`:
 ```yaml
 codebase-build:
 - silta/decrypt-files:
@@ -100,10 +100,13 @@ pre-release:
 _Note for projects using `silta/drupal-build` and `silta/drupal-deploy`_
 
 If project uses separate jobs for build and deploy, the job you add the decryption to depends on the use-case:
-- if secret needs to be decrypted during application runtime, i.e., TLS certificate for SSO integration, add it under `silta/drupal-build`
+- if secret needs to be in a decrypted form during application runtime, i.e., TLS certificate for SSO integration, add it under `silta/drupal-build`.
 - if secret needs to be decrypted only during the deployment, i.e., Silta configuration file, add it under `silta/drupal-deploy`
 
-### Decrypting existing secrets locally
+## Decrypting existing secrets locally
+
+To inspect or alter information in encrypted files, you have to decrypt them locally.
+
 1. Get the encryption key (refer to the [Secret keys](#encryption-keys) section of this document)
 2. Run:
 ```shell
@@ -127,18 +130,18 @@ It's strongly recommended to create project-specific encryption keys or even env
 ```shell
 head -c 32 /dev/urandom | base64
 ```
-2. Update your CircleCI configuration to use the newly created key, i.e., when using `silta/drupal-build`, add:
+2. Use this key locally for encryption
+3. Update your CircleCI configuration to use the same key, i.e., in `silta/drupal-build` add:
 ```yaml
 codebase-build:
 - silta/decrypt-files:
     files: path/to/file
     secret_key_env: MY_PROJECT_SECRET_KEY
 ```
-3. Use the same key locally for encryption
 
 A few notes:
-- You can refer to this example when switching existing project to use a custom encryption key. However, bear in mind that you must first locally decrypt existing secrets with **the old encryption key** and re-encrypt them with the new one.
-- Projects can have multiple encryption keys, i.e, one for development, one for staging and another one for production environment. If you choose to go this path, make sure you use the right keys when encrypting/decrypting secrets per environment.
+- You can refer to this example when switching encryption keys for an existing project. However, bear in mind that you must first locally decrypt existing secrets with **the old encryption key** and re-encrypt them with the new one for things to work.
+- Projects can have multiple encryption keys, i.e, one for development, one for staging and another one for production environment. If you choose to go this path, make sure you use the right key when encrypting/decrypting secrets per environment.
 
 ### For existing projects
 
@@ -146,25 +149,25 @@ To get the encryption key from and existing project, follow the guide below.
 
 1. Determine name of the CircleCI environment variable the project uses for decryption. This can be done by inspecting project's CircleCI configuration file and searching for `secret_key_env` references.
 ---
-Case 1: references are found, i.e., `secret_key_env: MY_PROJECT_SECRET_KEY`.
+_If references are found, i.e., `secret_key_env: MY_PROJECT_SECRET_KEY`._
 
-This indicates that project uses a custom encryption key stored in the env var with the specified name. In CircleCI, definition of this env var can be found under "Environment variables" section of the "Project settings" page.
+This indicates that project utilises custom encryption key(s) stored in CircleCI's environment variable(s).
 
 ---
-Case 2: references are not found.
+_If references are not found_
 
-This indicates that project uses the default encryption key stored in CircleCI's context as `SECRET_KEY` environment variable (reference to [Silta CircleCI orb](https://circleci.com/developer/orbs/orb/silta/silta#commands-decrypt-files)). Note that project can utilise multiple contexts, check for `context` information in your CircleCI config to see which one is in use. In CircleCI, definition of the environment variable can be found under "Organization settings -> Contexts -> <choose the correct context> -> "Environment variables"
+This indicates that project uses the default encryption key stored in CircleCI's context as `SECRET_KEY` environment variable (reference to [Silta CircleCI orb](https://circleci.com/developer/orbs/orb/silta/silta#commands-decrypt-files)). Note that project can utilise multiple contexts, check for `context` information in your CircleCI config to see which one is in use.
 
 ---
 
 2. Get value of the particular CircleCI environment variable, note that when inspecting via CircleCI UI values are redacted due to security reasons. To get the actual value of the env var, you must SSH into a CircleCI environment.
 3. In CircleCI, go to your project's pipelines page, find the last successful pipeline of the environment you need to get the encryption key for. Now find the job you're interested in and rerun if with SSH (from top-right corner choose "Rerun > Rerun job with SSH").
-4. Wait for job to run until it's successful and is "Wait for SSH sessions". Use the SSH command from CircleCI's output, it should look something like this:
+4. Wait for the job to run until it's successful and "Waiting for SSH sessions". Use the SSH command from CircleCI's output, it should look something like this:
 ```shell
 ssh -p 54782 50.19.60.152
 ```
-5. After SSH'ing into CircleCI env, run the following command to get the encryption key value (replace MY_PROJECT_SECRET_KEY with the actual env var name):
+5. After SSH'ing into CircleCI env, run the following command to get the encryption key value (replace `MY_PROJECT_SECRET_KEY` with the actual env var name):
 ```shell
 printenv MY_PROJECT_SECRET_KEY
 ```
-6. Securely store the value locally, i.e., as an environment variable, use it for local encryption/decryption of secrets.
+6. Securely store the value locally for further use, i.e. set it as an environment variable
