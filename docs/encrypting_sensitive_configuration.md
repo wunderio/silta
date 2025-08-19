@@ -3,123 +3,171 @@ id: encrypting-sensitive-configuration
 title: Encrypting sensitive configuration
 ---
 
-Certain configuration items such as access tokens or secret keys are quite sensitive
-and should not be committed to the repository in plain text. Silta supports decrypting certain files
-during the build process.
+Certain information such as access tokens, secret keys, passwords, certificates etc. is considered as sensitive data thus should not be committed to the repository as plain text.
 
-We use `openssl` to encrypt files, but there are many versions available with incompatible ciphers.
-We therefore recommend the following process:
+Silta supports encryption/decryption of such information via [silta-cli](https://github.com/wunderio/silta-cli), furthermore, _silta-cli_ can be used both locally and during the build/deploy, thus making the process simple and consistent. Official documentation of _silta-cli_ can be found [here](https://github.com/wunderio/silta-cli).
 
-- SSH into a CircleCI environment using "Rerun workflow > Rerun job with SSH" from the last build. Note that different environments might have different circleci contexts and hence - different encryption keys. Check your circleci config file for context information.
-  You will get a command like (the actual IP and port changes for each build)
-  ```bash
-  ssh -p 64537 3.80.240.10
-  ```
-  If you have trouble getting in, please refer to `troubleshooting.md` SSH section.
+## Encryption & decryption
 
-- Create your file named `/tmp/secret_file`.
+To encrypt a file for secure storing within repository, `silta secrets encrypt` command is used. When used in Silta, encrypted files have to be decrypted during the build or deployment to take effect. See the walkthrough example below.
 
-- Encrypt it with
-  ```bash
-  openssl aes-256-cbc -pbkdf2 -in /tmp/secret_file -out /tmp/encrypted_file -pass env:SECRET_KEY
-  ```
-  Make sure that the `-in` and `-out` parameters are not the same, or openssl will encrypt its own output.
+### 1. Get the encryption key
 
-- Now copy the encrypted file back to your local environment with
-  ```bash
-  scp -P 64537 3.80.240.10:/tmp/encrypted_file path/to/file
-  ```
-  The port and IP should be the same as the SSH instructions. Note that `-P` is uppercase for `scp`!
+Please refer to the section related to [encryption keys](#encryption-keys)
 
-  You might get an error like "subsystem request failed on channel 0
-  scp: Connection closed"
-  Try to use -O as an argument, like this:
-  ```bash
-  scp -O -P 64537 3.80.240.10:/tmp/encrypted_file path/to/file
-  ```
+### 2. Create and encrypt the file containing sensitive information
 
-- Commit the encrypted file to git at the location where you want to have it.
+`silta-cli` allows to encrypt any file, i.e. it can be Silta configuration file containing sensitive data within environment variables or TLS certificates, an actual TLS certificate file located at `/secrets/server.crt` or anything else. Below are some examples:
 
-- In your CircleCI configuration, add following 
-  - *Drupal chart*: Add following under `silta/drupal-build-deploy`:
-  ```yaml
-  decrypt_files: path/to/file
-  ```
-  - *Drupal chart*: If using multiple secret files separate them with a comma (space separation work but is deprecated). For example:
-  ```yaml
-  decrypt_files: silta/secrets,silta/secrets-this,silta/secrets-that
-  ```
-  - *Frontend chart*: Add following under `codebase-build`:
-  ```yaml
-  - silta/decrypt-files:
-      files: path/to/file
-  ```
-  - `path/to/file` is relative to the build folder (root)
-
-- Your secret file can also contain an extension to the configuration in silta.yml, for example to set encrypted environment variables. To do that, add this to your `drupal-build-deploy` CircleCI job:
-  ```yaml
-  silta_config: silta/silta.yml,silta/secrets
-  ```
-
-- Push your code, the file will get decrypted in place at the build time.
-  Check the CircleCI step "Decrypt secret files".
-
-- Your secret file can be used as it is (for example, the private key to connect to another service).
-
-## Example of secret environment variables
-
-*Drupal chart*
+- Sensitive Silta configuration for Drupal chart
 ```yaml
 php:
+  hashsalt: super-secret
   env:
-    PAYMENT_GW_KEY: '1234567890qwertyuiop'
+    IMPORTANT_API_KEY: super-secret
 ```
-
-*Frontend chart*
+- Sensitive Silta configuration for Frontend chart
 ```yaml
 services:
-  myservice:
+  node:
     env:
-      PAYMENT_GW_KEY: '1234567890qwertyuiop'
+      IMPORTANT_API_KEY: super-secret
+```
+Once you have the file ready for encryption, run:
+```shell
+silta secrets encrypt --file /path/to/file --secret-key <secret-key>
+```
+Or, if you have the encryption key stored as a local environment variable, use that as a reference instead:
+```shell
+silta secrets encrypt --file /path/to/file --secret-key-env ENV_VAR_NAME
 ```
 
-## Using a custom encryption key
-For cases where you want to have your own encryption key, you can do that with the following steps:
+Note that `silta secrets encrypt` encrypts the source file itself unless you specify a different target path via the `--output-file` flag (see full docs [here](https://github.com/wunderio/silta-cli/blob/master/docs/silta_secrets_encrypt.md))
 
-- Create an environment variable in your CircleCI project.
-Click the gear icon on a build page > Environment variables > Add Variable.
-Use a name like `MYPROJECT_SECRET_KEY` and the value of your choice (preferably a strong key).
-- Use the same step as above, but specify the environment variable to be used as the decryption key:
-  ```yaml
-  - silta/decrypt-files:
-      files: path/to/file
-      secret_key_env: MYPROJECT_SECRET_KEY
-  ```
+### 3. Add decryption to CircleCI configuration
 
+When used in Silta, files have to be decrypted to take effect. For this you need to alter the relevant build/deploy jobs, you can use one of the two options below.
 
-## Decrypting existing secrets file
+---
 
-Check the port and IP address by Rerunning the latest workflow in CircleCI: > Rerun job with SSH
+#### `decrypt_files` parameter
 
-Using the SSH port and IP address securely copy your silta/secrets file to CircleCI
+Caveats:
+- `decrypt_files` is only supported in `silta/drupal-build-deploy`, `silta/drupal-build` and `silta/drupal-deploy` jobs, thus only the Drupal chart
+- You can't specify a custom encryption key
 
-```bash
-scp -P 64537 silta/secrets 3.80.240.10:/tmp/encrypted_file
-````
+Advantages:
+- simpler configuration, no need to specify or generate an encryption key - one defined in [CircleCI context](circleci-context.md) (`SECRET_KEY`) is used. Note that it's expected that secrets are encrypted with the same key locally (to get the key, refer to [encryption keys](#encryption-keys) section).
 
-SSH to CircleCI using the correct port/IP you got from rerunning the job with SSH
+Usage example:
+```yaml
+decrypt_files: path/to/encrypted/file
+```
+- `path/to/encrypted/file` is relative to the build folder (root)
 
-```bash
-ssh -p 64537 3.80.240.10
+---
+
+#### `codebase-build` or `pre-release` parameter with a `decrypt-files` command in it (recommended)
+
+This approach has slightly more complex configuration however it also has more advantages:
+
+- Allows to specify a custom encryption key
+- Supported by all charts: 
+  - Drupal (`silta/drupal-build`, `silta/drupal-deploy`, `silta/drupal-build-deploy` jobs). Note: use `pre-release` parameter in `silta/drupal-deploy`
+  - Frontend (`silta/frontend-build-deploy` job)
+  - Simple (`silta/simple-build-deploy` job)
+
+Usage examples:
+
+In `silta/drupal-build`:
+```yaml
+codebase-build:
+- silta/decrypt-files:
+    files: sso/saml.crt
+    secret_key_env: MY_PROJECT_SECRET_KEY
+```
+In `silta/drupal-deploy`:
+```yaml
+pre-release:
+- silta/decrypt-files:
+    files: silta/secrets
+    secret_key_env: MY_PROJECT_SECRET_KEY
 ```
 
-Run following command in CircleCI:
+- Note: If you don't specify the `secret_key_env` parameter, default encryption key from CircleCI context will be used as mentioned earlier.
 
-```bash
-openssl aes-256-cbc -pbkdf2 -d -in /tmp/encrypted_file -out /tmp/decrypted_file -pass env:SECRET_KEY
+---
+_Note for projects using `silta/drupal-build` and `silta/drupal-deploy`_
+
+If project uses separate jobs for build and deploy, the job you add the decryption to depends on the use-case:
+- if secret needs to be in a decrypted form during application runtime, i.e., TLS certificate for SSO integration, add it under `silta/drupal-build`.
+- if secret needs to be decrypted only during the deployment, i.e., Silta configuration file, add it under `silta/drupal-deploy`
+
+## Decrypting existing secrets locally
+
+To inspect or alter information in encrypted files, you have to decrypt them locally.
+
+1. Get the encryption key (refer to the [Secret keys](#encryption-keys) section of this document)
+2. Run:
+```shell
+silta secrets decrypt --file /path/to/encrypted/file --secret-key <secret-key>
+```
+or, if you have secret key stored as local environment variable:
+```shell
+silta secrets decrypt --file /path/to/encrypted/file --secret-key-env ENV_VAR_NAME
 ```
 
-Check `/tmp/decrypted_file` or scp it back to your local using
-```bash
-scp -P 64537 3.80.240.10:/tmp/decrypted_file silta/secrets_decrypted
+Note that `silta secrets decrypt` decrypts the source file itself unless you specify the`--output-file` flag. See full docs of the decryption command [here](https://github.com/wunderio/silta-cli/blob/master/docs/silta_secrets_decrypt.md)
+
+Remember **not to** commit decrypted secret files!
+
+## Encryption keys
+
+### For new projects
+It's strongly recommended to create project-specific encryption keys or even environment specific ones for better security. Here's a walkthrough example.
+
+1. In CircleCI, click "Settings" button in the top-right corner of your project's overview page, then choose "Environment variables" from the sidebar on the left. Click "Add environment variable". Name it something like `MY_PROJECT_SECRET_KEY` and generate a secure random value for it, i.e. on Unix based systems you can use this command:
+```shell
+head -c 32 /dev/urandom | base64
 ```
+2. Use this key locally for encryption
+3. Update your CircleCI configuration to use the same key, i.e., in `silta/drupal-build` add:
+```yaml
+codebase-build:
+- silta/decrypt-files:
+    files: path/to/file
+    secret_key_env: MY_PROJECT_SECRET_KEY
+```
+
+A few notes:
+- You can refer to this example when switching encryption keys for an existing project. However, bear in mind that you must first locally decrypt existing secrets with **the old encryption key** and re-encrypt them with the new one for things to work.
+- Projects can have multiple encryption keys, i.e, one for development, one for staging and another one for production environment. If you choose to go this path, make sure you use the right key when encrypting/decrypting secrets per environment.
+
+### For existing projects
+
+To get the encryption key from and existing project, follow the guide below.
+
+1. Determine name of the CircleCI environment variable the project uses for decryption. This can be done by inspecting project's CircleCI configuration file and searching for `secret_key_env` references.
+---
+_If references are found, i.e., `secret_key_env: MY_PROJECT_SECRET_KEY`._
+
+This indicates that project utilises custom encryption key(s) stored in CircleCI's environment variable(s).
+
+---
+_If references are not found_
+
+This indicates that project uses the default encryption key stored in CircleCI's context as `SECRET_KEY` environment variable (reference to [Silta CircleCI orb](https://circleci.com/developer/orbs/orb/silta/silta#commands-decrypt-files)). Note that project can utilise multiple contexts, check for `context` information in your CircleCI config to see which one is in use.
+
+---
+
+2. Get value of the particular CircleCI environment variable, note that when inspecting via CircleCI UI values are redacted due to security reasons. To get the actual value of the env var, you must SSH into a CircleCI environment.
+3. In CircleCI, go to your project's pipelines page, find the last successful pipeline of the environment you need to get the encryption key for. Now find the job you're interested in and rerun if with SSH (from top-right corner choose "Rerun > Rerun job with SSH").
+4. Wait for the job to run until it's successful and "Waiting for SSH sessions". Use the SSH command from CircleCI's output, it should look something like this:
+```shell
+ssh -p 54782 50.19.60.152
+```
+5. After SSH'ing into CircleCI env, run the following command to get the encryption key value (replace `MY_PROJECT_SECRET_KEY` with the actual env var name):
+```shell
+printenv MY_PROJECT_SECRET_KEY
+```
+6. Securely store the value locally for further use, i.e. set it as an environment variable
