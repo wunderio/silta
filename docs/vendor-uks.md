@@ -50,8 +50,8 @@ Silta is mostly Upcloud compatible, there are some requirements for environments
         ]
         }
     ```
-    - To enable whitelist for VPN, SSH service has to annotated with:
-    ```
+    - To enable allowlist for VPN, SSH service has to annotated with:
+    ```yaml
     gitAuth:
       annotations:
             service.beta.kubernetes.io/upcloud-load-balancer-config: |
@@ -65,15 +65,24 @@ Silta is mostly Upcloud compatible, there are some requirements for environments
                     "port": 22,
                     "rules": [
                       {
-                        "name": "allow-vpn",
-                        "priority": 100,
+                        "name": "allow-ip",
+                        "matching_condition": "or",
                         "matchers": [
                           {
-                              "type": "src_ip",
-                              "inverse": true,
-                              "match_src_ip": {
-                                  "value": "<VPN_IP_HERE>"
-                              }
+                            "type": "src_ip",
+                            "inverse": true,
+                            "match_src_ip": {
+                              "comment": "vpn-1",
+                              "value": "<VPN_IP_HERE>/32"
+                            }
+                          },
+                          {
+                            "type": "src_ip",
+                            "inverse": true,
+                            "match_src_ip": {
+                              "comment": "vpn-2",
+                              "value": "<VPN_2_IP_HERE>/32"
+                            }
                           }
                         ],
                         "actions": [
@@ -96,12 +105,13 @@ Silta is mostly Upcloud compatible, there are some requirements for environments
       params:
         remote: s3
         remotePath: silta-shared
-        s3-access-key-id: <ACCESS_KEY>
         s3-acl: private
         s3-endpoint: xyz.fi-hel2.upcloudobjects.com
         s3-provider: Other
         s3-region: fi-hel2
+        s3-access-key-id: <ACCESS_KEY>
         s3-secret-access-key: <SECRET_KEY>
+        s3-directory-markers: "true"
     ```
 
 - If using managed database, create a new database user and set authentication method to `mysql_native_password`
@@ -110,10 +120,9 @@ Silta is mostly Upcloud compatible, there are some requirements for environments
 
 There are few more requirements listed on [silta-cluster chart page](https://github.com/wunderio/charts/tree/master/silta-cluster#requirements), those are common for all silta-cluster installations 
 
-
 ## Missing functionality
 
-- Managed Docker image registry
+- Managed Docker image registry. Use [Harbor](https://goharbor.io/) as a replacement and the object storage as a storage backend.
 - Managed NFS storage
 
 ## Deployment specifics
