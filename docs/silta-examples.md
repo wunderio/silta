@@ -902,3 +902,13 @@ redis:
 Notice the `condition` key in `extra_charts.yml` for the redis subchart. It makes it possible to deploy this subchart conditionally, when `redis: enabled` is passed in `silta.yml`.
 
 Delete the `condition: redis.enabled` line if you want this subchart installed in all your future deployments, regardless of settings in `silta.yml`.
+
+## Create/rotate imagePullSecret
+Here are steps for custom `imagePullSecret` creation in GCP:
+
+1. Create and download new key for Service Account.
+2. Wrap key into docker auth config and base64 it: 
+```
+jq -Rs '{auths: {"europe-north1-docker.pkg.dev": {username: "_json_key", password: .}}}' path-to-key.json | jq -c . | base64 | tr -d '\n'
+```
+3.Use value as imagePullSecret in chart values.
