@@ -21,6 +21,54 @@ On new, empty cluster, before installing silta-cluster chart:
    - AmazonElasticFileSystemFullAccess
    - AmazonS3FullAccess
 
+#### S3 backend for csi-rclone
+
+Create a custom policy, storage user, attach policy to storage user and acquire keys for it. 
+
+Custom policy:
+```yaml
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Effect": "Allow",
+      "Action": [
+        "s3:ListBucket",
+        "s3:DeleteObject",
+        "s3:GetObject",
+        "s3:PutObject",
+        "s3:PutObjectAcl"
+      ],
+      "Resource": [
+        "arn:aws:s3:::BUCKET_NAME/*",
+        "arn:aws:s3:::BUCKET_NAME"
+      ]
+    },
+    {
+      "Effect": "Allow",
+      "Action": "s3:ListAllMyBuckets",
+      "Resource": "arn:aws:s3:::*"
+    }
+  ]
+}
+```
+
+csi-clone configuration:
+```yaml
+csi-rclone:
+  enabled: true
+  params:
+    remote: s3
+    remotePath: <bucket-name>
+    s3-provider: AWS
+    s3-endpoint: ""
+    s3-region: <region>
+    s3-access-key-id: <KEY-ID>
+    s3-secret-access-key: <ACCESS-KEY>
+    s3-acl: private
+```
+Note: `s3-endpoint` needs override due to minio endpoint in chart defaults.
+
 ### Silta-cluster chart requirements
 
 Enabling proxy protocol over ingress-nginx, for passing client IP to pods:
