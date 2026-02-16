@@ -17,20 +17,8 @@ title: Migrating an existing Drupal project
    ```bash
    curl -s https://raw.githubusercontent.com/wunderio/silta/master/scripts/drupal-migrate.sh | bash
    ```
-   For Drupal 7 with composer.json run      
-   ```bash
-   curl -s https://raw.githubusercontent.com/wunderio/silta/master/scripts/drupal7-migrate.sh | bash
-   ```
-   Please check [troubleshooting](troubleshooting.md) for other Drupal 7 cases  
-   
-   Migration script will create `.circleci/config.yml` file for CircleCI builds. You might need to adapt branch names or contexts.
 
-   **Important**  
-   Add this to silta.yml config if You use Drupal 7 
-   ```yaml
-   php:
-     drupalCoreVersion: "7"
-   ```
+   Migration script will create `.circleci/config.yml` file for CircleCI builds. You might need to adapt branch names or contexts.
 
 1. Read through the output of the script and check for any instructions to perform manual steps.
 
@@ -61,39 +49,3 @@ title: Migrating an existing Drupal project
    will be created with a copy of this content.
 
 1. Congratulations, your project is now up and running! Please share any issues you had or ideas for improvements.
-
-## Drupal 7 migration tips
-
-### Project uses make file for builds  
-Have something like this in .circleci/config.yml
-```yaml
-codebase-build:
-   - run:
-      name: Build from makefile
-      command: |
-         composer install
-         vendor/drush/drush/drush make ~/project/drupal/conf/site.make ~/project/drupal/web/
-         mkdir -p web/sites/all/modules
-         cp -r code/modules/custom web/sites/all/modules/
-```
-
-### Missing drush
-Add composer.json in Drupal folder
-```json
-{
-    "require": {
-        "drush/drush": "8.*"
-    },
-    "extra": {
-        "installer-paths": {
-            "web/": ["type:drupal-core"]
-        }
-    }
-}
-```
-
-And then in .circleci/config.yml add
-```yaml
-command: |
-   composer install
-```

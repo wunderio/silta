@@ -158,11 +158,10 @@ This file is actually not part of the repository, but gets mounted into the runn
 It loads the database credential and additional Silta-specific configuration. You don't need to modify it (you can't), but you need to make sure
 that it gets included from your settings.php.
 
-### Lando configuration file
-This file is not actually needed to deploy a project to Silta, but it configures the project for
-usage in local developemnt environments with Lando. Silta doesn't specify how you should run your code locally, but Lando and Silta have compatible of working.
+### DDEV configuration file
+This file is not required to deploy a project to Silta, but it configures the project for use in local development environments with DDEV. Silta does not specify how you should run your code locally, but DDEV and Silta are compatible ways of working.
 
-There is no plan to consolidate Silta and Lando, as they have very different requirements (for example Lando mounts the codebase as a volume, whereas Silta copies it into dedicated Docker images). 
+There is no plan to consolidate Silta and DDEV, as they have very different requirements (for example, DDEV mounts the codebase as a volume, whereas Silta copies it into dedicated Docker images).
 
 ### phpcs.xml
 This file is also not required for Silta, but we use phpcs for validation by default.

@@ -275,7 +275,7 @@ Some known references are:
 - `composer.json` & `composer.lock`
 - `.dockerignore`
 - `.gitignore`
-- `.lando.yml`
+- `.ddev/config.yaml`
 - `grumphp.yml`
 - `phpcs.xml`
 
