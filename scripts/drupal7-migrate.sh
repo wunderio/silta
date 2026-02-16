@@ -4,12 +4,40 @@ echo "This script will convert your Drupal project to be compatible with Silta."
 echo "Make sure you are in the git root of your project."
 
 echo "Checking dependencies"
+if ! command -v git >/dev/null 2>&1; then
+  echo "git not found. Please install git first."
+  exit 1
+fi
+
 git --version
-composer --version
+
+if command -v composer >/dev/null 2>&1; then
+  composer --version
+else
+  echo "composer not found. Continuing with migration script."
+fi
+
+drupal_root=""
+if [ -d drupal ]; then
+  drupal_root="drupal"
+elif [ -f composer.json ] || [ -d web ] || [ -d conf ]; then
+  drupal_root="."
+fi
+
+if [ -z "$drupal_root" ]; then
+  echo "Could not detect Drupal root automatically. Please run this script from the project root."
+  exit 1
+fi
 
 mkdir -p .circleci
 
-if [ -f drupal/composer.json ]
+if [ "$drupal_root" = "." ]; then
+  circleci_drupal_root="."
+else
+  circleci_drupal_root="$drupal_root"
+fi
+
+if [ -f "$drupal_root/composer.json" ]
 then
 cat > .circleci/config.yml << EOF
 version: 2.1
@@ -23,11 +51,11 @@ workflows:
     jobs:
       - silta/drupal-validate:
           name: validate
-          drupal-root: drupal
+          drupal-root: ${circleci_drupal_root}
 
       - silta/drupal-build-deploy: &build-deploy
           name: build-deploy
-          drupal-root: drupal
+          drupal-root: ${circleci_drupal_root}
           codebase-build:
             - run:
                 name: Copy settings
@@ -54,13 +82,13 @@ else
   echo "composer.json missing. Please create .circleci/config.yml yourself"
 fi
 
-if [ ! -d "drupal" ]
+if [ ! -d "$drupal_root" ]
 then
-    echo "Could not find drupal/ directory. Please add docker and Silta files manually."
-    exit
+    echo "Could not find Drupal directory at $drupal_root. Please add docker and Silta files manually."
+    exit 1
 fi
 
-cd drupal
+cd "$drupal_root"
 echo "Adding Dockerfiles"
 mkdir -p silta
 curl -s https://raw.githubusercontent.com/wunderio/drupal-project/master/silta/nginx.Dockerfile > silta/nginx.Dockerfile

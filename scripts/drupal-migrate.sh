@@ -4,31 +4,51 @@ echo "This script will convert your Drupal project to be compatible with Silta."
 echo "Make sure you are in the git root of your project."
 
 echo "Checking dependencies"
-git --version
-composer --version
-
-if  grep -q "drupal/core" "drupal/composer.json" ; then
-         echo 'Drupal 8+ detected' ;
-else
-         echo 'Unsupported Drupal version. Please follow documentation how to migrate projects' ;
-         exit ;
+if ! command -v git >/dev/null 2>&1; then
+  echo "git not found. Please install git first."
+  exit 1
 fi
+
+git --version
+
+if command -v composer >/dev/null 2>&1; then
+  composer --version
+else
+  echo "composer not found. Continuing, but some generated build steps may need composer."
+fi
+
+drupal_root=""
+
+if [ -f composer.json ] && grep -q "drupal/core" composer.json; then
+  drupal_root="."
+elif [ -f drupal/composer.json ] && grep -q "drupal/core" drupal/composer.json; then
+  drupal_root="drupal"
+else
+  composer_path=$(find . -name composer.json -not -path "*vendor*" -not -path "*modules*" -not -path "*core*" -not -path "*test*" | head -n 1)
+  if [ -n "$composer_path" ] && grep -q "drupal/core" "$composer_path"; then
+    drupal_root=$(dirname "$composer_path")
+  fi
+fi
+
+if [ -z "$drupal_root" ]; then
+  echo "Unsupported Drupal version or composer.json not found. Please follow documentation how to migrate projects"
+  exit 1
+fi
+
+echo "Drupal 8+ detected in $drupal_root"
 
 mkdir -p .circleci
 
-if [ -f drupal/composer.json ] && [ -f drupal/build.sh ]
+if [ -f "$drupal_root/composer.json" ] && [ -f "$drupal_root/build.sh" ]
 then
   echo "This looks like a D8 Wundertools project."
-  drupal_root="drupal"
   echo "Adding Wunderools CircleCI configuration"
   curl -s https://raw.githubusercontent.com/wunderio/Wundertools/master/.circleci/config.yml > .circleci/config.yml
 else
   echo "Adding standard CircleCI configuration"
   curl -s https://raw.githubusercontent.com/wunderio/drupal-project/master/.circleci/config.yml > .circleci/config.yml
 
-  # Try to detect the default path
-  composer_path=`find . -name composer.json -not -path "*vendor*" -not -path "*modules*" -not -path "*core*" -not -path "*test*"`
-  drupal_root_guess=`dirname $composer_path`
+  drupal_root_guess="$drupal_root"
 
   while ! [[ $drupal_root ]] || ! [ -d $drupal_root ]
   do
@@ -46,7 +66,7 @@ else
   done
 fi
 
-cd $drupal_root
+cd "$drupal_root"
 
 echo "Adding Dockerfiles"
 mkdir -p silta
