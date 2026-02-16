@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="generator" content="Docusaurus v3.9.1">
 <title data-rh="true">Creating a new project | Silta</title><meta data-rh="true" name="viewport" content="width=device-width,initial-scale=1"><meta data-rh="true" name="twitter:card" content="summary_large_image"><meta data-rh="true" property="og:url" content="https://silta.wunder.io/silta/docs/creating-new-project"><meta data-rh="true" property="og:locale" content="en"><meta data-rh="true" name="docusaurus_locale" content="en"><meta data-rh="true" name="docsearch:language" content="en"><meta data-rh="true" name="docusaurus_version" content="current"><meta data-rh="true" name="docusaurus_tag" content="docs-default-current"><meta data-rh="true" name="docsearch:version" content="current"><meta data-rh="true" name="docsearch:docusaurus_tag" content="docs-default-current"><meta data-rh="true" property="og:title" content="Creating a new project | Silta"><meta data-rh="true" name="description" content="Drupal project guidelines"><meta data-rh="true" property="og:description" content="Drupal project guidelines"><link data-rh="true" rel="icon" href="/silta/img/favicon.ico"><link data-rh="true" rel="canonical" href="https://silta.wunder.io/silta/docs/creating-new-project"><link data-rh="true" rel="alternate" href="https://silta.wunder.io/silta/docs/creating-new-project" hreflang="en"><link data-rh="true" rel="alternate" href="https://silta.wunder.io/silta/docs/creating-new-project" hreflang="x-default"><link data-rh="true" rel="preconnect" href="https://P70R8SQEIU-dsn.algolia.net" crossorigin="anonymous"><script data-rh="true" type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Creating a new project","item":"https://silta.wunder.io/silta/docs/creating-new-project"}]}</script><link rel="search" type="application/opensearchdescription+xml" title="Silta" href="/silta/opensearch.xml"><link rel="stylesheet" href="/silta/assets/css/styles.9a03ee38.css">
-<script src="/silta/assets/js/runtime~main.87a96369.js" defer="defer"></script>
+<script src="/silta/assets/js/runtime~main.72a14e1c.js" defer="defer"></script>
 <script src="/silta/assets/js/main.3e504366.js" defer="defer"></script>
 </head>
 <body class="navigation-with-keyboard">
@@ -16,10 +16,10 @@
 <li>Make a copy of Wunder&#x27;s <a href="https://github.com/wunderio/drupal-project" target="_blank" rel="noopener noreferrer">drupal-project</a>, and push it as a new repository within the wunderio Github organisation.</li>
 <li>Setup your project:<!-- -->
 <ul>
-<li>Run your project locally with <a href="https://docs.devwithlando.io" target="_blank" rel="noopener noreferrer">lando</a>: <code>lando start</code> (follow local environment setup instructions at <a href="https://github.com/wunderio/drupal-project#setup" target="_blank" rel="noopener noreferrer">https://github.com/wunderio/drupal-project#setup</a>)</li>
-<li>Install composer dependencies with <code>lando composer install</code> and commit composer.lock and generated files in the <code>web</code> folder. If Drupal adds additional database credentials in settings.php, these should not be committed and can be discarded.</li>
+<li>Run your project locally with <a href="https://docs.ddev.com/en/stable/" target="_blank" rel="noopener noreferrer">DDEV</a>: <code>ddev start</code> (follow local environment setup instructions at <a href="https://github.com/wunderio/drupal-project#setup" target="_blank" rel="noopener noreferrer">https://github.com/wunderio/drupal-project#setup</a>)</li>
+<li>Install composer dependencies with <code>ddev composer install</code> and commit composer.lock and generated files in the <code>web</code> folder. If Drupal adds additional database credentials in settings.php, these should not be committed and can be discarded.</li>
 <li>Install javascript dependencies with <code>npm install</code> and commit the package-lock.json file.</li>
-<li>Install Drupal with <code>lando drush site-install</code> and export the default configuration with <code>lando drush config-export</code>.</li>
+<li>Install Drupal with <code>ddev drush site-install</code> / <code>ddev drush si</code> and export the default configuration with <code>ddev drush config-export</code> / <code>ddev drush cex</code>.</li>
 </ul>
 </li>
 <li>Log in to CircleCI with your Github credentials, select &quot;wunderio&quot; and <a href="https://circleci.com/add-projects/gh/wunderio" target="_blank" rel="noopener noreferrer">enable your project</a>.</li>
