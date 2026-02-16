@@ -70,11 +70,11 @@ else
   echo "Your existing phpcs configuration was kept."
 fi
 
-if [ ! -f .lando.yml ]; then
-  echo "Adding our standard .lando.yml"
-  curl -s https://raw.githubusercontent.com/wunderio/drupal-project/master/.lando.yml > .lando.yml
+if [ ! -f .ddev/config.yal ]; then
+  echo "Adding our standard .ddev/config.yaml"
+  curl -s https://raw.githubusercontent.com/wunderio/drupal-project/master/.ddev/config.yaml > .ddev/config.yaml
 else
-  echo "Your existing lando configuration was kept."
+  echo "Your existing DDEV configuration was kept."
 fi
 
 if [ -f composer.json ]; then
@@ -90,18 +90,18 @@ else
   echo "You don't seem to be using composer, this is currently not supported out of the box."
 fi
 
-if ! grep -q "settings.lando.php" web/sites/default/settings.php
+if ! grep -q "settings.ddev.php" web/sites/default/settings.php
 then
   echo '
 /**
- * Lando configuration overrides.
+ * DDEV configuration overrides.
  */
-if (getenv("LANDO_INFO") && file_exists($app_root . "/" . $site_path . "/settings.lando.php")) {
-  include $app_root . "/" . $site_path . "/settings.lando.php";
+if (getenv("DDEV_INFO") && file_exists($app_root . "/" . $site_path . "/settings.ddev.php")) {
+  include $app_root . "/" . $site_path . "/settings.ddev.php";
 }
 ' >>  web/sites/default/settings.php
 fi
-curl -s https://raw.githubusercontent.com/wunderio/drupal-project/master/web/sites/default/settings.lando.php > web/sites/default/settings.lando.php
+curl -s https://raw.githubusercontent.com/wunderio/drupal-project/master/web/sites/default/settings.php > web/sites/default/settings.php
 
 echo "Updating settings.php"
 if ! grep -q "settings.silta.php" web/sites/default/settings.php
