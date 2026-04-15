@@ -250,6 +250,7 @@ USER elasticsearch
 When using `silta/drupal-build-deploy`:
 
 ```
+      - silta/docker-login
       - silta/drupal-build-deploy:
           pre-release:
             - silta/build-docker-image:
