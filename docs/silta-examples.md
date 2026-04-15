@@ -250,6 +250,7 @@ USER elasticsearch
 When using `silta/drupal-build-deploy`:
 
 ```
+      - silta/docker-login
       - silta/drupal-build-deploy:
           pre-release:
             - silta/build-docker-image:
@@ -262,6 +263,7 @@ When using `silta/drupal-build-deploy`:
 When using `silta/frontend-build-deploy`:
 
 ```
+      - silta/docker-login
       - silta/frontend-build-deploy:
           image_build_steps:
             - silta/build-docker-image:
