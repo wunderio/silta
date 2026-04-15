@@ -262,6 +262,7 @@ When using `silta/drupal-build-deploy`:
 When using `silta/frontend-build-deploy`:
 
 ```
+      - silta/docker-login
       - silta/frontend-build-deploy:
           image_build_steps:
             - silta/build-docker-image:
