@@ -42,7 +42,7 @@ Or, if you have the encryption key stored as a local environment variable, use t
 silta secrets encrypt --file /path/to/file --secret-key-env ENV_VAR_NAME
 ```
 
-Note that `silta secrets encrypt` encrypts the source file itself unless you specify a different target path via the `--output-file` flag (see full docs [here](https://github.com/wunderio/silta-cli/blob/master/docs/silta_secrets_encrypt.md)).
+crNote that `silta secrets encrypt` encrypts the source file itself unless you specify a different target path via the `--output-file` flag (see full docs [here](https://github.com/wunderio/silta-cli/blob/master/docs/silta_secrets_encrypt.md)).
 
 ### 3. Add decryption to CircleCI configuration
 
@@ -117,8 +117,9 @@ or, if you have secret key stored as local environment variable:
 silta secrets decrypt --file /path/to/encrypted/file --secret-key-env ENV_VAR_NAME
 ```
 
-Note #1 that `silta secrets decrypt` decrypts the source file itself unless you specify the`--output-file` flag. See full docs of the decryption command [here](https://github.com/wunderio/silta-cli/blob/master/docs/silta_secrets_decrypt.md).
-Note #2: Users of vscode and other IDE users - if enabled, the autoformat functionality may cause for binary or decrypted files to be slightly UTF-8 adjusted which leads to a corrupt sercrets file. Thus it's recommended to use `--output-file` as it will bypass IDE file watch / autoformat functionality.
+Note that `silta secrets decrypt` decrypts the source file itself unless you specify the`--output-file` flag. See full docs of the decryption command [here](https://github.com/wunderio/silta-cli/blob/master/docs/silta_secrets_decrypt.md).
+
+Note for users of vscode and other IDE users - if enabled, the autoformat functionality may cause for binary or decrypted files to be slightly UTF-8 adjusted which leads to a corrupt sercrets file. Thus it's recommended to use `--output-file` as it will bypass IDE file watch / autoformat functionality.
 
 Remember **not to** commit decrypted secret files!
 
