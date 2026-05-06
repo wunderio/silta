@@ -42,7 +42,7 @@ Or, if you have the encryption key stored as a local environment variable, use t
 silta secrets encrypt --file /path/to/file --secret-key-env ENV_VAR_NAME
 ```
 
-crNote that `silta secrets encrypt` encrypts the source file itself unless you specify a different target path via the `--output-file` flag (see full docs [here](https://github.com/wunderio/silta-cli/blob/master/docs/silta_secrets_encrypt.md)).
+Note that `silta secrets encrypt` encrypts the source file itself unless you specify a different target path via the `--output-file` flag (see full docs [here](https://github.com/wunderio/silta-cli/blob/master/docs/silta_secrets_encrypt.md)).
 
 ### 3. Add decryption to CircleCI configuration
 
