@@ -4,6 +4,11 @@
 
 This document details the procedure for migrating a GKE Persistent Volume (PV) provisioned with the legacy in-tree driver (`kubernetes.io/gce-pd`) to a modern CSI driver (`pd.csi.storage.gke.io`) with a target StorageClass (e.g. `premium-rwo` / `pd-ssd`), preserving all data and retaining the original PVC name to maintain Helm release consistency.
 
+> **NOTE:** The examples below migrate from StorageClass `standard` to
+> `premium-rwo`, and hardcode the filesystem type as `ext4`. Adjust the
+> storage classes, disk type and `fsType` to match your own environment
+> before running any of these commands.
+
 ### Placeholders used in this runbook
 
 | Placeholder | Meaning |
@@ -198,10 +203,25 @@ kubectl get pv [original-pv-name]
 
 ### 4. Run Deployment & Resume Workload
 
-Edit storage type back to previous. 
-Remove StatefulSet orphaning to allow Helm to manage the new PVC and PV definitions cleanly.
+Revert the Helm/deployment values to the original storage settings
+(StorageClass `standard`, original PV/PVC definitions) so the next
+deploy does not attempt to recreate the CSI/`premium-rwo` resources.
+
+Then orphan-delete the StatefulSet so the manually re-bound PVC from
+step 3 is left untouched and Helm can recreate the StatefulSet cleanly:
 ```bash
 # Orphan-delete the StatefulSet (leaves pods/PVC definitions clean for Helm)
 kubectl delete statefulset [statefulset-name] -n [namespace] --cascade=orphan
 ```
-Trigger CircleCI/CD pipeline to redeploy the workload with the new storage class and PV/PVC definitions.
+Trigger CircleCI/CD pipeline to redeploy the workload with the original storage class and PV/PVC definitions.
+
+---
+
+## Cleanup
+
+Once the migrated volume has been verified and you are confident the rollback
+path is no longer needed, remember to clean up the lingering resources left
+behind by the migration: the retained original PV (`[original-pv-name]`), its
+underlying GCP disk and the intermediate snapshot (`[snapshot-name]`). Do this
+only when you see fit — while they exist, the rollback plan above stays
+available.
