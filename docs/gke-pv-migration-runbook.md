@@ -74,7 +74,7 @@ gcloud compute disks create [new-disk-name] \
 
 ### 4. Delete Original PVC
 
-Remove the old PVC (the original disk remains protected by `Retain`) and orphan-delete the StatefulSet so Helm can update immutable storage definitions later.
+Remove the old PVC (the original disk remains protected by `Retain`).
 
 ```bash
 kubectl delete pvc [original-pvc-name] -n [namespace]
