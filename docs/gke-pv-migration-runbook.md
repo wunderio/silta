@@ -126,10 +126,11 @@ spec:
       storage: [disk-size]        # e.g. 500Gi
 ```
 
-Apply the manifest and scale up the StatefulSet to Bind it (as it waits for First Consumer):
+Apply the manifest, verify the PVC is `Bound`, then scale up the StatefulSet to mount the volume:
 
 ```bash
-kubectl apply -f storage-migration.yaml  
+kubectl apply -f storage-migration.yaml
+kubectl get pvc [original-pvc-name] -n [namespace]
 kubectl scale statefulset [statefulset-name] -n [namespace] --replicas=1
 ```
 
@@ -161,7 +162,7 @@ kubectl delete pv [migrated-pv-name]
 Because the original PVC was deleted, the retained original PV switches to state `Released`. Clear its old claim reference so Kubernetes makes it `Available` again.
 
 ```bash
-kubectl patch pv $PV_NAME -p '{"spec":{"claimRef":null}}'
+kubectl patch pv [original-pv-name] -p '{"spec":{"claimRef":null}}'
 ```
 
 ### 3. Statically Re-bind Original PV to Original PVC Name
