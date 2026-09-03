@@ -135,7 +135,7 @@ kubectl scale statefulset [statefulset-name] -n [namespace] --replicas=1
 
 ### 6. Run Deployment & Resume Workload
 
-Remove StatefulSet orphaning to allow Helm to manage the new PVC and PV definitions cleanly.
+Orphan-delete the StatefulSet so Helm can recreate it with updated storage definitions.
 ```bash
 # Orphan-delete the StatefulSet (leaves pods/PVC definitions clean for Helm)
 kubectl delete statefulset [statefulset-name] -n [namespace] --cascade=orphan
