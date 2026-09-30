@@ -36,13 +36,13 @@ deploymentEnvironment "AKS" {
 
         aksLb = infrastructureNode "Azure Load Balancer" "Standard L4 load balancer with a static public IP, fronting the Traefik ingress service for the built-in cluster domain." "Azure Load Balancer"
 
-        aksAppGw = infrastructureNode "Application Gateway" "Optional L7 entry point for exposed customer domains, driven by the AGIC add-on watching in-cluster Ingress resources. Requires VNet peering, a route table association, and the gateway subnet allow-listed in nginx realipfrom, noauthips and the release NetworkPolicy." "Application Gateway + AGIC"
+        aksAppGw = infrastructureNode "Application Gateway" "Optional L7 entry point for exposed customer domains, driven by the AGIC add-on watching in-cluster Ingress resources. Requires VNet peering, a route table association, and the gateway subnet allow-listed in nginx realipfrom, noauthips and the release NetworkPolicy." "Application Gateway + AGIC" "Optional"
 
         aksAcr = infrastructureNode "Azure Container Registry" "Project images. CI authenticates with a service principal held in a CircleCI Context." "ACR"
 
         aksBlob = infrastructureNode "Azure Blob Storage" "Default backend for the silta-shared storage class via csi-rclone." "Blob Storage"
 
-        aksFiles = infrastructureNode "Azure Files" "Alternative RWX backend via the azurefile-csi driver. Chosen for projects with many files; cannot be switched on an existing deployment." "Azure Files"
+        aksFiles = infrastructureNode "Azure Files" "Alternative RWX backend via the azurefile-csi driver. Chosen for projects with many files; cannot be switched on an existing deployment." "Azure Files" "Optional"
 
         aksDisk = infrastructureNode "Azure Disk" "Default block storage class for database and search volumes." "Azure Disk CSI"
 
@@ -66,6 +66,7 @@ deploymentEnvironment "AKS" {
                 deploymentNode "Helm release" "One release per git branch, deployed with cluster.type=aks" "Helm 3" {
                     containerInstance varnish
                     aksNginx = containerInstance webserver
+                    containerInstance waf
                     aksApp = containerInstance appRuntime
                     containerInstance shell
                     aksDb = containerInstance database

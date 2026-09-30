@@ -15,6 +15,8 @@ projectApp = softwareSystem "Project environment" "A single deployed environment
 
     webserver = container "Web server" "Serves static assets and public files, enforces basic auth on non-production environments, and hands dynamic requests to the application runtime." "nginx"
 
+    waf = container "WAF agent" "Optional Signal Sciences agent running beside nginx to inspect requests." "Signal Sciences agent" "Optional"
+
     appRuntime = container "Application runtime" "The project's own code, baked into an image at build time. PHP-FPM for Drupal, Node.js for frontend projects, static content for simple projects." "PHP-FPM / Node.js"
 
     shell = container "Shell" "Long-running container with the same codebase and credentials as the runtime. The target of SSH sessions, drush commands and manual maintenance." "PHP CLI / drush"
@@ -31,7 +33,7 @@ projectApp = softwareSystem "Project environment" "A single deployed environment
 
     scheduledJobs = container "Scheduled jobs" "CronJobs owned by the release: application cron, nightly database and file backups with retention, and reference-data refresh that seeds preview environments from a sanitised copy of a reference environment." "Kubernetes CronJob"
 
-    sharedFiles = container "Shared file storage" "ReadWriteMany volumes on the silta-shared storage class: public files, private files, backups and reference data. Shared by every pod of the release." "PersistentVolumeClaim (csi-rclone)"
+    sharedFiles = container "Shared file storage" "ReadWriteMany volumes on the silta-shared storage class: public files, private files, backups and reference data. Shared by every pod of the release." "PersistentVolumeClaim"
 
     releasePolicy = container "Release network policy" "NetworkPolicies from the silta-release library chart that isolate each release, allowing only the ingress controller, the jump server and explicitly listed peers in." "Kubernetes NetworkPolicy"
 }

@@ -1,10 +1,9 @@
 # ---------------------------------------------------------------------------
 # Views
 #
-# Deployment views (L4) are the core of this baseline — one per supported
-# cloud. The landscape, context and container views above them exist because
-# deployment views cannot be drawn without a container model, and because the
-# same model then serves the non-technical and onboarding audiences.
+# Deployment views are the core of this baseline — one per supported cloud.
+# The landscape, context and container views provide the model foundation and
+# serve the non-technical and onboarding audiences.
 #
 # Component (L3) and dynamic views are deliberately absent from the baseline.
 # ---------------------------------------------------------------------------

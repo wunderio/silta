@@ -46,7 +46,7 @@ deploymentEnvironment "UKS" {
 
         uksBlock = infrastructureNode "UpCloud block storage" "Block volumes for database and search. Minimum provisionable size is 1Gi." "UKS storage class"
 
-        uksManagedDb = infrastructureNode "Managed MySQL" "Optional managed database, replacing the in-cluster MariaDB. Requires the application user to use mysql_native_password." "UpCloud Managed Database"
+        uksManagedDb = infrastructureNode "Managed MySQL" "Optional managed database, replacing the in-cluster MariaDB. Requires the application user to use mysql_native_password." "UpCloud Managed Database" "Optional"
 
         deploymentNode "UKS cluster" "Managed Kubernetes, network created by Terraform" "Kubernetes" {
 
@@ -68,6 +68,7 @@ deploymentEnvironment "UKS" {
                 deploymentNode "Helm release" "One release per git branch" "Helm 3" {
                     containerInstance varnish
                     uksNginx = containerInstance webserver
+                    containerInstance waf
                     uksApp = containerInstance appRuntime
                     containerInstance shell
                     uksDb = containerInstance database

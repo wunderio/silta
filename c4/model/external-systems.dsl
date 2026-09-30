@@ -9,7 +9,7 @@ github = softwareSystem "GitHub" "Hosts project repositories, the Silta charts, 
 
 circleci = softwareSystem "CircleCI" "Cloud CI service that runs validation, build and deployment jobs. Holds the cluster and registry credentials in shared Contexts." "External"
 
-cdn = softwareSystem "CDN" "Optional content delivery / edge layer in front of a production site: Fastly, AWS CloudFront or Cloudflare. Terminates TLS for the public domain and forwards cache misses to the cluster ingress." "External"
+cdn = softwareSystem "CDN" "Optional content delivery / edge layer in front of a production site: Fastly, AWS CloudFront or Cloudflare. Terminates TLS for the public domain and forwards cache misses to the cluster ingress." "External,Optional"
 
 publicDns = softwareSystem "DNS" "Public DNS. Holds the wildcard record for the cluster domain and the customer's own domains." "External"
 
@@ -22,8 +22,6 @@ imageRegistry = softwareSystem "Container registry" "Stores project images built
 objectStorage = softwareSystem "Cloud object storage" "Bucket storage backing the silta-shared storage class: public and private files, database backups and reference data. GCS, S3, Azure Blob/Files or UpCloud Object Storage." "External"
 
 monitoring = softwareSystem "Monitoring and metrics" "Cluster and application observability: VictoriaMetrics and Grafana, optionally Instana." "External"
-
-waf = softwareSystem "WAF / bot protection" "Optional Signal Sciences agent running beside nginx in the project environment." "External"
 
 codeAnalysis = softwareSystem "SonarQube" "Optional static analysis service invoked from the CI analyze job." "External"
 

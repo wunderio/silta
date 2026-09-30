@@ -36,9 +36,9 @@ deploymentEnvironment "GKE" {
 
         gkeGcs = infrastructureNode "Cloud Storage" "Buckets behind the silta-shared storage class — public files, private files, backups, reference data — and the public charts.wdr.io Helm repository." "GCS"
 
-        gkeFilestore = infrastructureNode "Filestore" "Managed NFS share used where the nfs-subdir provisioner is preferred over csi-rclone." "Filestore"
+        gkeFilestore = infrastructureNode "Filestore" "Managed NFS share used where the nfs-subdir provisioner is preferred over csi-rclone." "Filestore" "Optional"
 
-        deploymentNode "GKE cluster" "Regional, VPC-native, with autoscaling node pools" "Kubernetes" {
+        deploymentNode "GKE cluster" "Regional, route-based by default; VPC-native when configured per cluster in CI" "Kubernetes" {
 
             gkeApi = infrastructureNode "Kubernetes API server" "Managed control plane. CI authenticates to it with a service-account key held in a CircleCI Context." "GKE control plane"
 
@@ -63,6 +63,7 @@ deploymentEnvironment "GKE" {
                 deploymentNode "Helm release" "One release per git branch — production, master and every open feature branch" "Helm 3" {
                     gkeVarnish = containerInstance varnish
                     gkeNginx = containerInstance webserver
+                    containerInstance waf
                     gkeApp = containerInstance appRuntime
                     gkeShell = containerInstance shell
                     gkeDb = containerInstance database

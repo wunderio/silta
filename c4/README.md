@@ -10,7 +10,7 @@ than forking it.
 Docker is the only prerequisite — nothing is installed on your machine.
 
 ```bash
-cd c4 && docker compose up
+cd c4 && LOCAL_UID=$(id -u) LOCAL_GID=$(id -g) docker compose up
 ```
 
 Then open <http://localhost:8080>. You land on the workspace: diagrams on one

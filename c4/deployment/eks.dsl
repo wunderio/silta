@@ -2,8 +2,8 @@
 # Deployment: Amazon EKS
 #
 # Differences from the GKE reference that matter when reading this diagram:
-#   * ingress-nginx replaces Traefik, and the NLB speaks the PROXY protocol so
-#     the real client IP survives;
+#   * ingress-nginx replaces Traefik, and the ingress ELB speaks the PROXY
+#     protocol so the real client IP survives;
 #   * csi-rclone points at an S3 bucket with a dedicated IAM user;
 #   * EBS gp2 is the default block storage class, EFS the optional RWX one;
 #   * the SSH jump server needs one Elastic IP per subnet on its NLB;
@@ -32,7 +32,7 @@ deploymentEnvironment "EKS" {
 
         eksDns = infrastructureNode "Route 53" "Hosted zones for the cluster domain and customer domains." "Route 53"
 
-        eksLb = infrastructureNode "Elastic Load Balancer" "Fronts the ingress-nginx controller. PROXY protocol is enabled on both the service annotation and the controller config so client IPs reach the pods." "ELB / NLB"
+        eksLb = infrastructureNode "Elastic Load Balancer" "Fronts the ingress-nginx controller. PROXY protocol is enabled on both the service annotation and the controller config so client IPs reach the pods." "ELB"
 
         eksSshLb = infrastructureNode "Network Load Balancer" "TCP passthrough for the SSH jump server, with source-IP stickiness, client-IP preservation and one Elastic IP allocation per subnet." "NLB"
 
@@ -42,7 +42,7 @@ deploymentEnvironment "EKS" {
 
         eksEbs = infrastructureNode "EBS (gp2)" "Default block storage class for database and search volumes, provisioned by the Amazon EBS CSI driver add-on." "EBS"
 
-        eksEfs = infrastructureNode "EFS" "Managed NFS, used where the nfs-subdir provisioner is preferred over csi-rclone." "EFS"
+        eksEfs = infrastructureNode "EFS" "Managed NFS, used where the nfs-subdir provisioner is preferred over csi-rclone." "EFS" "Optional"
 
         deploymentNode "EKS cluster" "Amazon VPC CNI for NetworkPolicy, EBS CSI driver add-on, IAM role attached to the worker nodes" "Kubernetes" {
 
@@ -64,6 +64,7 @@ deploymentEnvironment "EKS" {
                 deploymentNode "Helm release" "One release per git branch, deployed with cluster.type=aws" "Helm 3" {
                     containerInstance varnish
                     eksNginx = containerInstance webserver
+                    containerInstance waf
                     eksApp = containerInstance appRuntime
                     containerInstance shell
                     eksDb = containerInstance database

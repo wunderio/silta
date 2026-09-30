@@ -1,7 +1,7 @@
 # ---------------------------------------------------------------------------
 # People
 #
-# Silta has three very different audiences, and the model keeps them separate
+# Silta has six very different audiences, and the model keeps them separate
 # on purpose: what a product owner needs from a diagram is not what an ops
 # engineer needs.
 # ---------------------------------------------------------------------------
