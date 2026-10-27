@@ -21,7 +21,7 @@ projectApp = softwareSystem "Project environment" "A single deployed environment
 
     shell = container "Shell" "Long-running container with the same codebase and credentials as the runtime. The target of SSH sessions, drush commands and manual maintenance." "PHP CLI / drush"
 
-    database = container "Database" "The application database. A single-pod MariaDB by default, a Percona XtraDB cluster or a managed cloud database for production-grade environments." "MariaDB / Percona XtraDB" "Database"
+    database = container "Database" "The application database: a single-pod MariaDB." "MariaDB" "Database"
 
     searchEngine = container "Search engine" "Full-text index for the application." "Elasticsearch / Solr" "Optional,Database"
 

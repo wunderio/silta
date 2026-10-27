@@ -3,9 +3,13 @@
 #
 # Everything Silta depends on but does not operate. Anything listed here is a
 # supplier boundary: it is someone else's SLA.
+#
+# Exceptions, untagged and therefore not grey: the observability stack and
+# Silta Hub are run by the Silta team, but sit outside the systems modelled
+# in detail here.
 # ---------------------------------------------------------------------------
 
-github = softwareSystem "GitHub" "Hosts project repositories, the Silta charts, images and CLI sources. Also the identity provider for developer SSH and dashboard login, and the source of branch/PR webhooks." "External"
+github = softwareSystem "GitHub" "Hosts project repositories, the Silta charts, images and CLI sources. Also the identity provider for developer SSH, one of the OIDC providers for dashboard login, and the source of branch/PR webhooks." "External"
 
 circleci = softwareSystem "CircleCI" "Cloud CI service that runs validation, build and deployment jobs. Holds the cluster and registry credentials in shared Contexts." "External"
 
@@ -21,8 +25,6 @@ imageRegistry = softwareSystem "Container registry" "Stores project images built
 
 objectStorage = softwareSystem "Cloud object storage" "Bucket storage backing the silta-shared storage class: public and private files, database backups and reference data. GCS, S3, Azure Blob/Files or UpCloud Object Storage." "External"
 
-monitoring = softwareSystem "Monitoring and metrics" "Cluster and application observability: VictoriaMetrics and Grafana, optionally Instana." "External"
+monitoring = softwareSystem "Observability stack" "Central log, event and metric storage on the silta-operations cluster. OpenTelemetry collectors in each cluster ship data through vmproxy, which tags it by project and scopes queries per user, into VictoriaMetrics and VictoriaLogs. Grafana on top." ""
 
-codeAnalysis = softwareSystem "SonarQube" "Optional static analysis service invoked from the CI analyze job." "External"
-
-hub = softwareSystem "Silta Hub" "Central service that collects cluster inventory and telemetry from every Silta cluster and coordinates release data synchronisation between environments. Internals are out of scope for this baseline." ""
+hub = softwareSystem "Silta Hub" "Central service that collects image and service inventory and telemetry from clusters running the optional Hub agent, typically those the dashboard does not connect to directly. Internals are out of scope for this baseline." ""

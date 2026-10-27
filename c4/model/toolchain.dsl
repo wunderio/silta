@@ -12,7 +12,7 @@ toolchain = softwareSystem "Silta Delivery Toolchain" "The CI-side of Silta: the
 
     cli = container "Silta CLI" "Single Go binary that carries the deployment logic: cluster login, image build and push, chart download and extension, release naming, helm upgrade, diff, cleanup and secret encryption." "Go"
 
-    builderImage = container "CI builder image" "silta-cicd image used as the CircleCI executor. Ships docker, helm, kubectl, the cloud CLIs, composer, node and the Silta CLI." "Docker image"
+    builderImage = container "CI builder image" "silta-cicd image used as the CircleCI executor. Ships docker, helm, kubectl, the cloud CLIs, composer and node. The Silta CLI is installed into it by the orb at job start." "Docker image"
 
     charts = container "Helm charts" "The drupal, frontend, simple and silta-cluster charts plus the shared silta-release library chart. The contract between a project and the platform." "Helm 3"
 

@@ -9,7 +9,6 @@
 #     the same annotation carries the source-IP allow-list for SSH;
 #   * there is no managed container registry — Harbor is self-hosted on top of
 #     the object storage;
-#   * managed MySQL is an option, but needs mysql_native_password;
 #   * the smallest volume UKS will provision is 1Gi, so chart defaults that
 #     request less must be raised.
 # ---------------------------------------------------------------------------
@@ -45,8 +44,6 @@ deploymentEnvironment "UKS" {
         uksObject = infrastructureNode "UpCloud Object Storage" "S3-compatible bucket behind the silta-shared storage class, configured in csi-rclone with s3-provider=Other and directory markers enabled." "Object Storage"
 
         uksBlock = infrastructureNode "UpCloud block storage" "Block volumes for database and search. Minimum provisionable size is 1Gi." "UKS storage class"
-
-        uksManagedDb = infrastructureNode "Managed MySQL" "Optional managed database, replacing the in-cluster MariaDB. Requires the application user to use mysql_native_password." "UpCloud Managed Database" "Optional"
 
         deploymentNode "UKS cluster" "Managed Kubernetes, network created by Terraform" "Kubernetes" {
 
@@ -92,6 +89,5 @@ deploymentEnvironment "UKS" {
     uksRegistry -> uksApp "Is pulled by the kubelet to start" "HTTPS"
     uksCsi -> uksObject "Mounts the bucket as RWX volumes from" "rclone over HTTPS"
     uksBlock -> uksDb "Provides block storage to" "CSI"
-    uksManagedDb -> uksApp "Replaces the in-cluster database for" "MySQL protocol"
     uksJobs -> uksObject "Writes nightly backups and reference data to" "rclone over HTTPS"
 }

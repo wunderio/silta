@@ -98,5 +98,5 @@ deploymentEnvironment "GKE" {
     gkeCsi -> gkeGcs "Mounts buckets as RWX volumes from" "rclone over HTTPS"
     gkeFilestore -> gkeFiles "Backs, where NFS is preferred" "NFS"
     gkeJobs -> gkeGcs "Writes nightly backups and reference data to" "rclone over HTTPS"
-    gkeDashBackend -> gkeApi "Reads workloads and streams logs through" "HTTPS"
+    gkeDashBackend -> gkeApi "Reads workloads through" "HTTPS"
 }

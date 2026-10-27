@@ -37,13 +37,11 @@ github -> deploymentRemover "Notifies of deleted branches and closed pull reques
 
 circleci -> orb "Resolves the pipeline definition from" "CircleCI orb registry"
 circleci -> builderImage "Runs every job inside" "Docker"
-orb -> cli "Delegates all build and deployment steps to" "Shell"
-builderImage -> cli "Bundles" ""
+orb -> cli "Installs into the job executor and delegates all build and deployment steps to" "Shell"
 
 cli -> github "Checks out the project codebase from" "Git over HTTPS"
 cli -> imageRegistry "Builds and pushes the project images to" "Docker Registry API"
 cli -> chartRepo "Downloads and optionally extends the packaged chart from" "HTTPS"
-cli -> codeAnalysis "Submits scan results to, in the analyze job" "HTTPS"
 cli -> silta "Authenticates against the cluster and applies the release with" "Kubernetes API / Helm"
 cli -> projectApp "Creates, upgrades and deletes the environment's Helm release" "Helm 3"
 
@@ -73,6 +71,7 @@ appRuntime -> mailTrap "Sends mail to, in non-production environments" "SMTP"
 appRuntime -> smtpRelay "Sends mail through, in production" "SMTP"
 appRuntime -> siltaProxy "Makes outbound calls through, when a fixed egress IP is required" "HTTP CONNECT"
 appRuntime -> monitoring "Exposes metrics and logs to" "HTTP"
+silta -> monitoring "Ships container logs, cluster events and metrics to, via OpenTelemetry collectors" "OTLP / HTTPS (vmproxy)"
 
 # --- Inside a release ------------------------------------------------------
 
@@ -98,8 +97,7 @@ sshJumpServer -> sshKeyServer "Fetches the authorised key set from" "HTTPS"
 sshKeyServer -> github "Reads organisation members and their public keys from" "GitHub API"
 inClusterRegistry -> appRuntime "Supplies images to, on clusters without a managed registry" "Docker Registry API"
 splash -> ingressController "Answers unmatched hostnames behind" "HTTP"
-controllerSidecars -> scheduledJobs "Terminates sidecars of, so batch pods can complete" "Kubernetes API"
-dbOperator -> database "Provisions and reconciles clustered" "Kubernetes API"
+controllerSidecars -> scheduledJobs "Manages sidecar lifecycle of" "Kubernetes API"
 hubAgent -> hub "Reports cluster inventory and telemetry to" "HTTPS"
 hubAgent -> projectApp "Triggers scheduled data synchronisation jobs in" "Kubernetes API"
 
@@ -108,7 +106,7 @@ hubAgent -> projectApp "Triggers scheduled data synchronisation jobs in" "Kubern
 dashWeb -> dashBackend "Calls" "JSON/HTTPS"
 dashBackend -> dashSessions "Stores sessions and account mappings in" "MongoDB wire protocol"
 dashBackend -> dashSyncStorage "Stores and retrieves synchronisation artefacts in" "HTTPS"
-dashBackend -> github "Authenticates users and reads organisation membership from" "OAuth 2.0"
+dashBackend -> github "Authenticates users (as one of the configured OIDC providers) and reads organisation membership from" "OIDC / OAuth 2.0"
 dashBackend -> circleci "Provisions project access credentials in" "CircleCI API"
-dashBackend -> silta "Reads workloads, logs and events from, with a scoped service account" "Kubernetes API"
-dashBackend -> projectApp "Streams container logs of" "Kubernetes API"
+dashBackend -> silta "Reads workloads from, with a scoped service account" "Kubernetes API"
+dashBackend -> monitoring "Queries environment logs and events from" "HTTPS (vmproxy)"

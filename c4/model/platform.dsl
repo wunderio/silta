@@ -19,9 +19,9 @@ silta = softwareSystem "Silta Cluster Platform" "A Kubernetes cluster prepared b
 
     nfsProvisioner = container "NFS subdir provisioner" "Alternative RWX storage class backed by a managed NFS share (Filestore, Azure Files, EFS)." "nfs-subdir-external-provisioner" "Optional"
 
-    downscaler = container "Downscaler" "Scales idle non-production environments to zero on a schedule and wakes them back up on the first incoming request, via a placeholder proxy. The main cost-control mechanism. Retention rules are per branch-name pattern." "Go controller + wake-up proxy"
+    downscaler = container "Downscaler" "Scales idle non-production environments to zero on a schedule and wakes them back up on the first incoming request, via a placeholder proxy. The main cost-control mechanism. Retention rules are per branch-name pattern." "Go controller + wake-up proxy" "Optional"
 
-    deploymentRemover = container "Deployment remover" "Receives GitHub webhooks and deletes the Helm release, namespace resources and storage of branches that no longer exist." "Go service"
+    deploymentRemover = container "Deployment remover" "Receives GitHub webhooks and deletes the Helm release, namespace resources and storage of branches that no longer exist." "Go service" "Optional"
 
     sshJumpServer = container "SSH jump server" "Single SSH entry point into the cluster. Authorises developers against their GitHub organisation keys, then proxies them into the shell container of a specific release. Sessions can be recorded." "OpenSSH (sshd-gitauth)"
 
@@ -33,9 +33,7 @@ silta = softwareSystem "Silta Cluster Platform" "A Kubernetes cluster prepared b
 
     inClusterRegistry = container "In-cluster registry" "Self-hosted image registry for clusters without a managed registry service." "Docker distribution" "Optional"
 
-    controllerSidecars = container "Controller sidecars" "Kubernetes controller that manages sidecar lifecycle for jobs, so batch pods terminate cleanly." "Go controller"
+    controllerSidecars = container "Controller sidecars" "Kubernetes controller that manages sidecar lifecycle for jobs." "Go controller"
 
-    hubAgent = container "Silta Hub agent" "Reads cluster inventory (namespaces, releases, workloads) read-only and reports it to Silta Hub. Also drives scheduled release data synchronisation." "Go agent" "Optional"
-
-    dbOperator = container "Percona XtraDB operator" "Manages clustered, replicated MySQL for environments that need more than the single-pod MariaDB." "percona-xtradb-cluster-operator" "Optional"
+    hubAgent = container "Silta Hub agent" "Disabled by default. Used on clusters the dashboard cannot or should not connect to directly: runs passively, reading image and service information read-only and reporting it to Silta Hub. Telemetry modes: disabled, silta-cluster or all. Releases on such clusters cannot currently be viewed or managed from the dashboard." "Go agent" "Optional"
 }
