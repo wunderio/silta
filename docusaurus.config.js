@@ -30,7 +30,7 @@ module.exports = {
     navbar: {
       // title: 'Silta',
       logo: {
-        alt: 'Wunder Silta',
+        alt: 'Mearra Silta',
         src: 'img/logo.svg',
       },
       items: [
@@ -71,23 +71,19 @@ module.exports = {
           items: [
             {
               label: 'Facebook',
-              href: 'https://www.facebook.com/wunder.io',
+              href: 'https://www.facebook.com/mearraofficial',
             },
             {
               label: 'Linkedin',
-              href: 'https://www.linkedin.com/company/wunder.io',
-            },
-            {
-              label: 'Twitter',
-              href: 'https://twitter.com/Wunder_io',
+              href: 'https://www.linkedin.com/company/wunder-io',
             },
             {
               label: 'Instagram',
-              href: 'https://www.instagram.com/wunder.io/',
+              href: 'https://www.instagram.com/mearraofficial',
             },
             {
               label: 'Youtube',
-              href: 'https://www.youtube.com/channel/UCsBoaJt5sX12IFBu1giXZJg',
+              href: 'https://www.youtube.com/@mearracom',
             },
           ],
         },
@@ -96,7 +92,7 @@ module.exports = {
           items: [
             {
               label: 'Blog',
-              href: 'https://wunder.io/articles/',
+              href: 'https://mearra.com/insights',
             },
             {
               label: 'GitHub',
@@ -105,7 +101,7 @@ module.exports = {
           ],
         },
       ],
-      copyright: `Copyright © ${new Date().getFullYear()} Wunder`,
+      copyright: `Copyright © ${new Date().getFullYear()} Mearra`,
     },
   },
   presets: [
@@ -114,15 +110,13 @@ module.exports = {
       {
         docs: {
           sidebarPath: require.resolve('./sidebars.js'),
-          // Please change this to your repo.
           editUrl:
             'https://github.com/wunderio/silta/tree/master/',
         },
         blog: {
           showReadingTime: true,
-          // Please change this to your repo.
           editUrl:
-            'https://github.com/facebook/docusaurus/edit/master/website/blog/',
+            'https://github.com/wunderio/silta/tree/master/',
         },
         theme: {
           customCss: require.resolve('./src/css/custom.css'),
