@@ -28,7 +28,7 @@ module.exports = {
       darkTheme: require('prism-react-renderer').themes.dracula,
     },
     navbar: {
-      // title: 'Silta',
+      title: 'Silta',
       logo: {
         alt: 'Mearra Silta',
         src: 'img/logo.svg',
@@ -42,8 +42,9 @@ module.exports = {
         },
         {
           href: 'https://github.com/wunderio/silta',
-          label: 'GitHub',
           position: 'right',
+          className: 'header-github-link',
+          'aria-label': 'GitHub repository',
         },
       ],
     },
