@@ -67,6 +67,58 @@
   --ifm-link-color: var(--mearra-violet);
 }
 
+/* Dark mode. Lovable has no dark tokens, so these are derived from the brand palette (unconfirmed). */
+html[data-theme='dark'] {
+  --ifm-color-primary: #a59bff;
+  --ifm-color-primary-dark: #8f82ff;
+  --ifm-color-primary-darker: #8476ff;
+  --ifm-color-primary-darkest: #6250ff;
+  --ifm-color-primary-light: #bbb4ff;
+  --ifm-color-primary-lighter: #c6c0ff;
+  --ifm-color-primary-lightest: #e0ddff;
+
+  --ifm-background-color: #12002f;
+  --ifm-background-surface-color: #1a0742;
+  --ifm-font-color-base: var(--mearra-ink-foreground);
+  --ifm-heading-color: var(--mearra-ink-foreground);
+  --ifm-color-emphasis-300: #3a2a63;
+  --ifm-toc-border-color: #3a2a63;
+  --ifm-hr-background-color: #3a2a63;
+  --ifm-table-border-color: #3a2a63;
+  --ifm-code-background: #2a1a55;
+  --ifm-link-color: var(--ifm-color-primary);
+
+  --mearra-text-muted: #b8b3cc;
+  --mearra-surface-alt: #170538;
+  --mearra-row-hover: rgba(242, 238, 231, 0.05);
+  --mearra-active-bg: rgba(165, 155, 255, 0.15);
+  --mearra-active-fg: #c6c0ff;
+  --mearra-shadow-lift: 0 12px 30px -16px rgba(0, 0, 0, 0.8);
+  --docusaurus-highlighted-code-line-bg: rgba(165, 155, 255, 0.25);
+}
+
+html[data-theme='dark'] .navbar {
+  border-bottom: 1px solid #3a2a63;
+}
+
+html[data-theme='dark'] .footer {
+  border-top: 1px solid #3a2a63;
+}
+
+html[data-theme='dark'] .theme-code-block {
+  box-shadow: 0 0 0 1px #3a2a63;
+}
+
+html[data-theme='dark'] .alert--secondary,
+html[data-theme='dark'] .alert--info {
+  --ifm-alert-border-color: #a59bff;
+  --ifm-alert-background-color: rgba(165, 155, 255, 0.1);
+}
+
+html[data-theme='dark'] .markdown table thead tr {
+  background-color: #2a0a6b;
+}
+
 body {
   -webkit-font-smoothing: antialiased;
 }
@@ -508,9 +560,9 @@ html {
 
 /* DocSearch: light pill in the ink navbar, sand modal with violet active hit */
 html[data-theme] {
-  --docsearch-primary-color: var(--mearra-violet);
-  --docsearch-highlight-color: var(--mearra-violet);
-  --docsearch-logo-color: var(--mearra-violet);
+  --docsearch-primary-color: var(--ifm-color-primary);
+  --docsearch-highlight-color: var(--ifm-color-primary);
+  --docsearch-logo-color: var(--ifm-color-primary);
   --docsearch-text-color: var(--ifm-font-color-base);
   --docsearch-secondary-text-color: var(--mearra-text-muted);
   --docsearch-muted-color: var(--mearra-text-muted);
@@ -534,6 +586,11 @@ html[data-theme] {
   --docsearch-footer-background: var(--ifm-background-color);
   --docsearch-footer-shadow: 0 -1px 0 0 var(--ifm-color-emphasis-300);
   --docsearch-focus-color: var(--mearra-violet);
+}
+
+html[data-theme='dark'] {
+  --docsearch-container-background: rgba(0, 0, 0, 0.6);
+  --docsearch-modal-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.8), 0 0 0 1px #3a2a63;
 }
 
 .navbar .DocSearch-Button {
@@ -576,7 +633,7 @@ html[data-theme] {
 }
 
 .DocSearch-Modal .DocSearch-Hit mark {
-  background: rgba(0, 240, 135, 0.6);
+  background: var(--mearra-signal);
   border-radius: 2px;
   color: var(--mearra-ink);
   text-decoration: none;

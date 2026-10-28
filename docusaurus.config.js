@@ -21,7 +21,8 @@ module.exports = {
   themeConfig: {
     colorMode: {
       defaultMode: 'light',
-      disableSwitch: true,
+      disableSwitch: false,
+      respectPrefersColorScheme: true,
     },
     prism: {
       theme: require('./src/utils/prismMearra'),
