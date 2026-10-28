@@ -596,3 +596,37 @@ html[data-theme] {
   background: transparent;
   text-decoration: underline;
 }
+
+/* Mobile drawer: ink header so the white mark stays visible, labelled GitHub link */
+.navbar-sidebar__brand {
+  background-color: var(--mearra-ink);
+  height: var(--ifm-navbar-height);
+}
+
+.navbar-sidebar__brand .navbar__title {
+  color: rgba(242, 238, 231, 0.8);
+}
+
+.navbar-sidebar__close {
+  color: var(--mearra-ink-foreground);
+}
+
+.navbar-sidebar .menu__link {
+  font-size: 1.05rem;
+}
+
+.navbar-sidebar .header-github-link {
+  gap: 0.5rem;
+  padding: var(--ifm-menu-link-padding-vertical) var(--ifm-menu-link-padding-horizontal);
+}
+
+.navbar-sidebar .header-github-link::after {
+  content: 'GitHub';
+}
+
+.navbar-sidebar__back {
+  font-family: var(--mearra-font-condensed);
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
