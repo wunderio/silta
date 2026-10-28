@@ -1,0 +1,18 @@
+# Browse the model at http://localhost:8080
+#
+#   LOCAL_UID=$(id -u) LOCAL_GID=$(id -g) docker compose up
+#
+# Structurizr re-reads workspace.dsl on every page load, so edit a .dsl file
+# and refresh. It writes workspace.json and .structurizr/ next to this file;
+# both are gitignored — see the note in README.md if you want to keep
+# hand-tuned diagram layouts.
+services:
+  structurizr:
+    image: structurizr/structurizr
+    command: local
+    ports:
+      - "8080:8080"
+    volumes:
+      - .:/usr/local/structurizr
+    # Keeps generated files owned by you rather than root.
+    user: "${LOCAL_UID:-1000}:${LOCAL_GID:-1000}"

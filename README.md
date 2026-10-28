@@ -32,6 +32,26 @@ as a stable production hosting.
 - [Amazon Web Services / EKS](docs/vendor-eks.md)
 - [UpCloud Kubernetes Service / UKS](docs/vendor-uks.md)
 
+### Architecture model (C4)
+
+A [C4 model](c4/) of the platform, written in Structurizr DSL. It covers the
+delivery toolchain, the shared cluster services, the containers that make up a
+single project environment, and a deployment view for each of the four vendors
+listed above.
+
+This is the base model — no client-specific detail. Client workspaces
+[extend it](c4/extensions/README.md) instead of forking it, so they inherit
+changes made here.
+
+Browse it locally. Docker is the only prerequisite:
+
+```bash
+cd c4 && docker compose up
+```
+
+Then open <http://localhost:8080>. See [c4/README.md](c4/README.md) for the
+full layout and for exporting the diagrams to Mermaid or PlantUML.
+
 ## How it works in practice
 
 All infrastructure configuration is based on Git, a deployment is triggered automatically when pushing code to Github. 

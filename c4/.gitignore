@@ -1,0 +1,9 @@
+# Structurizr runtime files.
+# workspace.json holds hand-tuned diagram layouts — if you drop `autolayout`
+# from a view and arrange it manually, un-ignore this file and commit it.
+workspace.json
+.structurizr/
+
+# Generated diagram exports
+export/
+.export-check/
