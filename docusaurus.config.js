@@ -5,7 +5,17 @@ module.exports = {
   baseUrl: '/silta/',
   onBrokenLinks: 'throw',
   onBrokenMarkdownLinks: 'warn',
-  favicon: 'img/favicon.ico',
+  favicon: 'img/favicon.svg',
+  stylesheets: [
+    {
+      href: 'https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500&family=Sofia+Sans+Condensed:wght@600;700&family=Sofia+Sans+Extra+Condensed:wght@800&family=Sofia+Sans:ital,wght@0,400;0,600;0,700;1,400&display=swap',
+      type: 'text/css',
+    },
+  ],
+  headTags: [
+    {tagName: 'link', attributes: {rel: 'preconnect', href: 'https://fonts.googleapis.com'}},
+    {tagName: 'link', attributes: {rel: 'preconnect', href: 'https://fonts.gstatic.com', crossorigin: 'anonymous'}},
+  ],
   organizationName: 'wunderio', // Usually your GitHub org/user name.
   projectName: 'silta', // Usually your repo name.
   themeConfig: {

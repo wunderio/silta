@@ -1,43 +1,97 @@
 /* stylelint-disable docusaurus/copyright-header */
 /**
- * Any CSS included here will be global. The classic template
- * bundles Infima by default. Infima is a CSS framework designed to
- * work well for content-centric websites.
+ * Mearra theme for the Silta docs.
+ * Global styles on top of Infima. Brand tokens first, then Infima mappings.
  */
 
-/* You can override the default Infima variables here. */
 :root {
-  --ifm-color-primary: #5b37bf;
-  --ifm-color-primary-dark: rgb(33, 175, 144);
-  --ifm-color-primary-darker: rgb(31, 165, 136);
-  --ifm-color-primary-darkest: #532fb6;
-  --ifm-color-primary-light: rgb(70, 203, 174);
-  --ifm-color-primary-lighter: rgb(102, 212, 189);
-  --ifm-color-primary-lightest: rgb(146, 224, 208);
-  --ifm-code-font-size: 95%;
+  /* Mearra brand palette */
+  --mearra-ink: #1e0050;
+  --mearra-ink-foreground: #f2eee7;
+  --mearra-violet: #4400f0;
+  --mearra-signal: #00f087;
+  --mearra-coral: #ff5c5f;
+  --mearra-amber: #efa831;
+  --mearra-sand: #f4efea;
+  --mearra-sand-deep: #e6dcd1;
+  --mearra-card: #fbf9f5;
+  --mearra-secondary: #ebe6e0;
+  --mearra-accent: #e1e1ff;
+  --mearra-muted: #4c4967;
+  --mearra-border: #d9cfc5;
+  --mearra-code: #140435;
+  --mearra-code-foreground: #ede7df;
+  --mearra-code-muted: #8e8ba6;
+  --mearra-shadow-lift: 0 12px 30px -16px rgba(30, 0, 80, 0.35);
 
-  --ifm-footer-background-color: #532fb6;
-  --ifm-footer-link-color: white;
-  --ifm-footer-link-hover-color: white;
-  --ifm-footer-title-color: white;
-  --ifm-footer-color: white;
-  --ifm-heading-color: #5b37bf;
-  --ifm-navbar-link-color: #5b37bf;
+  /* Fonts */
+  --mearra-font-display: 'Sofia Sans Extra Condensed', 'Sofia Sans', sans-serif;
+  --mearra-font-condensed: 'Sofia Sans Condensed', 'Sofia Sans', sans-serif;
+  --ifm-font-family-base: 'Sofia Sans', ui-sans-serif, system-ui, -apple-system, 'Segoe UI', sans-serif;
+  --ifm-heading-font-family: var(--mearra-font-display);
+  --ifm-font-family-monospace: 'JetBrains Mono', ui-monospace, SFMono-Regular, Menlo, monospace;
+  --ifm-font-size-base: 1.0625rem;
+  --ifm-line-height-base: 1.68;
+  --ifm-code-font-size: 85%;
+
+  /* Primary scale, built from Mearra violet #4400F0 */
+  --ifm-color-primary: #4400f0;
+  --ifm-color-primary-dark: #3d00d8;
+  --ifm-color-primary-darker: #3a00cc;
+  --ifm-color-primary-darkest: #3000a8;
+  --ifm-color-primary-light: #520cff;
+  --ifm-color-primary-lighter: #5a1aff;
+  --ifm-color-primary-lightest: #7b47ff;
+
+  /* Surfaces and text */
+  --ifm-background-color: var(--mearra-sand);
+  --ifm-background-surface-color: var(--mearra-card);
+  --ifm-font-color-base: var(--mearra-ink);
+  --ifm-heading-color: var(--mearra-ink);
+  --ifm-color-emphasis-300: var(--mearra-border);
+  --ifm-toc-border-color: var(--mearra-border);
+  --ifm-hr-background-color: var(--mearra-border);
+  --ifm-table-border-color: var(--mearra-border);
+  --ifm-code-background: var(--mearra-sand-deep);
+  --ifm-code-border-radius: 4px;
+  --ifm-global-radius: 0.375rem;
+  --ifm-card-border-radius: 0.75rem;
+  --ifm-button-border-radius: 0.375rem;
+  --ifm-link-color: var(--mearra-violet);
+}
+
+body {
+  -webkit-font-smoothing: antialiased;
+}
+
+html {
+  scroll-padding-top: 6rem;
+}
+
+::selection {
+  background: var(--mearra-signal);
+  color: var(--mearra-ink);
+}
+
+:focus-visible {
+  outline: 2px solid var(--ifm-color-primary);
+  outline-offset: 2px;
+}
+
+/* Body copy links: underlined like the Mearra prose style */
+.markdown a {
+  text-decoration: underline;
+  text-decoration-thickness: 1px;
+  text-underline-offset: 3px;
+}
+
+.markdown a:hover {
+  text-decoration-thickness: 2px;
 }
 
 .docusaurus-highlight-code-line {
-  background-color: #e0e1e2;
+  background-color: rgba(255, 255, 255, 0.08);
   display: block;
   margin: 0 calc(-1 * var(--ifm-pre-padding));
   padding: 0 var(--ifm-pre-padding);
-}
-
-/* their current selectors are missing and reusintg wrong variables. Just bear the ugly !important for now. */
-
-.hero .button {
-  color: white !important;
-}
-
-.button--outline:hover {
-  color: #5b37bf !important;
 }
