@@ -1,37 +1,224 @@
 /* stylelint-disable docusaurus/copyright-header */
 
 /**
- * CSS files with the .module.css suffix will be treated as CSS modules
- * and scoped locally.
+ * Homepage styles. CSS modules, scoped locally.
  */
 
-.heroBanner {
-  padding: 4rem 0;
-  text-align: center;
-  position: relative;
+.hero {
+  background-color: var(--mearra-ink);
+  color: var(--mearra-ink-foreground);
   overflow: hidden;
 }
 
-@media screen and (max-width: 966px) {
-  .heroBanner {
-    padding: 2rem;
-  }
+.heroInner {
+  display: grid;
+  grid-template-columns: minmax(0, 1.1fr) minmax(0, 1fr);
+  align-items: center;
+  gap: 3rem;
+  max-width: 1200px;
+  padding-top: 5rem;
+  padding-bottom: 7rem;
+}
+
+.heroTitle {
+  font-family: var(--mearra-font-display);
+  font-size: clamp(3rem, 6vw, 4.75rem);
+  font-weight: 800;
+  line-height: 0.9;
+  letter-spacing: -0.01em;
+  text-transform: uppercase;
+  color: var(--mearra-ink-foreground);
+  margin: 0;
+}
+
+.heroTagline {
+  max-width: 36rem;
+  margin: 1.5rem 0 0;
+  font-size: 1.125rem;
+  line-height: 1.65;
+  color: rgba(242, 238, 231, 0.8);
 }
 
 .buttons {
   display: flex;
-  align-items: center;
-  justify-content: center;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+  margin-top: 2.25rem;
 }
 
-.features {
+.button {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.75rem 1.5rem;
+  border-radius: var(--ifm-global-radius);
+  font-family: var(--mearra-font-condensed);
+  font-size: 1.125rem;
+  font-weight: 700;
+  letter-spacing: 0.03em;
+  text-transform: uppercase;
+  transition: transform 0.15s, background-color 0.15s, border-color 0.15s;
+}
+
+.button:hover {
+  text-decoration: none;
+}
+
+.buttonPrimary {
+  background-color: var(--mearra-signal);
+  color: var(--mearra-ink);
+}
+
+.buttonPrimary:hover {
+  color: var(--mearra-ink);
+  transform: translateY(-2px);
+}
+
+.buttonOutline {
+  border: 1px solid rgba(242, 238, 231, 0.4);
+  color: var(--mearra-ink-foreground);
+}
+
+.buttonOutline:hover {
+  border-color: var(--mearra-ink-foreground);
+  background-color: rgba(242, 238, 231, 0.1);
+  color: var(--mearra-ink-foreground);
+}
+
+.heroCode :global(.theme-code-block) {
+  margin: 0;
+  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5), 0 0 0 1px rgba(242, 238, 231, 0.1);
+}
+
+.section {
+  max-width: 1200px;
+  padding-top: 5rem;
+  padding-bottom: 5rem;
+}
+
+.sectionTitle {
+  font-size: 3rem;
+  line-height: 1;
+  text-transform: uppercase;
+  margin-bottom: 2rem;
+}
+
+.docGrid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 1rem;
+}
+
+.docCard {
   display: flex;
-  align-items: center;
-  padding: 2rem 0;
-  width: 100%;
+  flex-direction: column;
+  padding: 1.5rem;
+  border: 1px solid var(--ifm-color-emphasis-300);
+  border-radius: var(--ifm-card-border-radius);
+  background-color: var(--ifm-background-surface-color);
+  color: var(--ifm-font-color-base);
+  transition: transform 0.15s, border-color 0.15s, box-shadow 0.15s;
 }
 
-.featureImage {
-  height: 200px;
-  width: 200px;
+.docCard:hover {
+  transform: translateY(-4px);
+  border-color: var(--ifm-color-primary);
+  box-shadow: var(--mearra-shadow-lift);
+  color: var(--ifm-font-color-base);
+  text-decoration: none;
+}
+
+.docCardTitle {
+  font-family: var(--mearra-font-condensed);
+  font-size: 1.25rem;
+  font-weight: 700;
+  text-transform: none;
+  margin: 0;
+}
+
+.docCardText {
+  margin: 0.25rem 0 0;
+  color: var(--mearra-text-muted);
+}
+
+.docCardArrow {
+  margin-top: auto;
+  padding-top: 1.25rem;
+  box-sizing: content-box;
+  transition: transform 0.15s, color 0.15s;
+}
+
+.docCard:hover .docCardArrow {
+  transform: translateX(4px);
+  color: var(--ifm-color-primary);
+}
+
+.faqSection {
+  border-top: 1px solid var(--ifm-color-emphasis-300);
+  background-color: var(--mearra-surface-alt);
+}
+
+.faqGrid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 1rem;
+}
+
+.faqCard {
+  padding: 1.5rem;
+  border-radius: var(--ifm-card-border-radius);
+  background-color: var(--ifm-background-surface-color);
+}
+
+.faqNumber {
+  font-family: var(--mearra-font-display);
+  font-size: 3rem;
+  font-weight: 800;
+  line-height: 1;
+  color: var(--ifm-color-primary);
+}
+
+.faqTitle {
+  font-family: var(--mearra-font-condensed);
+  font-size: 1.25rem;
+  font-weight: 700;
+  text-transform: none;
+  margin: 0.75rem 0 0;
+}
+
+.faqText {
+  margin: 0.5rem 0 0;
+  line-height: 1.65;
+  color: var(--mearra-text-muted);
+}
+
+@media (max-width: 996px) {
+  .heroInner {
+    grid-template-columns: minmax(0, 1fr);
+    padding-top: 3.5rem;
+    padding-bottom: 4rem;
+  }
+
+  .docGrid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .faqGrid {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
+
+@media (max-width: 576px) {
+  .docGrid {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .section {
+    padding-top: 3.5rem;
+    padding-bottom: 3.5rem;
+  }
+
+  .sectionTitle {
+    font-size: 2.5rem;
+  }
 }

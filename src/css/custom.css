@@ -24,6 +24,10 @@
   --mearra-code-muted: #8e8ba6;
   --mearra-shadow-lift: 0 12px 30px -16px rgba(30, 0, 80, 0.35);
 
+  /* Theme-aware helpers (redefined for dark mode) */
+  --mearra-text-muted: var(--mearra-muted);
+  --mearra-surface-alt: var(--mearra-secondary);
+
   /* Fonts */
   --mearra-font-display: 'Sofia Sans Extra Condensed', 'Sofia Sans', sans-serif;
   --mearra-font-condensed: 'Sofia Sans Condensed', 'Sofia Sans', sans-serif;
