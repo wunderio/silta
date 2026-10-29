@@ -50,6 +50,65 @@ It's highly suggested to create mysql data backup before image change.
 
 Note: Do not change image to an earlier version, it may break the data.
 
+## Using highly available MariaDB (mariadb-ha)
+
+`mariadb-ha` deploys a MariaDB Galera cluster (3 or more nodes) managed by [mariadb-operator](https://github.com/mariadb-operator/mariadb-operator), with automatic primary failover. It's meant for production environments that need database high availability. It uses considerably more resources than the default single-pod `mariadb` (by default 3 pods × 250m CPU / 512Mi memory / 5Gi storage).
+
+Note: mariadb-operator must be installed in the cluster. If it's missing, deployment fails with `API k8s.mariadb.com/v1alpha1 unavailable, ask cluster administrator to enable mariadb-operator support in Silta cluster first!`. Ask your cluster administrator before enabling it.
+
+_Drupal chart_:
+
+```yaml
+db:
+  primary: mariadb-ha
+mariadb:
+  enabled: false
+mariadb-ha:
+  enabled: true
+```
+
+_Frontend chart_ (`mariadb` is disabled by default):
+
+```yaml
+db:
+  primary: mariadb-ha
+mariadb-ha:
+  enabled: true
+```
+
+
+```yaml
+mariadb-ha:
+  # Odd number, at least 3.
+  replicas: 3
+  persistence:
+    # Can only be increased. Volumes are resized in place by the operator.
+    size: 10Gi
+  resources:
+    requests:
+      cpu: 500m
+      memory: 1Gi
+    limits:
+      memory: 2Gi
+  myCnf: |
+    [mariadb]
+    max_allowed_packet=256M
+```
+
+Environment variables available to Drupal containers and frontend services:
+- When `db.primary: mariadb-ha`: `DB_HOST` (`<release>-mariadb-ha-primary`), `DB_NAME`, `DB_USER` and `DB_PASS`. Note that `DB_USER` is `root` in this case.
+- Whenever `mariadb-ha` is enabled: `MARIADB_HA_DB_HOST`, `MARIADB_HA_DB_NAME`, `MARIADB_HA_DB_USER` and `MARIADB_HA_DB_PASS` (application user).
+
+Note: The new cluster starts with an empty database, data is not migrated automatically. To switch an existing environment from `mariadb` to `mariadb-ha`, take a backup first, then:
+1. Deploy with `mariadb-ha.enabled: true`, keeping `mariadb` enabled and `db.primary: mariadb`.
+2. Copy the data, i.e. from the shell container:
+   ```bash
+   mariadb-dump -h $MARIADB_DB_HOST -u $MARIADB_DB_USER -p$MARIADB_DB_PASS --single-transaction $MARIADB_DB_NAME \
+     | mariadb -h $MARIADB_HA_DB_HOST -u $MARIADB_HA_DB_USER -p$MARIADB_HA_DB_PASS $MARIADB_HA_DB_NAME
+   ```
+3. Deploy with `db.primary: mariadb-ha`.
+4. Once everything is verified, set `mariadb.enabled: false`.
+
 ## Mount Drupal public files to a different location
 
 _Drupal chart_:
