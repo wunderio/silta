@@ -1,0 +1,31 @@
+.notFound {
+  max-width: 36rem;
+  padding: 6rem 1rem;
+  text-align: center;
+}
+
+.code {
+  font-family: var(--mearra-font-display);
+  font-size: 6rem;
+  font-weight: 800;
+  line-height: 1;
+  color: var(--ifm-color-primary);
+  margin: 0;
+}
+
+.title {
+  font-size: 2.25rem;
+  text-transform: uppercase;
+  margin: 1rem 0;
+}
+
+.text {
+  font-size: 1.125rem;
+  color: var(--mearra-text-muted);
+}
+
+.link {
+  display: inline-block;
+  margin-top: 1rem;
+  font-weight: 600;
+}

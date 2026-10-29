@@ -5,22 +5,34 @@ module.exports = {
   baseUrl: '/silta/',
   onBrokenLinks: 'throw',
   onBrokenMarkdownLinks: 'warn',
-  favicon: 'img/favicon.ico',
+  favicon: 'img/favicon.svg',
+  stylesheets: [
+    {
+      href: 'https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500&family=Sofia+Sans+Condensed:wght@600;700&family=Sofia+Sans+Extra+Condensed:wght@800&family=Sofia+Sans:ital,wght@0,400;0,600;0,700;1,400&display=swap',
+      type: 'text/css',
+    },
+  ],
+  headTags: [
+    {tagName: 'link', attributes: {rel: 'preconnect', href: 'https://fonts.googleapis.com'}},
+    {tagName: 'link', attributes: {rel: 'preconnect', href: 'https://fonts.gstatic.com', crossorigin: 'anonymous'}},
+  ],
   organizationName: 'wunderio', // Usually your GitHub org/user name.
   projectName: 'silta', // Usually your repo name.
   themeConfig: {
     colorMode: {
       defaultMode: 'light',
-      disableSwitch: true,
+      disableSwitch: false,
+      respectPrefersColorScheme: true,
     },
     prism: {
-      theme: require('prism-react-renderer').themes.github,
-      darkTheme: require('prism-react-renderer').themes.dracula,
+      theme: require('./src/utils/prismMearra'),
+      darkTheme: require('./src/utils/prismMearra'),
+      additionalLanguages: ['bash', 'php'],
     },
     navbar: {
-      // title: 'Silta',
+      title: 'Silta',
       logo: {
-        alt: 'Wunder Silta',
+        alt: 'Mearra Silta',
         src: 'img/logo.svg',
       },
       items: [
@@ -32,8 +44,9 @@ module.exports = {
         },
         {
           href: 'https://github.com/wunderio/silta',
-          label: 'GitHub',
           position: 'right',
+          className: 'header-github-link',
+          'aria-label': 'GitHub repository',
         },
       ],
     },
@@ -61,23 +74,19 @@ module.exports = {
           items: [
             {
               label: 'Facebook',
-              href: 'https://www.facebook.com/wunder.io',
+              href: 'https://www.facebook.com/mearraofficial',
             },
             {
               label: 'Linkedin',
-              href: 'https://www.linkedin.com/company/wunder.io',
-            },
-            {
-              label: 'Twitter',
-              href: 'https://twitter.com/Wunder_io',
+              href: 'https://www.linkedin.com/company/wunder-io',
             },
             {
               label: 'Instagram',
-              href: 'https://www.instagram.com/wunder.io/',
+              href: 'https://www.instagram.com/mearraofficial',
             },
             {
               label: 'Youtube',
-              href: 'https://www.youtube.com/channel/UCsBoaJt5sX12IFBu1giXZJg',
+              href: 'https://www.youtube.com/@mearracom',
             },
           ],
         },
@@ -86,7 +95,7 @@ module.exports = {
           items: [
             {
               label: 'Blog',
-              href: 'https://wunder.io/articles/',
+              href: 'https://mearra.com/insights',
             },
             {
               label: 'GitHub',
@@ -95,7 +104,7 @@ module.exports = {
           ],
         },
       ],
-      copyright: `Copyright © ${new Date().getFullYear()} Wunder`,
+      copyright: `Copyright © ${new Date().getFullYear()} Mearra`,
     },
   },
   presets: [
@@ -104,15 +113,13 @@ module.exports = {
       {
         docs: {
           sidebarPath: require.resolve('./sidebars.js'),
-          // Please change this to your repo.
           editUrl:
             'https://github.com/wunderio/silta/tree/master/',
         },
         blog: {
           showReadingTime: true,
-          // Please change this to your repo.
           editUrl:
-            'https://github.com/facebook/docusaurus/edit/master/website/blog/',
+            'https://github.com/wunderio/silta/tree/master/',
         },
         theme: {
           customCss: require.resolve('./src/css/custom.css'),

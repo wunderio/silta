@@ -1,43 +1,689 @@
 /* stylelint-disable docusaurus/copyright-header */
 /**
- * Any CSS included here will be global. The classic template
- * bundles Infima by default. Infima is a CSS framework designed to
- * work well for content-centric websites.
+ * Mearra theme for the Silta docs.
+ * Global styles on top of Infima. Brand tokens first, then Infima mappings.
  */
 
-/* You can override the default Infima variables here. */
 :root {
-  --ifm-color-primary: #5b37bf;
-  --ifm-color-primary-dark: rgb(33, 175, 144);
-  --ifm-color-primary-darker: rgb(31, 165, 136);
-  --ifm-color-primary-darkest: #532fb6;
-  --ifm-color-primary-light: rgb(70, 203, 174);
-  --ifm-color-primary-lighter: rgb(102, 212, 189);
-  --ifm-color-primary-lightest: rgb(146, 224, 208);
-  --ifm-code-font-size: 95%;
+  /* Mearra brand palette */
+  --mearra-ink: #1e0050;
+  --mearra-ink-foreground: #f2eee7;
+  --mearra-violet: #4400f0;
+  --mearra-signal: #00f087;
+  --mearra-coral: #ff5c5f;
+  --mearra-amber: #efa831;
+  --mearra-sand: #f4efea;
+  --mearra-sand-deep: #e6dcd1;
+  --mearra-card: #fbf9f5;
+  --mearra-secondary: #ebe6e0;
+  --mearra-accent: #e1e1ff;
+  --mearra-muted: #4c4967;
+  --mearra-border: #d9cfc5;
+  --mearra-code: #140435;
+  --mearra-code-foreground: #ede7df;
+  --mearra-code-muted: #8e8ba6;
+  --mearra-shadow-lift: 0 12px 30px -16px rgba(30, 0, 80, 0.35);
 
-  --ifm-footer-background-color: #532fb6;
-  --ifm-footer-link-color: white;
-  --ifm-footer-link-hover-color: white;
-  --ifm-footer-title-color: white;
-  --ifm-footer-color: white;
-  --ifm-heading-color: #5b37bf;
-  --ifm-navbar-link-color: #5b37bf;
+  /* Theme-aware helpers (redefined for dark mode) */
+  --mearra-text-muted: var(--mearra-muted);
+  --mearra-surface-alt: var(--mearra-secondary);
+  --mearra-row-hover: rgba(230, 220, 209, 0.6);
+  --mearra-active-bg: var(--mearra-accent);
+  --mearra-active-fg: var(--mearra-violet);
+
+  /* Fonts */
+  --mearra-font-display: 'Sofia Sans Extra Condensed', 'Sofia Sans', sans-serif;
+  --mearra-font-condensed: 'Sofia Sans Condensed', 'Sofia Sans', sans-serif;
+  --ifm-font-family-base: 'Sofia Sans', ui-sans-serif, system-ui, -apple-system, 'Segoe UI', sans-serif;
+  --ifm-heading-font-family: var(--mearra-font-display);
+  --ifm-font-family-monospace: 'JetBrains Mono', ui-monospace, SFMono-Regular, Menlo, monospace;
+  --ifm-font-size-base: 1.0625rem;
+  --ifm-line-height-base: 1.68;
+  --ifm-code-font-size: 85%;
+
+  /* Primary scale, built from Mearra violet #4400F0 */
+  --ifm-color-primary: #4400f0;
+  --ifm-color-primary-dark: #3d00d8;
+  --ifm-color-primary-darker: #3a00cc;
+  --ifm-color-primary-darkest: #3000a8;
+  --ifm-color-primary-light: #520cff;
+  --ifm-color-primary-lighter: #5a1aff;
+  --ifm-color-primary-lightest: #7b47ff;
+
+  /* Surfaces and text */
+  --ifm-background-color: var(--mearra-sand);
+  --ifm-background-surface-color: var(--mearra-card);
+  --ifm-font-color-base: var(--mearra-ink);
+  --ifm-heading-color: var(--mearra-ink);
+  --ifm-color-emphasis-300: var(--mearra-border);
+  --ifm-toc-border-color: var(--mearra-border);
+  --ifm-hr-background-color: var(--mearra-border);
+  --ifm-table-border-color: var(--mearra-border);
+  --ifm-code-background: var(--mearra-sand-deep);
+  --ifm-code-border-radius: 4px;
+  --ifm-global-radius: 0.375rem;
+  --ifm-card-border-radius: 0.75rem;
+  --ifm-button-border-radius: 0.375rem;
+  --ifm-link-color: var(--mearra-violet);
 }
 
-.docusaurus-highlight-code-line {
-  background-color: #e0e1e2;
+/* Dark mode. Lovable has no dark tokens, so these are derived from the brand palette (unconfirmed). */
+html[data-theme='dark'] {
+  --ifm-color-primary: #a59bff;
+  --ifm-color-primary-dark: #8f82ff;
+  --ifm-color-primary-darker: #8476ff;
+  --ifm-color-primary-darkest: #6250ff;
+  --ifm-color-primary-light: #bbb4ff;
+  --ifm-color-primary-lighter: #c6c0ff;
+  --ifm-color-primary-lightest: #e0ddff;
+
+  --ifm-background-color: #12002f;
+  --ifm-background-surface-color: #1a0742;
+  --ifm-font-color-base: var(--mearra-ink-foreground);
+  --ifm-heading-color: var(--mearra-ink-foreground);
+  --ifm-color-emphasis-300: #3a2a63;
+  --ifm-toc-border-color: #3a2a63;
+  --ifm-hr-background-color: #3a2a63;
+  --ifm-table-border-color: #3a2a63;
+  --ifm-code-background: #2a1a55;
+  --ifm-link-color: var(--ifm-color-primary);
+
+  --mearra-text-muted: #b8b3cc;
+  --mearra-surface-alt: #170538;
+  --mearra-row-hover: rgba(242, 238, 231, 0.05);
+  --mearra-active-bg: rgba(165, 155, 255, 0.15);
+  --mearra-active-fg: #c6c0ff;
+  --mearra-shadow-lift: 0 12px 30px -16px rgba(0, 0, 0, 0.8);
+  --docusaurus-highlighted-code-line-bg: rgba(165, 155, 255, 0.25);
+}
+
+html[data-theme='dark'] .navbar {
+  border-bottom: 1px solid #3a2a63;
+}
+
+html[data-theme='dark'] .footer {
+  border-top: 1px solid #3a2a63;
+}
+
+html[data-theme='dark'] .theme-code-block {
+  box-shadow: 0 0 0 1px #3a2a63;
+}
+
+html[data-theme='dark'] .alert--secondary,
+html[data-theme='dark'] .alert--info {
+  --ifm-alert-border-color: #a59bff;
+  --ifm-alert-background-color: rgba(165, 155, 255, 0.1);
+}
+
+html[data-theme='dark'] .markdown table thead tr {
+  background-color: #2a0a6b;
+}
+
+body {
+  -webkit-font-smoothing: antialiased;
+}
+
+html {
+  scroll-padding-top: 6rem;
+}
+
+::selection {
+  background: var(--mearra-signal);
+  color: var(--mearra-ink);
+}
+
+:focus-visible {
+  outline: 2px solid var(--ifm-color-primary);
+  outline-offset: 2px;
+}
+
+/* Body copy links: underlined like the Mearra prose style */
+.markdown a {
+  text-decoration: underline;
+  text-decoration-thickness: 1px;
+  text-underline-offset: 3px;
+}
+
+.markdown a:hover {
+  text-decoration-thickness: 2px;
+}
+
+:root {
+  --docusaurus-highlighted-code-line-bg: rgba(68, 0, 240, 0.35);
+}
+
+/* Navbar: ink bar with the white Mearra mark */
+.navbar {
+  --ifm-navbar-background-color: var(--mearra-ink);
+  --ifm-navbar-link-color: var(--mearra-ink-foreground);
+  --ifm-navbar-link-hover-color: var(--mearra-signal);
+  --ifm-navbar-link-active-color: var(--mearra-signal);
+  --ifm-navbar-height: 4rem;
+  --ifm-navbar-shadow: none;
+  color: var(--mearra-ink-foreground);
+}
+
+.navbar__inner {
+  max-width: 1440px;
+  margin: 0 auto;
+}
+
+.navbar__logo {
+  height: 2.25rem;
+  margin-right: 0.75rem;
+}
+
+.navbar__title {
+  font-family: var(--mearra-font-condensed);
+  font-weight: 700;
+  font-size: 1rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: rgba(242, 238, 231, 0.8);
+}
+
+.navbar__brand:hover .navbar__title {
+  color: var(--mearra-ink-foreground);
+}
+
+.navbar__link {
+  font-family: var(--mearra-font-condensed);
+  font-weight: 700;
+  font-size: 1.05rem;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
+.navbar__toggle {
+  color: var(--mearra-ink-foreground);
+}
+
+.header-github-link {
+  display: flex;
+  align-items: center;
+  padding: 0.5rem;
+}
+
+.header-github-link::before {
+  content: '';
+  width: 1.25rem;
+  height: 1.25rem;
+  background-color: currentColor;
+  mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M12 .297c-6.63 0-12 5.373-12 12 0 5.303 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61C4.422 18.07 3.633 17.7 3.633 17.7c-1.087-.744.084-.729.084-.729 1.205.084 1.838 1.236 1.838 1.236 1.07 1.835 2.809 1.305 3.495.998.108-.776.417-1.305.76-1.605-2.665-.3-5.466-1.332-5.466-5.93 0-1.31.465-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-.322 3.3 1.23.96-.267 1.98-.399 3-.405 1.02.006 2.04.138 3 .405 2.28-1.552 3.285-1.23 3.285-1.23.645 1.653.24 2.873.12 3.176.765.84 1.23 1.91 1.23 3.22 0 4.61-2.805 5.625-5.475 5.92.42.36.81 1.096.81 2.22 0 1.606-.015 2.896-.015 3.286 0 .315.21.69.825.57C20.565 22.092 24 17.592 24 12.297c0-6.627-5.373-12-12-12'/%3E%3C/svg%3E") no-repeat center / contain;
+}
+
+/* Mobile drawer keeps the page colors, not the ink bar */
+.navbar-sidebar {
+  --ifm-navbar-link-color: var(--ifm-font-color-base);
+  --ifm-navbar-link-hover-color: var(--ifm-color-primary);
+  --ifm-navbar-link-active-color: var(--ifm-color-primary);
+  background-color: var(--ifm-background-color);
+  color: var(--ifm-font-color-base);
+}
+
+/* Footer: ink, centered three-column grid */
+.footer {
+  --ifm-footer-background-color: var(--mearra-ink);
+  --ifm-footer-color: rgba(242, 238, 231, 0.7);
+  --ifm-footer-link-color: rgba(242, 238, 231, 0.8);
+  --ifm-footer-link-hover-color: var(--mearra-signal);
+  --ifm-footer-title-color: var(--mearra-ink-foreground);
+  --ifm-footer-padding-vertical: 3.5rem;
+  padding-bottom: 2.5rem;
+}
+
+.footer__links {
+  max-width: 48rem;
+  margin: 0 auto;
+}
+
+.footer__title {
+  font-family: var(--mearra-font-condensed);
+  font-size: 1.125rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  margin-bottom: 1rem;
+}
+
+.footer__link-item {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.375rem;
+  font-size: 1rem;
+  transition: color 0.15s;
+}
+
+.footer__link-item:hover {
+  text-decoration: none;
+}
+
+.footer__bottom {
+  max-width: 1200px;
+  margin: 2.5rem auto 0;
+  padding-top: 1.5rem;
+  border-top: 1px solid rgba(242, 238, 231, 0.2);
+}
+
+.footer__copyright {
+  font-size: 1rem;
+}
+
+@media (max-width: 996px) {
+  .footer__links {
+    text-align: center;
+  }
+}
+
+/* Docs typography */
+.markdown h1,
+.markdown h2 {
+  font-family: var(--mearra-font-display);
+  font-weight: 800;
+  text-transform: uppercase;
+}
+
+.markdown h1:first-child {
+  --ifm-h1-font-size: clamp(2.75rem, 5vw, 4rem);
+  line-height: 0.95;
+  letter-spacing: -0.01em;
+}
+
+.markdown h2 {
+  --ifm-h2-font-size: 2.25rem;
+  line-height: 1;
+  margin-top: 3rem;
+}
+
+.markdown h3 {
+  font-family: var(--mearra-font-condensed);
+  font-weight: 700;
+  --ifm-h3-font-size: 1.35rem;
+}
+
+.markdown h4,
+.markdown h5,
+.markdown h6 {
+  font-family: var(--mearra-font-condensed);
+  font-weight: 700;
+}
+
+.markdown ul {
+  list-style: square;
+}
+
+.markdown li::marker {
+  color: var(--ifm-color-primary);
+}
+
+.markdown :not(pre) > code {
+  border: 0;
+  padding: 0.1em 0.4em;
+}
+
+/* Tables: ink header row */
+.markdown table {
+  border-collapse: collapse;
+  border-radius: var(--ifm-global-radius);
+  font-size: 1rem;
+}
+
+.markdown table thead tr {
+  background-color: var(--mearra-ink);
+  color: var(--mearra-ink-foreground);
+  border-bottom: 0;
+}
+
+.markdown table th {
+  border: 0;
+  font-family: var(--mearra-font-condensed);
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+.markdown table td {
+  border-width: 0 0 1px;
+}
+
+.markdown table tr:nth-child(2n) {
+  background-color: transparent;
+}
+
+.markdown table tbody tr:hover {
+  background-color: var(--mearra-row-hover);
+}
+
+/* Code blocks: always ink, like the Mearra code panel */
+.theme-code-block {
+  --ifm-pre-background: var(--mearra-code);
+  border-radius: 0.5rem;
+  box-shadow: none;
+}
+
+.theme-code-block [class*='codeBlockTitle'] {
+  border-bottom: 1px solid rgba(142, 139, 166, 0.2);
+  font-family: var(--ifm-font-family-monospace);
+  font-size: 0.875rem;
+  font-weight: 400;
+  color: var(--mearra-code-muted);
+}
+
+.theme-code-block button[class*='copyButton'],
+.theme-code-block button[class*='wordWrapButton'] {
+  color: var(--mearra-code-foreground);
+  border-color: rgba(142, 139, 166, 0.3);
+}
+
+/* Admonitions: 4px left rule, tinted background, condensed label */
+.theme-admonition {
+  --ifm-alert-border-width: 0;
+  --ifm-alert-border-left-width: 4px;
+  --ifm-alert-foreground-color: var(--ifm-font-color-base);
+  border-radius: var(--ifm-global-radius);
+  box-shadow: none;
+}
+
+.theme-admonition [class*='admonitionHeading'] {
+  font-family: var(--mearra-font-condensed);
+  font-size: 1rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+}
+
+.alert--secondary,
+.alert--info {
+  --ifm-alert-border-color: var(--mearra-violet);
+  --ifm-alert-background-color: rgba(68, 0, 240, 0.05);
+  --ifm-alert-background-color-highlight: rgba(68, 0, 240, 0.12);
+}
+
+.alert--success {
+  --ifm-alert-border-color: var(--mearra-signal);
+  --ifm-alert-background-color: rgba(0, 240, 135, 0.1);
+  --ifm-alert-background-color-highlight: rgba(0, 240, 135, 0.2);
+}
+
+.alert--warning {
+  --ifm-alert-border-color: var(--mearra-amber);
+  --ifm-alert-background-color: rgba(239, 168, 49, 0.1);
+  --ifm-alert-background-color-highlight: rgba(239, 168, 49, 0.2);
+}
+
+.alert--danger {
+  --ifm-alert-border-color: var(--mearra-coral);
+  --ifm-alert-background-color: rgba(255, 92, 95, 0.1);
+  --ifm-alert-background-color-highlight: rgba(255, 92, 95, 0.2);
+}
+
+.alert--info [class*='admonitionIcon'] svg,
+.alert--secondary [class*='admonitionIcon'] svg {
+  fill: var(--ifm-color-primary);
+}
+
+.alert--success [class*='admonitionIcon'] svg,
+.alert--warning [class*='admonitionIcon'] svg,
+.alert--danger [class*='admonitionIcon'] svg {
+  fill: var(--ifm-font-color-base);
+}
+
+/* Sidebar */
+.theme-doc-sidebar-container {
+  border-right-color: var(--ifm-color-emphasis-300) !important;
+}
+
+.theme-doc-sidebar-menu .menu__link,
+.theme-doc-sidebar-menu .menu__caret {
+  font-size: 1.05rem;
+}
+
+.theme-doc-sidebar-item-category-level-1 > .menu__list-item-collapsible > .menu__link {
+  font-weight: 700;
+  font-size: 1rem;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
+.theme-doc-sidebar-item-link .menu__link {
+  border-left: 3px solid transparent;
+  border-radius: 0;
+}
+
+.theme-doc-sidebar-item-link .menu__link:hover {
+  border-left-color: var(--ifm-color-emphasis-300);
+  background-color: var(--mearra-row-hover);
+}
+
+.theme-doc-sidebar-item-link .menu__link--active {
+  border-left-color: var(--ifm-color-primary);
+  background-color: var(--mearra-active-bg);
+  color: var(--mearra-active-fg);
+  font-weight: 700;
+}
+
+/* Table of contents with an "On this page" label */
+.theme-doc-toc-desktop::before {
+  content: 'On this page';
   display: block;
-  margin: 0 calc(-1 * var(--ifm-pre-padding));
-  padding: 0 var(--ifm-pre-padding);
+  margin-bottom: 0.75rem;
+  padding-left: var(--ifm-toc-padding-horizontal);
+  font-family: var(--mearra-font-condensed);
+  font-size: 0.95rem;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--mearra-text-muted);
 }
 
-/* their current selectors are missing and reusintg wrong variables. Just bear the ugly !important for now. */
-
-.hero .button {
-  color: white !important;
+.theme-doc-toc-desktop .table-of-contents {
+  border-left: 1px solid var(--ifm-toc-border-color);
+  font-size: 0.95rem;
 }
 
-.button--outline:hover {
-  color: #5b37bf !important;
+.table-of-contents__link {
+  color: var(--mearra-text-muted);
+}
+
+.theme-doc-toc-desktop .table-of-contents__link {
+  display: block;
+  margin-left: calc(-1 * var(--ifm-toc-padding-horizontal) - 1px);
+  padding-left: calc(var(--ifm-toc-padding-horizontal) - 1px);
+  border-left: 2px solid transparent;
+}
+
+.table-of-contents__link:hover {
+  color: var(--ifm-font-color-base);
+}
+
+.table-of-contents__link--active,
+.table-of-contents__link--active:hover {
+  color: var(--ifm-color-primary);
+  font-weight: 600;
+}
+
+.theme-doc-toc-desktop .table-of-contents__link--active {
+  border-left-color: var(--ifm-color-primary);
+}
+
+/* Breadcrumbs */
+.breadcrumbs__link {
+  font-family: var(--mearra-font-condensed);
+  font-size: 0.95rem;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--mearra-text-muted);
+  background: none;
+}
+
+.breadcrumbs__item--active .breadcrumbs__link {
+  background: none;
+  color: var(--ifm-font-color-base);
+}
+
+/* Edit this page */
+.theme-edit-this-page {
+  color: var(--mearra-text-muted);
+}
+
+.theme-edit-this-page:hover {
+  color: var(--ifm-color-primary);
+}
+
+/* Previous / next cards */
+.pagination-nav__link {
+  border-color: var(--ifm-color-emphasis-300);
+  border-radius: 0.5rem;
+  background-color: var(--ifm-background-surface-color);
+  transition: transform 0.15s, border-color 0.15s, box-shadow 0.15s;
+}
+
+.pagination-nav__link:hover {
+  transform: translateY(-2px);
+  border-color: var(--ifm-color-primary);
+  box-shadow: var(--mearra-shadow-lift);
+}
+
+.pagination-nav__sublabel {
+  font-family: var(--mearra-font-condensed);
+  font-size: 0.95rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--mearra-text-muted);
+}
+
+.pagination-nav__label {
+  color: var(--ifm-font-color-base);
+}
+
+.pagination-nav__link:hover .pagination-nav__label {
+  color: var(--ifm-color-primary);
+}
+
+/* DocSearch: light pill in the ink navbar, sand modal with violet active hit */
+html[data-theme] {
+  --docsearch-primary-color: var(--ifm-color-primary);
+  --docsearch-highlight-color: var(--ifm-color-primary);
+  --docsearch-logo-color: var(--ifm-color-primary);
+  --docsearch-text-color: var(--ifm-font-color-base);
+  --docsearch-secondary-text-color: var(--mearra-text-muted);
+  --docsearch-muted-color: var(--mearra-text-muted);
+  --docsearch-icon-color: var(--mearra-text-muted);
+  --docsearch-subtle-color: transparent;
+  --docsearch-border-radius: 0.375rem;
+  --docsearch-search-button-background: var(--mearra-ink-foreground);
+  --docsearch-search-button-text-color: rgba(30, 0, 80, 0.7);
+  --docsearch-key-background: transparent;
+  --docsearch-key-color: rgba(30, 0, 80, 0.6);
+  --docsearch-container-background: rgba(30, 0, 80, 0.6);
+  --docsearch-modal-background: var(--ifm-background-color);
+  --docsearch-modal-width: 42rem;
+  --docsearch-modal-shadow: 0 25px 50px -12px rgba(30, 0, 80, 0.5);
+  --docsearch-searchbox-background: transparent;
+  --docsearch-searchbox-focus-background: transparent;
+  --docsearch-hit-background: var(--ifm-background-surface-color);
+  --docsearch-hit-color: var(--ifm-font-color-base);
+  --docsearch-hit-highlight-color: var(--mearra-violet);
+  --docsearch-hit-shadow: none;
+  --docsearch-footer-background: var(--ifm-background-color);
+  --docsearch-footer-shadow: 0 -1px 0 0 var(--ifm-color-emphasis-300);
+  --docsearch-focus-color: var(--mearra-violet);
+}
+
+html[data-theme='dark'] {
+  --docsearch-container-background: rgba(0, 0, 0, 0.6);
+  --docsearch-modal-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.8), 0 0 0 1px #3a2a63;
+}
+
+.navbar .DocSearch-Button {
+  border-radius: 0.375rem;
+  font-family: var(--ifm-font-family-base);
+}
+
+.navbar .DocSearch-Button:hover {
+  --docsearch-search-button-text-color: var(--mearra-ink);
+  box-shadow: none;
+}
+
+@media (min-width: 997px) {
+  .navbar .DocSearch-Button {
+    width: 16rem;
+  }
+}
+
+.DocSearch-Button-Key {
+  border: 1px solid rgba(30, 0, 80, 0.2);
+  font-family: var(--ifm-font-family-monospace);
+  font-size: 0.75rem;
+}
+
+.DocSearch-Modal {
+  border-radius: 0.75rem;
+  overflow: hidden;
+}
+
+.DocSearch-SearchBar {
+  border-bottom: 2px solid var(--ifm-font-color-base);
+}
+
+.DocSearch-Form {
+  box-shadow: none;
+}
+
+.DocSearch-Modal .DocSearch-Hit a {
+  border-radius: 0.5rem;
+}
+
+.DocSearch-Modal .DocSearch-Hit mark {
+  background: var(--mearra-signal);
+  border-radius: 2px;
+  color: var(--mearra-ink);
+  text-decoration: none;
+}
+
+.DocSearch-Modal .DocSearch-Hit[aria-selected='true'] .DocSearch-Hit-title,
+.DocSearch-Modal .DocSearch-Hit[aria-selected='true'] .DocSearch-Hit-path,
+.DocSearch-Modal .DocSearch-Hit[aria-selected='true'] .DocSearch-Hit-text,
+.DocSearch-Modal .DocSearch-Hit[aria-selected='true'] .DocSearch-Hit-Tree,
+.DocSearch-Modal .DocSearch-Hit[aria-selected='true'] .DocSearch-Hit-icon,
+.DocSearch-Modal .DocSearch-Hit[aria-selected='true'] .DocSearch-Hit-action,
+.DocSearch-Modal .DocSearch-Hit[aria-selected='true'] mark {
+  color: var(--mearra-ink-foreground);
+}
+
+.DocSearch-Modal .DocSearch-Hit[aria-selected='true'] mark {
+  background: transparent;
+  text-decoration: underline;
+}
+
+/* Mobile drawer: ink header so the white mark stays visible, labelled GitHub link */
+.navbar-sidebar__brand {
+  background-color: var(--mearra-ink);
+  height: var(--ifm-navbar-height);
+}
+
+.navbar-sidebar__brand .navbar__title {
+  color: rgba(242, 238, 231, 0.8);
+}
+
+.navbar-sidebar__close {
+  color: var(--mearra-ink-foreground);
+}
+
+.navbar-sidebar .menu__link {
+  font-size: 1.05rem;
+}
+
+.navbar-sidebar .header-github-link {
+  gap: 0.5rem;
+  padding: var(--ifm-menu-link-padding-vertical) var(--ifm-menu-link-padding-horizontal);
+}
+
+.navbar-sidebar .header-github-link::after {
+  content: 'GitHub';
+}
+
+.navbar-sidebar__back {
+  font-family: var(--mearra-font-condensed);
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
 }
