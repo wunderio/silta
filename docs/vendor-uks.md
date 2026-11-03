@@ -123,8 +123,41 @@ There are few more requirements listed on [silta-cluster chart page](https://git
 ## Missing functionality
 
 - Managed Docker image registry. Use [Harbor](https://goharbor.io/) as a replacement and the object storage as a storage backend.
-- Managed NFS storage
 
 ## Deployment specifics
 
 There is no extra configuration required for basic deployments. The only change would be `cluster.type` but it's normally overridden in CI pipeline.
+
+### File Storage
+
+[UpCloud File Storage](https://upcloud.com/products/file-storage) - managed NFS storage, available via the `nfs-shared` storageclass.<br/>
+Public and private files can be stored on UpCloud File Storage via NFS mount, providing higher i/o access than default storage. This option is useful for projects with lots of files served.<br/>
+
+Example configuration for **new deployments**.
+```yaml
+mounts:
+  public-files:
+    enabled: true
+    storage: 1Gi
+    mountPath: /app/web/sites/default/files
+    storageClassName: nfs-shared
+  private-files:
+    enabled: true
+    storage: 1Gi
+    mountPath: /app/private
+    storageClassName: nfs-shared
+```
+
+Add `USER` directive to `silta/php.Dockerfile` right after the COPY line so files are created with correct permissions and can be modified via shell (i.e. `drush cr`).
+```yaml
+USER www-data
+```
+
+Dockerfile example of a project
+```yaml
+FROM wunderio/silta-php-fpm:8.5-fpm-v1
+COPY --chown=www-data:www-data . /app
+USER www-data
+```
+
+Migrating **existing** projects works the same way as on GKE, since the storageclass name is identical (`nfs-shared`). See the full example [here](gcp_filestore_migration.md).
